@@ -53,6 +53,7 @@ function getSectionQuestions(sectionId) {
   );
 }
 
-console.log(JSON.stringify(makeExamTest()));
-
-//console.log(getSectionQuestions(101))
+module.exports = {
+    makeExamTest,
+    getSectionQuestions,
+}

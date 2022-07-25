@@ -14,20 +14,19 @@ const { enter, leave } = Stage;
 const scenes = require("./scenes");
 
 const stage = new Stage(
-    [
-      scenes.sectionQuestionsScene,
-    ]
-    // ,
-    // { ttl: 1800 }
-  );
+  [scenes.sectionQuestionsScene, scenes.showSectionQuestionsScene]
+  // ,
+  // { ttl: 1800 }
+);
 
 const bot = new Telegraf(config.bot_token);
 bot.start((ctx) =>
   ctx.reply(
     "Привіт, це бот для практики здачі теоретичного іспиту ПДР!",
-    Markup.keyboard(
-      ["🔍 Питання до теми", "😎 Іспит"], 
-    ).resize().oneTime().extra()
+    Markup.keyboard(["🔍 Питання до теми", "😎 Іспит"])
+      .resize()
+      .oneTime()
+      .extra()
   )
 );
 bot.use(session());
@@ -38,14 +37,14 @@ bot.catch((err) => {
 bot.launch();
 bot.on("document", async (ctx) => {});
 
-bot.hears("🔍 Питання до теми", (ctx) => ctx.scene.enter("sectionQuestions"))
+bot.hears("🔍 Питання до теми", (ctx) => ctx.scene.enter("sectionQuestions"));
 
 bot.command("photo", async (ctx) => {
   ctx.replyWithPhoto(
     {
       url: "https://green-way.com.ua/storage/app/uploads/public/61d/c2c/60d/61dc2c60dbb16873548078.jpg",
     },
-    { caption: "Test" }
+    { caption: "<b>Test</b>", parse_mode: "HTML" }
   );
 });
 

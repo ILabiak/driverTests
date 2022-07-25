@@ -6,6 +6,11 @@ const Markup = require("telegraf/markup");
 const questions = require("./questions.json");
 const sections = require("./sections.json");
 
+const test = require("./algorithm");
+const { toUnicode } = require("punycode");
+
+const numberEmojies = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
+
 const showMenu = (context) => {
   context.reply(
     "Ви в меню:",
@@ -93,124 +98,106 @@ sectionQuestionsScene.action("<<", (ctx) => {
   });
 });
 sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
-    console.log(ctx.update.callback_query.data)
-})
+  // console.log(ctx.update.callback_query.data)
+  // ctx.deleteMessage();
+  ctx.scene.enter("showSectionQuestions", {
+    sectionId: ctx.update.callback_query.data,
+  });
+});
 sectionQuestionsScene.hears("Меню", (ctx) => {
   showMenu(ctx);
   ctx.scene.leave("sectionQuestions");
 });
 sectionQuestionsScene.on("message", (ctx) => {
-  if (parseInt(ctx.message.text) >= 0) {
-    let paymentAmount = parseInt(ctx.message.text);
-    ctx.scene.enter("paymentMethod", { amount: paymentAmount });
-  } else {
-    ctx.scene.enter("sectionQuestions");
-  }
+  ctx.reply("Don't know what u mean");
 });
 
-const userOrdersScene = new Scene("userOrders");
-userOrdersScene.enter(async (ctx) => {
-  let page;
-  let sectionsArr = [];
-  let pageSections = [];
+const showSectionQuestionsScene = new Scene("showSectionQuestions");
+showSectionQuestionsScene.enter(async (ctx) => {
+  if (ctx.session.__scenes.state.sectionId) {
+    let page;
+    let questions = [];
+    let questionsArr = [];
+    let sectionId = ctx.session.__scenes.state.sectionId;
 
-  if (ctx.session.__scenes.state.sectionsArr) {
-    //check if sectionsArr was already created in scene
-    sectionsArr = ctx.session.__scenes.state.sectionsArr;
-  } else {
-    for (let el of sections) {
-      sectionsArr.push({
-        text: el.name,
-        callback_data: el.id,
-      });
+    if (
+      ctx.session.__scenes.state.questionsArr &&
+      ctx.session.__scenes.state.page >= 1
+    ) {
+      questionsArr = ctx.session.__scenes.state.questionsArr;
+      page = ctx.session.__scenes.state.page;
+      if (page > questionsArr.length) page = questionsArr.length;
+    } else {
+      questions = test.getSectionQuestions(sectionId);
+
+      for (let question of questions) {
+        let counter = 0;
+        let questionObj = {
+          text: `<b>${question.text}</b>\n\n`,
+          image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
+          answers: [],
+          answered : false
+        };
+        let answers = [];
+        for (let answer of question.answers) {
+          questionObj.text += `${numberEmojies[counter]} ${answer.text}\n`;
+          answers.push({
+            text: `${numberEmojies[counter]}`,
+            callback_data: "0",
+          });
+          counter++;
+        }
+        answers[question.rightAnswerIndex].callback_data = "1"
+        if(question.image) {
+            questionObj.image = question.image
+        }
+        questionObj.answers = answers
+        questionsArr.push(questionObj);
+      }
+      ctx.session.__scenes.state.questionsArr = questionsArr;
+      page = 1;
+      ctx.session.__scenes.state.page = page;
     }
-  }
 
-  if (ctx.session.__scenes.state.page && ctx.session.__scenes.state.page >= 1) {
-    //check if page given while entering scene
-    page = ctx.session.__scenes.state.counter;
+    //console.dir(questionsArr[0])
+    ctx.telegram.sendPhoto(
+      ctx.chat.id,
+      {
+        url: questionsArr[page-1].image,
+      },
+      {
+        caption : questionsArr[page-1].text,
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [
+              [...questionsArr[page-1].answers],
+            [
+              { text: "<", callback_data: "<" },
+              { text: ">", callback_data: ">" },
+            ],
+            // [{ text: "Меню", callback_data: "menu" }],
+          ],
+        },
+      }
+    );
+
+    // console.log(JSON.stringify(questionsArr))
   } else {
-    page = 1;
-    ctx.session.__scenes.state.page = page;
+    ctx.scene.leave("showSectionQuestions");
   }
-
-  //   if (page < 1) page = 1;
-  //   if (page == )
-  //     keyboardArr[page].push({ text: ">>", callback_data: ">>" });
-  //   else if (page == keyboardArr.length - 1)
-  //     keyboardArr[page].push({ text: "<<", callback_data: "<<" });
-  //   else if (page > 0 && counter < keyboardArr.length - 1) {
-  //     keyboardArr[page].unshift({ text: "<<", callback_data: "<<" });
-  //     //keyboardArr[page].push({ text: ">>", callback_data: ">>" });
-  //   }
-  ctx.telegram.sendMessage(ctx.chat.id, "Список тем:", {
-    reply_markup: {
-      inline_keyboard: [
-        [...keyboardArr[counter]],
-        [{ text: "Меню", callback_data: "menu" }],
-      ],
-    },
-  });
 });
-userOrdersScene.action(">>", (ctx) => {
-  ctx.deleteMessage();
-  let counter = ctx.session.__scenes.state.counter;
-  counter++;
-  ctx.scene.enter("userOrders", {
-    telegramId: ctx.session.__scenes.state.telegramId,
-    counter: counter,
-    arr: ctx.session.__scenes.state.arr,
-    keyboardArr: ctx.session.__scenes.state.keyboardArr,
-  });
-});
-userOrdersScene.action("<<", (ctx) => {
-  ctx.deleteMessage();
-  let counter = ctx.session.__scenes.state.counter;
-  counter--;
-  ctx.scene.enter("userOrders", {
-    telegramId: ctx.session.__scenes.state.telegramId,
-    counter: counter,
-    arr: ctx.session.__scenes.state.arr,
-    keyboardArr: ctx.session.__scenes.state.keyboardArr,
-  });
-});
-userOrdersScene.action("menu", (ctx) => {
+showSectionQuestionsScene.action("menu", (ctx) => {
   ctx.deleteMessage();
   showMenu(ctx);
-  ctx.scene.leave("userOrders");
+  ctx.scene.leave("showSectionQuestions");
 });
-userOrdersScene.action(/^\d+$/, async (ctx) => {
-  const message = ctx.update.callback_query.data;
-  const ordersArr = ctx.session.__scenes.state.arr;
-  if (ordersArr.includes(message)) {
-    const orderId = parseInt(message);
-    const apiOrderDetails = await api.getOrderDetails(orderId);
-    const dbOrderDetails = await db.getOrderDetails(orderId);
-    if (apiOrderDetails.charge < dbOrderDetails.charge) {
-      const chargeDiff = dbOrderDetails.charge - apiOrderDetails.charge;
-      const telegramId = ctx.update.message.from.id;
-      await db.changeBalance(telegramId, chargeDiff);
-    }
-    await db.updateOrderDetails(
-      orderId,
-      apiOrderDetails.charge,
-      apiOrderDetails.start_count,
-      apiOrderDetails.status,
-      apiOrderDetails.remains
-    );
-    const orderInfo = apiOrderDetails.text + `Ссылка: ${dbOrderDetails.link}`;
-    ctx.reply(orderInfo);
-  } else {
-    showMenu(ctx);
-    ctx.scene.leave("userOrders");
-  }
-});
-userOrdersScene.on("message", async (ctx) => {
+showSectionQuestionsScene.on("message", async (ctx) => {
   showMenu(ctx);
   ctx.scene.leave("userOrders");
 });
 
 module.exports = {
   sectionQuestionsScene,
+  showSectionQuestionsScene,
   showMenu,
 };
