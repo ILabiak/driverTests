@@ -186,6 +186,26 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.scene.leave("showSectionQuestions");
   }
 });
+showSectionQuestionsScene.action(">", (ctx) => {
+    ctx.deleteMessage();
+    let page = ctx.session.__scenes.state.page;
+    page++;
+    ctx.scene.enter("showSectionQuestions", {
+      page: page,
+      questionsArr: ctx.session.__scenes.state.questionsArr,
+      sectionId : ctx.session.__scenes.state.sectionId
+    });
+  });
+showSectionQuestionsScene.action("<", (ctx) => {
+    ctx.deleteMessage();
+    let page = ctx.session.__scenes.state.page;
+    page--;
+    ctx.scene.enter("showSectionQuestions", {
+      page: page,
+      questionsArr: ctx.session.__scenes.state.questionsArr,
+      sectionId : ctx.session.__scenes.state.sectionId
+    });
+  });
 showSectionQuestionsScene.action("menu", (ctx) => {
   ctx.deleteMessage();
   showMenu(ctx);
