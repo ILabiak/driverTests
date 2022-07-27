@@ -26,43 +26,22 @@ sectionQuestionsScene.enter(async (ctx) => {
   let pageSections = [];
   let sectionNames = [];
 
-  if (
-    ctx.session.__scenes.state.sectionsArr &&
-    ctx.session.__scenes.state.sectionNames
-  ) {
-    //check if sectionsArr and sectionNames were already created in scene
-    sectionsArr = ctx.session.__scenes.state.sectionsArr;
-    sectionNames = ctx.session.__scenes.state.sectionNames;
-  } else {
-    for (let el of sections) {
-      sectionNames.push(`🔍 ${el.name}\n`);
-      let index = el.name.indexOf(". ");
-      sectionsArr.push({
-        text: el.name.slice(0, index),
-        callback_data: el.id,
-      });
-    }
-    ctx.session.__scenes.state.sectionsArr = sectionsArr;
-    ctx.session.__scenes.state.sectionNames = sectionNames;
+  for (let el of sections) {
+    sectionNames.push(`🔍 ${el.name}\n`);
+    let index = el.name.indexOf(". ");
+    sectionsArr.push({
+      text: el.name.slice(0, index),
+      callback_data: el.id,
+    });
   }
-  if (ctx.session.__scenes.state.page && ctx.session.__scenes.state.page >= 1) {
-    //check if page given while entering scene
-    let pageLimit = Math.ceil(sections.length / 5);
-    if (ctx.session.__scenes.state.page > pageLimit) {
-      page = pageLimit;
-    } else {
-      page = ctx.session.__scenes.state.page;
-    }
-  } else {
-    page = 1;
-    ctx.session.__scenes.state.page = page;
-  }
+  ctx.session.__scenes.state.sectionsArr = sectionsArr;
+  ctx.session.__scenes.state.sectionNames = sectionNames;
+
+  page = 1;
+  ctx.session.__scenes.state.page = page;
 
   pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
   message += sectionNames.slice(page * 5 - 5, page * 5).join("");
-
-  // console.log(message)
-  // console.log(pageSections)
 
   ctx.telegram.sendMessage(ctx.chat.id, message, {
     reply_markup: {
@@ -72,30 +51,59 @@ sectionQuestionsScene.enter(async (ctx) => {
           { text: "<<", callback_data: "<<" },
           { text: ">>", callback_data: ">>" },
         ],
-        // [{ text: "Меню", callback_data: "menu" }],
       ],
     },
   });
 });
 sectionQuestionsScene.action(">>", (ctx) => {
-  ctx.deleteMessage();
+  let message = "Список тем:\n";
   let page = ctx.session.__scenes.state.page;
-  page++;
-  ctx.scene.enter("sectionQuestions", {
-    page: page,
-    sectionsArr: ctx.session.__scenes.state.sectionsArr,
-    sectionNames: ctx.session.__scenes.state.sectionNames,
-  });
+  let sectionsArr = ctx.session.__scenes.state.sectionsArr;
+  let sectionNames = ctx.session.__scenes.state.sectionNames;
+  if (page < Math.ceil(sections.length / 5)) {
+    page++;
+    ctx.session.__scenes.state.page = page;
+
+    let pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
+    message += sectionNames.slice(page * 5 - 5, page * 5).join("");
+
+    ctx.editMessageText(message, {
+      reply_markup: {
+        inline_keyboard: [
+          [...pageSections],
+          [
+            { text: "<<", callback_data: "<<" },
+            { text: ">>", callback_data: ">>" },
+          ],
+        ],
+      },
+    });
+  }
 });
 sectionQuestionsScene.action("<<", (ctx) => {
-  ctx.deleteMessage();
+  let message = "Список тем:\n";
   let page = ctx.session.__scenes.state.page;
-  page--;
-  ctx.scene.enter("sectionQuestions", {
-    page: page,
-    sectionsArr: ctx.session.__scenes.state.sectionsArr,
-    sectionNames: ctx.session.__scenes.state.sectionNames,
-  });
+  let sectionsArr = ctx.session.__scenes.state.sectionsArr;
+  let sectionNames = ctx.session.__scenes.state.sectionNames;
+  if (page > 1) {
+    page--;
+    ctx.session.__scenes.state.page = page;
+
+    let pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
+    message += sectionNames.slice(page * 5 - 5, page * 5).join("");
+
+    ctx.editMessageText(message, {
+      reply_markup: {
+        inline_keyboard: [
+          [...pageSections],
+          [
+            { text: "<<", callback_data: "<<" },
+            { text: ">>", callback_data: ">>" },
+          ],
+        ],
+      },
+    });
+  }
 });
 sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
   // console.log(ctx.update.callback_query.data)
@@ -136,7 +144,7 @@ showSectionQuestionsScene.enter(async (ctx) => {
           text: `<b>${question.text}</b>\n\n`,
           image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
           answers: [],
-          answered : false
+          answered: false,
         };
         let answers = [];
         for (let answer of question.answers) {
@@ -147,11 +155,11 @@ showSectionQuestionsScene.enter(async (ctx) => {
           });
           counter++;
         }
-        answers[question.rightAnswerIndex].callback_data = "1"
-        if(question.image) {
-            questionObj.image = question.image
+        answers[question.rightAnswerIndex].callback_data = "1";
+        if (question.image) {
+          questionObj.image = question.image;
         }
-        questionObj.answers = answers
+        questionObj.answers = answers;
         questionsArr.push(questionObj);
       }
       ctx.session.__scenes.state.questionsArr = questionsArr;
@@ -163,14 +171,14 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.telegram.sendPhoto(
       ctx.chat.id,
       {
-        url: questionsArr[page-1].image,
+        url: questionsArr[page - 1].image,
       },
       {
-        caption : questionsArr[page-1].text,
+        caption: questionsArr[page - 1].text,
         parse_mode: "HTML",
         reply_markup: {
           inline_keyboard: [
-              [...questionsArr[page-1].answers],
+            [...questionsArr[page - 1].answers],
             [
               { text: "<", callback_data: "<" },
               { text: ">", callback_data: ">" },
@@ -180,32 +188,37 @@ showSectionQuestionsScene.enter(async (ctx) => {
         },
       }
     );
-
     // console.log(JSON.stringify(questionsArr))
   } else {
     ctx.scene.leave("showSectionQuestions");
   }
 });
+showSectionQuestionsScene.action("1", (ctx) => {
+  ctx.reply("правильно");
+});
+showSectionQuestionsScene.action("0", (ctx) => {
+  ctx.reply("не правильно");
+});
 showSectionQuestionsScene.action(">", (ctx) => {
-    ctx.deleteMessage();
-    let page = ctx.session.__scenes.state.page;
-    page++;
-    ctx.scene.enter("showSectionQuestions", {
-      page: page,
-      questionsArr: ctx.session.__scenes.state.questionsArr,
-      sectionId : ctx.session.__scenes.state.sectionId
-    });
+  ctx.deleteMessage();
+  let page = ctx.session.__scenes.state.page;
+  page++;
+  ctx.scene.enter("showSectionQuestions", {
+    page: page,
+    questionsArr: ctx.session.__scenes.state.questionsArr,
+    sectionId: ctx.session.__scenes.state.sectionId,
   });
+});
 showSectionQuestionsScene.action("<", (ctx) => {
-    ctx.deleteMessage();
-    let page = ctx.session.__scenes.state.page;
-    page--;
-    ctx.scene.enter("showSectionQuestions", {
-      page: page,
-      questionsArr: ctx.session.__scenes.state.questionsArr,
-      sectionId : ctx.session.__scenes.state.sectionId
-    });
+  ctx.deleteMessage();
+  let page = ctx.session.__scenes.state.page;
+  page--;
+  ctx.scene.enter("showSectionQuestions", {
+    page: page,
+    questionsArr: ctx.session.__scenes.state.questionsArr,
+    sectionId: ctx.session.__scenes.state.sectionId,
   });
+});
 showSectionQuestionsScene.action("menu", (ctx) => {
   ctx.deleteMessage();
   showMenu(ctx);
