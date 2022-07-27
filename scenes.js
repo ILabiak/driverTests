@@ -136,7 +136,8 @@ showSectionQuestionsScene.enter(async (ctx) => {
         }</b>\n\n`,
         image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
         answers: [],
-        answered: false,
+        answeredQuestionsCount: 0,
+        rightAnswersCount: 0,
       };
       questionNumber++;
       let answers = [];
@@ -183,10 +184,64 @@ showSectionQuestionsScene.enter(async (ctx) => {
   }
 });
 showSectionQuestionsScene.action("1", (ctx) => {
-  ctx.reply("правильно");
+    let questionsArr = ctx.session.__scenes.state.questionsArr;
+    let page = ctx.session.__scenes.state.page;
+    console.dir(questionsArr[page - 1].text)
+    questionsArr[page - 1].text +="\n✅ Правильно"
+    ctx.editMessageMedia(
+        {
+          type: "photo",
+          media: questionsArr[page - 1].image,
+        },
+        {
+          caption: questionsArr[page - 1].text,
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: [
+              //[...questionsArr[page - 1].answers],
+              [
+                { text: "<", callback_data: "<" },
+                { text: ">", callback_data: ">" },
+              ],
+              // [{ text: "Меню", callback_data: "menu" }],
+            ],
+          },
+        }
+      );
 });
 showSectionQuestionsScene.action("0", (ctx) => {
-  ctx.reply("не правильно");
+    let questionsArr = ctx.session.__scenes.state.questionsArr;
+    let page = ctx.session.__scenes.state.page;
+    console.dir(questionsArr[page - 1].text)
+    let rightAnswerIndex = 0;
+    let counter = 1;
+    for(let answer of questionsArr[page - 1].answers){
+        if(answer.callback_data == "1"){
+            rightAnswerIndex = counter
+        }
+        counter++;
+    }
+    questionsArr[page - 1].text +=`\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`
+    ctx.editMessageMedia(
+        {
+          type: "photo",
+          media: questionsArr[page - 1].image,
+        },
+        {
+          caption: questionsArr[page - 1].text,
+          parse_mode: "HTML",
+          reply_markup: {
+            inline_keyboard: [
+              //[...questionsArr[page - 1].answers],
+              [
+                { text: "<", callback_data: "<" },
+                { text: ">", callback_data: ">" },
+              ],
+              // [{ text: "Меню", callback_data: "menu" }],
+            ],
+          },
+        }
+      );
 });
 showSectionQuestionsScene.action(">", (ctx) => {
   let questionsArr = ctx.session.__scenes.state.questionsArr;
