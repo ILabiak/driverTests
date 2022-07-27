@@ -124,6 +124,9 @@ showSectionQuestionsScene.enter(async (ctx) => {
     let questions = [];
     let questionsArr = [];
     let sectionId = ctx.session.__scenes.state.sectionId;
+    ctx.session.__scenes.state.answeredQuestionsCount = 0;
+    ctx.session.__scenes.state.rightAnswersCount = 0;
+    ctx.session.__scenes.state.startDate = new Date();
 
     questions = test.getSectionQuestions(sectionId);
     let questionNumber = 1;
@@ -136,8 +139,6 @@ showSectionQuestionsScene.enter(async (ctx) => {
         }</b>\n\n`,
         image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
         answers: [],
-        answeredQuestionsCount: 0,
-        rightAnswersCount: 0,
       };
       questionNumber++;
       let answers = [];
@@ -186,7 +187,9 @@ showSectionQuestionsScene.enter(async (ctx) => {
 showSectionQuestionsScene.action("1", (ctx) => {
     let questionsArr = ctx.session.__scenes.state.questionsArr;
     let page = ctx.session.__scenes.state.page;
-    console.dir(questionsArr[page - 1].text)
+
+    ctx.session.__scenes.state.rightAnswersCount++;
+    ctx.session.__scenes.state.answeredQuestionsCount++;
     questionsArr[page - 1].text +="\n✅ Правильно"
     ctx.editMessageMedia(
         {
@@ -208,11 +211,20 @@ showSectionQuestionsScene.action("1", (ctx) => {
           },
         }
       );
+      if(ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length){
+        const startDate = ctx.session.__scenes.state.startDate
+        const endDate = new Date()
+        const completionTime = (endDate.getTime() - startDate.getTime()) / 1000
+        const message = `Запитання по темі пройдено
+Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${questionsArr.length}
+Пройдено за ${parseInt(completionTime)} секунд`
+ctx.reply(message)
+      }
 });
 showSectionQuestionsScene.action("0", (ctx) => {
     let questionsArr = ctx.session.__scenes.state.questionsArr;
     let page = ctx.session.__scenes.state.page;
-    console.dir(questionsArr[page - 1].text)
+    ctx.session.__scenes.state.answeredQuestionsCount++;
     let rightAnswerIndex = 0;
     let counter = 1;
     for(let answer of questionsArr[page - 1].answers){
@@ -242,6 +254,15 @@ showSectionQuestionsScene.action("0", (ctx) => {
           },
         }
       );
+      if(ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length){
+        const startDate = ctx.session.__scenes.state.startDate
+        const endDate = new Date()
+        const completionTime = (endDate.getTime() - startDate.getTime()) / 1000
+        const message = `Запитання по темі пройдено
+Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${questionsArr.length}
+Пройдено за ${parseInt(completionTime)} секунд`
+ctx.reply(message)
+      }
 });
 showSectionQuestionsScene.action(">", (ctx) => {
   let questionsArr = ctx.session.__scenes.state.questionsArr;
