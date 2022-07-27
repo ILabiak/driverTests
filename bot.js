@@ -41,7 +41,7 @@ bot.hears("🔍 Питання до теми", (ctx) => ctx.scene.enter("section
 
 bot.command("photo", async (ctx) => {
   ctx.replyWithPhoto(
-    {
+    { type: photo,
       url: "https://green-way.com.ua/storage/app/uploads/public/61d/c2c/60d/61dc2c60dbb16873548078.jpg",
     },
     { caption: "<b>Test</b>", parse_mode: "HTML" }

@@ -106,8 +106,6 @@ sectionQuestionsScene.action("<<", (ctx) => {
   }
 });
 sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
-  // console.log(ctx.update.callback_query.data)
-  // ctx.deleteMessage();
   ctx.scene.enter("showSectionQuestions", {
     sectionId: ctx.update.callback_query.data,
   });
@@ -123,55 +121,83 @@ sectionQuestionsScene.on("message", (ctx) => {
 const showSectionQuestionsScene = new Scene("showSectionQuestions");
 showSectionQuestionsScene.enter(async (ctx) => {
   if (ctx.session.__scenes.state.sectionId) {
-    let page;
     let questions = [];
     let questionsArr = [];
     let sectionId = ctx.session.__scenes.state.sectionId;
 
-    if (
-      ctx.session.__scenes.state.questionsArr &&
-      ctx.session.__scenes.state.page >= 1
-    ) {
-      questionsArr = ctx.session.__scenes.state.questionsArr;
-      page = ctx.session.__scenes.state.page;
-      if (page > questionsArr.length) page = questionsArr.length;
-    } else {
-      questions = test.getSectionQuestions(sectionId);
+    questions = test.getSectionQuestions(sectionId);
+    let questionNumber = 1;
 
-      for (let question of questions) {
-        let counter = 0;
-        let questionObj = {
-          text: `<b>${question.text}</b>\n\n`,
-          image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
-          answers: [],
-          answered: false,
-        };
-        let answers = [];
-        for (let answer of question.answers) {
-          questionObj.text += `${numberEmojies[counter]} ${answer.text}\n`;
-          answers.push({
-            text: `${numberEmojies[counter]}`,
-            callback_data: "0",
-          });
-          counter++;
-        }
-        answers[question.rightAnswerIndex].callback_data = "1";
-        if (question.image) {
-          questionObj.image = question.image;
-        }
-        questionObj.answers = answers;
-        questionsArr.push(questionObj);
+    for (let question of questions) {
+      let counter = 0;
+      let questionObj = {
+        text: `Питання №${questionNumber} з ${questions.length}\n<b>${
+          question.text
+        }</b>\n\n`,
+        image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
+        answers: [],
+        answered: false,
+      };
+      questionNumber++;
+      let answers = [];
+      for (let answer of question.answers) {
+        questionObj.text += `${numberEmojies[counter]} ${answer.text}\n`;
+        answers.push({
+          text: `${numberEmojies[counter]}`,
+          callback_data: "0",
+        });
+        counter++;
       }
-      ctx.session.__scenes.state.questionsArr = questionsArr;
-      page = 1;
-      ctx.session.__scenes.state.page = page;
+      answers[question.rightAnswerIndex].callback_data = "1";
+      if (question.image) {
+        questionObj.image = question.image;
+      }
+      questionObj.answers = answers;
+      questionsArr.push(questionObj);
     }
+    ctx.session.__scenes.state.questionsArr = questionsArr;
+    ctx.session.__scenes.state.page = 1;
 
-    //console.dir(questionsArr[0])
     ctx.telegram.sendPhoto(
       ctx.chat.id,
       {
-        url: questionsArr[page - 1].image,
+        url: questionsArr[0].image,
+      },
+      {
+        caption: questionsArr[0].text,
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [
+            [...questionsArr[0].answers],
+            [
+              { text: "<", callback_data: "<" },
+              { text: ">", callback_data: ">" },
+            ],
+            // [{ text: "Меню", callback_data: "menu" }],
+          ],
+        },
+      }
+    );
+  } else {
+    ctx.scene.leave("showSectionQuestions");
+  }
+});
+showSectionQuestionsScene.action("1", (ctx) => {
+  ctx.reply("правильно");
+});
+showSectionQuestionsScene.action("0", (ctx) => {
+  ctx.reply("не правильно");
+});
+showSectionQuestionsScene.action(">", (ctx) => {
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
+  let page = ctx.session.__scenes.state.page;
+  if (page < questionsArr.length) {
+    page++;
+
+    ctx.editMessageMedia(
+      {
+        type: "photo",
+        media: questionsArr[page - 1].image,
       },
       {
         caption: questionsArr[page - 1].text,
@@ -188,36 +214,37 @@ showSectionQuestionsScene.enter(async (ctx) => {
         },
       }
     );
-    // console.log(JSON.stringify(questionsArr))
-  } else {
-    ctx.scene.leave("showSectionQuestions");
+    ctx.session.__scenes.state.page = page;
   }
 });
-showSectionQuestionsScene.action("1", (ctx) => {
-  ctx.reply("правильно");
-});
-showSectionQuestionsScene.action("0", (ctx) => {
-  ctx.reply("не правильно");
-});
-showSectionQuestionsScene.action(">", (ctx) => {
-  ctx.deleteMessage();
-  let page = ctx.session.__scenes.state.page;
-  page++;
-  ctx.scene.enter("showSectionQuestions", {
-    page: page,
-    questionsArr: ctx.session.__scenes.state.questionsArr,
-    sectionId: ctx.session.__scenes.state.sectionId,
-  });
-});
 showSectionQuestionsScene.action("<", (ctx) => {
-  ctx.deleteMessage();
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
-  page--;
-  ctx.scene.enter("showSectionQuestions", {
-    page: page,
-    questionsArr: ctx.session.__scenes.state.questionsArr,
-    sectionId: ctx.session.__scenes.state.sectionId,
-  });
+  if (page > 1) {
+    page--;
+
+    ctx.editMessageMedia(
+      {
+        type: "photo",
+        media: questionsArr[page - 1].image,
+      },
+      {
+        caption: questionsArr[page - 1].text,
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [
+            [...questionsArr[page - 1].answers],
+            [
+              { text: "<", callback_data: "<" },
+              { text: ">", callback_data: ">" },
+            ],
+            // [{ text: "Меню", callback_data: "menu" }],
+          ],
+        },
+      }
+    );
+    ctx.session.__scenes.state.page = page;
+  }
 });
 showSectionQuestionsScene.action("menu", (ctx) => {
   ctx.deleteMessage();
