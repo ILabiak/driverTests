@@ -17,6 +17,56 @@ const showMenu = (context) => {
   );
 };
 
+const answerCallback = async (ctx) => {
+  let answer = ctx.update.callback_query.data == "1" ? true : false;
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
+  let page = ctx.session.__scenes.state.page;
+  questionsArr[page - 1].answered = true;
+
+  if (answer) {
+    ctx.session.__scenes.state.rightAnswersCount++;
+    questionsArr[page - 1].text += "\n✅ Правильно";
+  } else {
+    let rightAnswerIndex = questionsArr[page - 1].answers.findIndex(el => el.callback_data == "1") + 1
+    questionsArr[
+      page - 1
+    ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
+  }
+  await ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: questionsArr[page - 1].image,
+    },
+    {
+      caption: questionsArr[page - 1].text,
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "<", callback_data: "<" },
+            { text: ">", callback_data: ">" },
+          ],
+          // [{ text: "Меню", callback_data: "menu" }],
+        ],
+      },
+    }
+  );
+  ctx.session.__scenes.state.answeredQuestionsCount++;
+  if (
+    ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length
+  ) {
+    const startDate = ctx.session.__scenes.state.startDate;
+    const endDate = new Date();
+    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
+    const message = `Запитання по темі пройдено
+Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
+      questionsArr.length
+    }
+Пройдено за ${parseInt(completionTime)} секунд`;
+    ctx.reply(message);
+  }
+};
+
 const sectionQuestionsScene = new Scene("sectionQuestions");
 sectionQuestionsScene.enter(async (ctx) => {
   let message = "Список тем:\n";
@@ -121,7 +171,6 @@ const showSectionQuestionsScene = new Scene("showSectionQuestions");
 showSectionQuestionsScene.enter(async (ctx) => {
   if (ctx.session.__scenes.state.sectionId) {
     let questions = [];
-    //let questionsArr = [];
     let sectionId = ctx.session.__scenes.state.sectionId;
     ctx.session.__scenes.state.answeredQuestionsCount = 0;
     ctx.session.__scenes.state.rightAnswersCount = 0;
@@ -157,102 +206,23 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.scene.leave("showSectionQuestions");
   }
 });
-showSectionQuestionsScene.action("1", (ctx) => {
-  let questionsArr = ctx.session.__scenes.state.questionsArr;
-  let page = ctx.session.__scenes.state.page;
-
-  ctx.session.__scenes.state.rightAnswersCount++;
-  ctx.session.__scenes.state.answeredQuestionsCount++;
-  questionsArr[page - 1].text += "\n✅ Правильно";
-  ctx.editMessageMedia(
-    {
-      type: "photo",
-      media: questionsArr[page - 1].image,
-    },
-    {
-      caption: questionsArr[page - 1].text,
-      parse_mode: "HTML",
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: "<", callback_data: "<" },
-            { text: ">", callback_data: ">" },
-          ],
-          // [{ text: "Меню", callback_data: "menu" }],
-        ],
-      },
-    }
-  );
-  if (
-    ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length
-  ) {
-    const startDate = ctx.session.__scenes.state.startDate;
-    const endDate = new Date();
-    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
-    const message = `Запитання по темі пройдено
-Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
-      questionsArr.length
-    }
-Пройдено за ${parseInt(completionTime)} секунд`;
-    ctx.reply(message);
-  }
-});
-showSectionQuestionsScene.action("0", (ctx) => {
-  let questionsArr = ctx.session.__scenes.state.questionsArr;
-  let page = ctx.session.__scenes.state.page;
-  ctx.session.__scenes.state.answeredQuestionsCount++;
-  let rightAnswerIndex = 0;
-  let counter = 1;
-  for (let answer of questionsArr[page - 1].answers) {
-    if (answer.callback_data == "1") {
-      rightAnswerIndex = counter;
-    }
-    counter++;
-  }
-  questionsArr[
-    page - 1
-  ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
-  ctx.editMessageMedia(
-    {
-      type: "photo",
-      media: questionsArr[page - 1].image,
-    },
-    {
-      caption: questionsArr[page - 1].text,
-      parse_mode: "HTML",
-      reply_markup: {
-        inline_keyboard: [
-          //[...questionsArr[page - 1].answers],
-          [
-            { text: "<", callback_data: "<" },
-            { text: ">", callback_data: ">" },
-          ],
-          // [{ text: "Меню", callback_data: "menu" }],
-        ],
-      },
-    }
-  );
-  if (
-    ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length
-  ) {
-    const startDate = ctx.session.__scenes.state.startDate;
-    const endDate = new Date();
-    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
-    const message = `Запитання по темі пройдено
-Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
-      questionsArr.length
-    }
-Пройдено за ${parseInt(completionTime)} секунд`;
-    ctx.reply(message);
-  }
-});
-showSectionQuestionsScene.action(">", (ctx) => {
+showSectionQuestionsScene.action("1", async (ctx) => await answerCallback(ctx));
+showSectionQuestionsScene.action("0", async (ctx) => await answerCallback(ctx));
+showSectionQuestionsScene.action(">", async (ctx) => {
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
   if (page < questionsArr.length) {
     page++;
-
-    ctx.editMessageMedia(
+    let answered = questionsArr[page - 1].answered
+    let keyboard = [
+      [
+        { text: "<", callback_data: "<" },
+        { text: ">", callback_data: ">" },
+      ],
+      // [{ text: "Меню", callback_data: "menu" }],
+    ]
+    if(!answered) keyboard.unshift([...questionsArr[page - 1].answers])
+    await ctx.editMessageMedia(
       {
         type: "photo",
         media: questionsArr[page - 1].image,
@@ -261,27 +231,28 @@ showSectionQuestionsScene.action(">", (ctx) => {
         caption: questionsArr[page - 1].text,
         parse_mode: "HTML",
         reply_markup: {
-          inline_keyboard: [
-            [...questionsArr[page - 1].answers],
-            [
-              { text: "<", callback_data: "<" },
-              { text: ">", callback_data: ">" },
-            ],
-            // [{ text: "Меню", callback_data: "menu" }],
-          ],
+          inline_keyboard: keyboard,
         },
       }
     );
     ctx.session.__scenes.state.page = page;
   }
 });
-showSectionQuestionsScene.action("<", (ctx) => {
+showSectionQuestionsScene.action("<", async (ctx) => {
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
   if (page > 1) {
     page--;
-
-    ctx.editMessageMedia(
+    let answered = questionsArr[page - 1].answered
+    let keyboard = [
+      [
+        { text: "<", callback_data: "<" },
+        { text: ">", callback_data: ">" },
+      ],
+      // [{ text: "Меню", callback_data: "menu" }],
+    ]
+    if(!answered) keyboard.unshift([...questionsArr[page - 1].answers])
+    await ctx.editMessageMedia(
       {
         type: "photo",
         media: questionsArr[page - 1].image,
@@ -290,14 +261,7 @@ showSectionQuestionsScene.action("<", (ctx) => {
         caption: questionsArr[page - 1].text,
         parse_mode: "HTML",
         reply_markup: {
-          inline_keyboard: [
-            [...questionsArr[page - 1].answers],
-            [
-              { text: "<", callback_data: "<" },
-              { text: ">", callback_data: ">" },
-            ],
-            // [{ text: "Меню", callback_data: "menu" }],
-          ],
+          inline_keyboard: keyboard,
         },
       }
     );
@@ -323,6 +287,7 @@ function formatQuestions(questionsArr) {
       text: `Питання №${questionNumber} з ${questionsArr.length}\n<b>${question.text}</b>\n\n`,
       image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
       answers: [],
+      answered: false
     };
     questionNumber++;
     let answers = [];
@@ -341,7 +306,6 @@ function formatQuestions(questionsArr) {
     questionObj.answers = answers;
     resultArr.push(questionObj);
   }
-  console.dir(resultArr);
   return resultArr;
 }
 
