@@ -7,7 +7,6 @@ const questions = require("./questions.json");
 const sections = require("./sections.json");
 
 const test = require("./algorithm");
-const { toUnicode } = require("punycode");
 
 const numberEmojies = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
@@ -122,41 +121,15 @@ const showSectionQuestionsScene = new Scene("showSectionQuestions");
 showSectionQuestionsScene.enter(async (ctx) => {
   if (ctx.session.__scenes.state.sectionId) {
     let questions = [];
-    let questionsArr = [];
+    //let questionsArr = [];
     let sectionId = ctx.session.__scenes.state.sectionId;
     ctx.session.__scenes.state.answeredQuestionsCount = 0;
     ctx.session.__scenes.state.rightAnswersCount = 0;
     ctx.session.__scenes.state.startDate = new Date();
 
     questions = test.getSectionQuestions(sectionId);
-    let questionNumber = 1;
 
-    for (let question of questions) {
-      let counter = 0;
-      let questionObj = {
-        text: `Питання №${questionNumber} з ${questions.length}\n<b>${
-          question.text
-        }</b>\n\n`,
-        image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
-        answers: [],
-      };
-      questionNumber++;
-      let answers = [];
-      for (let answer of question.answers) {
-        questionObj.text += `${numberEmojies[counter]} ${answer.text}\n`;
-        answers.push({
-          text: `${numberEmojies[counter]}`,
-          callback_data: "0",
-        });
-        counter++;
-      }
-      answers[question.rightAnswerIndex].callback_data = "1";
-      if (question.image) {
-        questionObj.image = question.image;
-      }
-      questionObj.answers = answers;
-      questionsArr.push(questionObj);
-    }
+    let questionsArr = formatQuestions(questions);
     ctx.session.__scenes.state.questionsArr = questionsArr;
     ctx.session.__scenes.state.page = 1;
 
@@ -185,84 +158,93 @@ showSectionQuestionsScene.enter(async (ctx) => {
   }
 });
 showSectionQuestionsScene.action("1", (ctx) => {
-    let questionsArr = ctx.session.__scenes.state.questionsArr;
-    let page = ctx.session.__scenes.state.page;
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
+  let page = ctx.session.__scenes.state.page;
 
-    ctx.session.__scenes.state.rightAnswersCount++;
-    ctx.session.__scenes.state.answeredQuestionsCount++;
-    questionsArr[page - 1].text +="\n✅ Правильно"
-    ctx.editMessageMedia(
-        {
-          type: "photo",
-          media: questionsArr[page - 1].image,
-        },
-        {
-          caption: questionsArr[page - 1].text,
-          parse_mode: "HTML",
-          reply_markup: {
-            inline_keyboard: [
-              //[...questionsArr[page - 1].answers],
-              [
-                { text: "<", callback_data: "<" },
-                { text: ">", callback_data: ">" },
-              ],
-              // [{ text: "Меню", callback_data: "menu" }],
-            ],
-          },
-        }
-      );
-      if(ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length){
-        const startDate = ctx.session.__scenes.state.startDate
-        const endDate = new Date()
-        const completionTime = (endDate.getTime() - startDate.getTime()) / 1000
-        const message = `Запитання по темі пройдено
-Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${questionsArr.length}
-Пройдено за ${parseInt(completionTime)} секунд`
-ctx.reply(message)
-      }
+  ctx.session.__scenes.state.rightAnswersCount++;
+  ctx.session.__scenes.state.answeredQuestionsCount++;
+  questionsArr[page - 1].text += "\n✅ Правильно";
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: questionsArr[page - 1].image,
+    },
+    {
+      caption: questionsArr[page - 1].text,
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: "<", callback_data: "<" },
+            { text: ">", callback_data: ">" },
+          ],
+          // [{ text: "Меню", callback_data: "menu" }],
+        ],
+      },
+    }
+  );
+  if (
+    ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length
+  ) {
+    const startDate = ctx.session.__scenes.state.startDate;
+    const endDate = new Date();
+    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
+    const message = `Запитання по темі пройдено
+Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
+      questionsArr.length
+    }
+Пройдено за ${parseInt(completionTime)} секунд`;
+    ctx.reply(message);
+  }
 });
 showSectionQuestionsScene.action("0", (ctx) => {
-    let questionsArr = ctx.session.__scenes.state.questionsArr;
-    let page = ctx.session.__scenes.state.page;
-    ctx.session.__scenes.state.answeredQuestionsCount++;
-    let rightAnswerIndex = 0;
-    let counter = 1;
-    for(let answer of questionsArr[page - 1].answers){
-        if(answer.callback_data == "1"){
-            rightAnswerIndex = counter
-        }
-        counter++;
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
+  let page = ctx.session.__scenes.state.page;
+  ctx.session.__scenes.state.answeredQuestionsCount++;
+  let rightAnswerIndex = 0;
+  let counter = 1;
+  for (let answer of questionsArr[page - 1].answers) {
+    if (answer.callback_data == "1") {
+      rightAnswerIndex = counter;
     }
-    questionsArr[page - 1].text +=`\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`
-    ctx.editMessageMedia(
-        {
-          type: "photo",
-          media: questionsArr[page - 1].image,
-        },
-        {
-          caption: questionsArr[page - 1].text,
-          parse_mode: "HTML",
-          reply_markup: {
-            inline_keyboard: [
-              //[...questionsArr[page - 1].answers],
-              [
-                { text: "<", callback_data: "<" },
-                { text: ">", callback_data: ">" },
-              ],
-              // [{ text: "Меню", callback_data: "menu" }],
-            ],
-          },
-        }
-      );
-      if(ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length){
-        const startDate = ctx.session.__scenes.state.startDate
-        const endDate = new Date()
-        const completionTime = (endDate.getTime() - startDate.getTime()) / 1000
-        const message = `Запитання по темі пройдено
-Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${questionsArr.length}
-Пройдено за ${parseInt(completionTime)} секунд`
-ctx.reply(message)
-      }
+    counter++;
+  }
+  questionsArr[
+    page - 1
+  ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
+  ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: questionsArr[page - 1].image,
+    },
+    {
+      caption: questionsArr[page - 1].text,
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          //[...questionsArr[page - 1].answers],
+          [
+            { text: "<", callback_data: "<" },
+            { text: ">", callback_data: ">" },
+          ],
+          // [{ text: "Меню", callback_data: "menu" }],
+        ],
+      },
+    }
+  );
+  if (
+    ctx.session.__scenes.state.answeredQuestionsCount == questionsArr.length
+  ) {
+    const startDate = ctx.session.__scenes.state.startDate;
+    const endDate = new Date();
+    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
+    const message = `Запитання по темі пройдено
+Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
+      questionsArr.length
+    }
+Пройдено за ${parseInt(completionTime)} секунд`;
+    ctx.reply(message);
+  }
 });
 showSectionQuestionsScene.action(">", (ctx) => {
   let questionsArr = ctx.session.__scenes.state.questionsArr;
@@ -331,6 +313,37 @@ showSectionQuestionsScene.on("message", async (ctx) => {
   showMenu(ctx);
   ctx.scene.leave("userOrders");
 });
+
+function formatQuestions(questionsArr) {
+  let resultArr = [];
+  let questionNumber = 1;
+  for (let question of questionsArr) {
+    let counter = 0;
+    let questionObj = {
+      text: `Питання №${questionNumber} з ${questionsArr.length}\n<b>${question.text}</b>\n\n`,
+      image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
+      answers: [],
+    };
+    questionNumber++;
+    let answers = [];
+    for (let answer of question.answers) {
+      questionObj.text += `${numberEmojies[counter]} ${answer.text}\n`;
+      answers.push({
+        text: `${numberEmojies[counter]}`,
+        callback_data: "0",
+      });
+      counter++;
+    }
+    answers[question.rightAnswerIndex].callback_data = "1";
+    if (question.image) {
+      questionObj.image = question.image;
+    }
+    questionObj.answers = answers;
+    resultArr.push(questionObj);
+  }
+  console.dir(resultArr);
+  return resultArr;
+}
 
 module.exports = {
   sectionQuestionsScene,
