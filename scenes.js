@@ -70,7 +70,7 @@ const answerCallback = async (ctx) => {
   }
 };
 
-const changeQuestionCallback = async (ctx) => {
+const questionsPaginationCallback = async (ctx) => {
   let action = ctx.update.callback_query.data;
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
@@ -233,7 +233,6 @@ showSectionQuestionsScene.enter(async (ctx) => {
               { text: "<", callback_data: "<" },
               { text: ">", callback_data: ">" },
             ],
-            // [{ text: "Меню", callback_data: "menu" }],
           ],
         },
       }
@@ -244,8 +243,8 @@ showSectionQuestionsScene.enter(async (ctx) => {
 });
 showSectionQuestionsScene.action("1", async (ctx) => await answerCallback(ctx));
 showSectionQuestionsScene.action("0", async (ctx) => await answerCallback(ctx));
-showSectionQuestionsScene.action(">", async (ctx) => await changeQuestionCallback(ctx));
-showSectionQuestionsScene.action("<",async (ctx) => await changeQuestionCallback(ctx));
+showSectionQuestionsScene.action(">", async (ctx) => await questionsPaginationCallback(ctx));
+showSectionQuestionsScene.action("<",async (ctx) => await questionsPaginationCallback(ctx));
 showSectionQuestionsScene.action("menu", async (ctx) => {
   await ctx.deleteMessage();
   showMenu(ctx);
