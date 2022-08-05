@@ -67,11 +67,13 @@ const answerCallback = async (ctx) => {
     }
 Пройдено за ${parseInt(completionTime)} секунд`;
     ctx.reply(message);
+  } else if (answer) {
+    setTimeout(questionsPaginationCallback, 500, ctx, ">")
   }
 };
 
-const questionsPaginationCallback = async (ctx) => {
-  let action = ctx.update.callback_query.data;
+const questionsPaginationCallback = async (ctx, action) => {
+  //let action = ctx.update.callback_query.data;
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
   let keyboard = [
@@ -86,22 +88,22 @@ const questionsPaginationCallback = async (ctx) => {
     page--;
   }
   if (page != ctx.session.__scenes.state.page) {
-  let answered = questionsArr[page - 1].answered;
-  if (!answered) keyboard.unshift([...questionsArr[page - 1].answers]);
-  await ctx.editMessageMedia(
-    {
-      type: "photo",
-      media: questionsArr[page - 1].image,
-    },
-    {
-      caption: questionsArr[page - 1].text,
-      parse_mode: "HTML",
-      reply_markup: {
-        inline_keyboard: keyboard,
+    let answered = questionsArr[page - 1].answered;
+    if (!answered) keyboard.unshift([...questionsArr[page - 1].answers]);
+    await ctx.editMessageMedia(
+      {
+        type: "photo",
+        media: questionsArr[page - 1].image,
       },
-    }
-  );
-  ctx.session.__scenes.state.page = page;
+      {
+        caption: questionsArr[page - 1].text,
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: keyboard,
+        },
+      }
+    );
+    ctx.session.__scenes.state.page = page;
   }
 };
 
@@ -139,7 +141,7 @@ const sectionsPaginationCallback = async (ctx) => {
 const sectionQuestionsScene = new Scene("sectionQuestions");
 sectionQuestionsScene.enter(async (ctx) => {
   let message = "Список тем:\n";
-  let page;
+  let page = 1;
   let sectionsArr = [];
   let pageSections = [];
   let sectionNames = [];
@@ -155,7 +157,6 @@ sectionQuestionsScene.enter(async (ctx) => {
   ctx.session.__scenes.state.sectionsArr = sectionsArr;
   ctx.session.__scenes.state.sectionNames = sectionNames;
 
-  page = 1;
   ctx.session.__scenes.state.page = page;
 
   pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
@@ -174,15 +175,12 @@ sectionQuestionsScene.enter(async (ctx) => {
   });
 });
 sectionQuestionsScene.action(
-  ">>",
-  async (ctx) => await sectionsPaginationCallback(ctx)
-);
-sectionQuestionsScene.action(
-  "<<",
+  [">>", "<<"],
   async (ctx) => await sectionsPaginationCallback(ctx)
 );
 sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
-  ctx.scene.enter("showSectionQuestions", {
+  await ctx.deleteMessage();
+  await ctx.scene.enter("showSectionQuestions", {
     sectionId: ctx.update.callback_query.data,
   });
 });
@@ -232,15 +230,14 @@ showSectionQuestionsScene.enter(async (ctx) => {
     await ctx.scene.leave("showSectionQuestions");
   }
 });
-showSectionQuestionsScene.action("1", async (ctx) => await answerCallback(ctx));
-showSectionQuestionsScene.action("0", async (ctx) => await answerCallback(ctx));
 showSectionQuestionsScene.action(
-  ">",
-  async (ctx) => await questionsPaginationCallback(ctx)
+  ["0", "1"],
+  async (ctx) => await answerCallback(ctx)
 );
 showSectionQuestionsScene.action(
-  "<",
-  async (ctx) => await questionsPaginationCallback(ctx)
+  [">", "<"],
+  async (ctx) =>
+    await questionsPaginationCallback(ctx, ctx.update.callback_query.data)
 );
 showSectionQuestionsScene.action("menu", async (ctx) => {
   await ctx.deleteMessage();
