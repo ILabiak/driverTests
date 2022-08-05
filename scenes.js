@@ -85,6 +85,7 @@ const questionsPaginationCallback = async (ctx) => {
   } else if (page > 1 && action == "<") {
     page--;
   }
+  if (page != ctx.session.__scenes.state.page) {
   let answered = questionsArr[page - 1].answered;
   if (!answered) keyboard.unshift([...questionsArr[page - 1].answers]);
   await ctx.editMessageMedia(
@@ -101,6 +102,38 @@ const questionsPaginationCallback = async (ctx) => {
     }
   );
   ctx.session.__scenes.state.page = page;
+  }
+};
+
+const sectionsPaginationCallback = async (ctx) => {
+  let action = ctx.update.callback_query.data;
+  let message = "Список тем:\n";
+  let page = ctx.session.__scenes.state.page;
+  let sectionsArr = ctx.session.__scenes.state.sectionsArr;
+  let sectionNames = ctx.session.__scenes.state.sectionNames;
+  if (page < Math.ceil(sections.length / 5) && action == ">>") {
+    page++;
+  } else if (page > 1 && action == "<<") {
+    page--;
+  }
+  if (page != ctx.session.__scenes.state.page) {
+    ctx.session.__scenes.state.page = page;
+
+    let pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
+    message += sectionNames.slice(page * 5 - 5, page * 5).join("");
+
+    await ctx.editMessageText(message, {
+      reply_markup: {
+        inline_keyboard: [
+          [...pageSections],
+          [
+            { text: "<<", callback_data: "<<" },
+            { text: ">>", callback_data: ">>" },
+          ],
+        ],
+      },
+    });
+  }
 };
 
 const sectionQuestionsScene = new Scene("sectionQuestions");
@@ -140,56 +173,14 @@ sectionQuestionsScene.enter(async (ctx) => {
     },
   });
 });
-sectionQuestionsScene.action(">>", (ctx) => {
-  let message = "Список тем:\n";
-  let page = ctx.session.__scenes.state.page;
-  let sectionsArr = ctx.session.__scenes.state.sectionsArr;
-  let sectionNames = ctx.session.__scenes.state.sectionNames;
-  if (page < Math.ceil(sections.length / 5)) {
-    page++;
-    ctx.session.__scenes.state.page = page;
-
-    let pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
-    message += sectionNames.slice(page * 5 - 5, page * 5).join("");
-
-    ctx.editMessageText(message, {
-      reply_markup: {
-        inline_keyboard: [
-          [...pageSections],
-          [
-            { text: "<<", callback_data: "<<" },
-            { text: ">>", callback_data: ">>" },
-          ],
-        ],
-      },
-    });
-  }
-});
-sectionQuestionsScene.action("<<", (ctx) => {
-  let message = "Список тем:\n";
-  let page = ctx.session.__scenes.state.page;
-  let sectionsArr = ctx.session.__scenes.state.sectionsArr;
-  let sectionNames = ctx.session.__scenes.state.sectionNames;
-  if (page > 1) {
-    page--;
-    ctx.session.__scenes.state.page = page;
-
-    let pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
-    message += sectionNames.slice(page * 5 - 5, page * 5).join("");
-
-    ctx.editMessageText(message, {
-      reply_markup: {
-        inline_keyboard: [
-          [...pageSections],
-          [
-            { text: "<<", callback_data: "<<" },
-            { text: ">>", callback_data: ">>" },
-          ],
-        ],
-      },
-    });
-  }
-});
+sectionQuestionsScene.action(
+  ">>",
+  async (ctx) => await sectionsPaginationCallback(ctx)
+);
+sectionQuestionsScene.action(
+  "<<",
+  async (ctx) => await sectionsPaginationCallback(ctx)
+);
 sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
   ctx.scene.enter("showSectionQuestions", {
     sectionId: ctx.update.callback_query.data,
@@ -243,8 +234,14 @@ showSectionQuestionsScene.enter(async (ctx) => {
 });
 showSectionQuestionsScene.action("1", async (ctx) => await answerCallback(ctx));
 showSectionQuestionsScene.action("0", async (ctx) => await answerCallback(ctx));
-showSectionQuestionsScene.action(">", async (ctx) => await questionsPaginationCallback(ctx));
-showSectionQuestionsScene.action("<",async (ctx) => await questionsPaginationCallback(ctx));
+showSectionQuestionsScene.action(
+  ">",
+  async (ctx) => await questionsPaginationCallback(ctx)
+);
+showSectionQuestionsScene.action(
+  "<",
+  async (ctx) => await questionsPaginationCallback(ctx)
+);
 showSectionQuestionsScene.action("menu", async (ctx) => {
   await ctx.deleteMessage();
   showMenu(ctx);
