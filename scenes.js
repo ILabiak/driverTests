@@ -27,7 +27,10 @@ const answerCallback = async (ctx) => {
     ctx.session.__scenes.state.rightAnswersCount++;
     questionsArr[page - 1].text += "\n✅ Правильно";
   } else {
-    let rightAnswerIndex = questionsArr[page - 1].answers.findIndex(el => el.callback_data == "1") + 1
+    let rightAnswerIndex =
+      questionsArr[page - 1].answers.findIndex(
+        (el) => el.callback_data == "1"
+      ) + 1;
     questionsArr[
       page - 1
     ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
@@ -65,6 +68,39 @@ const answerCallback = async (ctx) => {
 Пройдено за ${parseInt(completionTime)} секунд`;
     ctx.reply(message);
   }
+};
+
+const changeQuestionCallback = async (ctx) => {
+  let action = ctx.update.callback_query.data;
+  let questionsArr = ctx.session.__scenes.state.questionsArr;
+  let page = ctx.session.__scenes.state.page;
+  let keyboard = [
+    [
+      { text: "<", callback_data: "<" },
+      { text: ">", callback_data: ">" },
+    ],
+  ];
+  if (page < questionsArr.length && action == ">") {
+    page++;
+  } else if (page > 1 && action == "<") {
+    page--;
+  }
+  let answered = questionsArr[page - 1].answered;
+  if (!answered) keyboard.unshift([...questionsArr[page - 1].answers]);
+  await ctx.editMessageMedia(
+    {
+      type: "photo",
+      media: questionsArr[page - 1].image,
+    },
+    {
+      caption: questionsArr[page - 1].text,
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: keyboard,
+      },
+    }
+  );
+  ctx.session.__scenes.state.page = page;
 };
 
 const sectionQuestionsScene = new Scene("sectionQuestions");
@@ -182,7 +218,7 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.session.__scenes.state.questionsArr = questionsArr;
     ctx.session.__scenes.state.page = 1;
 
-    ctx.telegram.sendPhoto(
+    await ctx.telegram.sendPhoto(
       ctx.chat.id,
       {
         url: questionsArr[0].image,
@@ -203,73 +239,15 @@ showSectionQuestionsScene.enter(async (ctx) => {
       }
     );
   } else {
-    ctx.scene.leave("showSectionQuestions");
+    await ctx.scene.leave("showSectionQuestions");
   }
 });
 showSectionQuestionsScene.action("1", async (ctx) => await answerCallback(ctx));
 showSectionQuestionsScene.action("0", async (ctx) => await answerCallback(ctx));
-showSectionQuestionsScene.action(">", async (ctx) => {
-  let questionsArr = ctx.session.__scenes.state.questionsArr;
-  let page = ctx.session.__scenes.state.page;
-  if (page < questionsArr.length) {
-    page++;
-    let answered = questionsArr[page - 1].answered
-    let keyboard = [
-      [
-        { text: "<", callback_data: "<" },
-        { text: ">", callback_data: ">" },
-      ],
-      // [{ text: "Меню", callback_data: "menu" }],
-    ]
-    if(!answered) keyboard.unshift([...questionsArr[page - 1].answers])
-    await ctx.editMessageMedia(
-      {
-        type: "photo",
-        media: questionsArr[page - 1].image,
-      },
-      {
-        caption: questionsArr[page - 1].text,
-        parse_mode: "HTML",
-        reply_markup: {
-          inline_keyboard: keyboard,
-        },
-      }
-    );
-    ctx.session.__scenes.state.page = page;
-  }
-});
-showSectionQuestionsScene.action("<", async (ctx) => {
-  let questionsArr = ctx.session.__scenes.state.questionsArr;
-  let page = ctx.session.__scenes.state.page;
-  if (page > 1) {
-    page--;
-    let answered = questionsArr[page - 1].answered
-    let keyboard = [
-      [
-        { text: "<", callback_data: "<" },
-        { text: ">", callback_data: ">" },
-      ],
-      // [{ text: "Меню", callback_data: "menu" }],
-    ]
-    if(!answered) keyboard.unshift([...questionsArr[page - 1].answers])
-    await ctx.editMessageMedia(
-      {
-        type: "photo",
-        media: questionsArr[page - 1].image,
-      },
-      {
-        caption: questionsArr[page - 1].text,
-        parse_mode: "HTML",
-        reply_markup: {
-          inline_keyboard: keyboard,
-        },
-      }
-    );
-    ctx.session.__scenes.state.page = page;
-  }
-});
-showSectionQuestionsScene.action("menu", (ctx) => {
-  ctx.deleteMessage();
+showSectionQuestionsScene.action(">", async (ctx) => await changeQuestionCallback(ctx));
+showSectionQuestionsScene.action("<",async (ctx) => await changeQuestionCallback(ctx));
+showSectionQuestionsScene.action("menu", async (ctx) => {
+  await ctx.deleteMessage();
   showMenu(ctx);
   ctx.scene.leave("showSectionQuestions");
 });
@@ -287,7 +265,7 @@ function formatQuestions(questionsArr) {
       text: `Питання №${questionNumber} з ${questionsArr.length}\n<b>${question.text}</b>\n\n`,
       image: "https://www.churchnb.org/wp-content/uploads/No.jpg",
       answers: [],
-      answered: false
+      answered: false,
     };
     questionNumber++;
     let answers = [];
