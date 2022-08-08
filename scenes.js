@@ -320,7 +320,7 @@ examScene.enter(async (ctx) => {
       },
     }
   );
-  setTimeout(await examTimedOut, 60000, ctx);
+  setTimeout(await examTimedOut, 1200000, ctx);
 });
 examScene.action(["0", "1"], async (ctx) => await answerCallback(ctx, true));
 examScene.action(
