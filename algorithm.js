@@ -1,6 +1,5 @@
 "use strict";
 
-const sections = require("./sections.json");
 const questions = require("./questions.json");
 
 const structureArr = [
@@ -26,7 +25,7 @@ const structureArr = [
   [142], // 20
 ];
 
-function makeExamTest() {
+function getExamQuestions() {
   let testQuestions = [];
   for (let i = 0; i < 20; i++) {
     let question;
@@ -54,6 +53,6 @@ function getSectionQuestions(sectionId) {
 }
 
 module.exports = {
-    makeExamTest,
-    getSectionQuestions,
-}
+  getExamQuestions,
+  getSectionQuestions,
+};

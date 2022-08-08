@@ -1,32 +1,29 @@
-const Stage = require("telegraf/stage");
 const Scene = require("telegraf/scenes/base");
-const Extra = require("telegraf/extra");
 const Markup = require("telegraf/markup");
 
-const questions = require("./questions.json");
 const sections = require("./sections.json");
 
-const test = require("./algorithm");
+const questionsHandler = require("./algorithm");
 
 const numberEmojies = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"];
 
 const showMenu = (context) => {
   context.reply(
     "Ви в меню:",
-    Markup.keyboard(["Моя інформація"]).resize().extra()
+    Markup.keyboard(["🔍 Питання до теми", "😎 Іспит"]).resize().extra()
   );
 };
 
-const answerCallback = async (ctx) => {
+const answerCallback = async (ctx, isExam) => {
   let answer = ctx.update.callback_query.data == "1" ? true : false;
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
   questionsArr[page - 1].answered = true;
-
   if (answer) {
     ctx.session.__scenes.state.rightAnswersCount++;
     questionsArr[page - 1].text += "\n✅ Правильно";
   } else {
+    ctx.session.__scenes.state.wrongAnswersCount++;
     let rightAnswerIndex =
       questionsArr[page - 1].answers.findIndex(
         (el) => el.callback_data == "1"
@@ -34,6 +31,12 @@ const answerCallback = async (ctx) => {
     questionsArr[
       page - 1
     ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
+    if (isExam && ctx.session.__scenes.state.wrongAnswersCount > 2) {
+      await ctx.deleteMessage();
+      await ctx.reply(`Ви не склали екзамен.`);
+      await ctx.scene.leave();
+      return;
+    }
   }
   await ctx.editMessageMedia(
     {
@@ -49,7 +52,7 @@ const answerCallback = async (ctx) => {
             { text: "<", callback_data: "<" },
             { text: ">", callback_data: ">" },
           ],
-          // [{ text: "Меню", callback_data: "menu" }],
+          [{ text: "Вийти в меню", callback_data: "quit" }],
         ],
       },
     }
@@ -66,14 +69,17 @@ const answerCallback = async (ctx) => {
       questionsArr.length
     }
 Пройдено за ${parseInt(completionTime)} секунд`;
-    ctx.reply(message);
-  } else if (answer) {
-    setTimeout(questionsPaginationCallback, 500, ctx, ">")
+    ctx.telegram.sendMessage(ctx.chat.id, message, {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Меню", callback_data: "menu" }]],
+      },
+    });
+  } else {
+    setTimeout(questionsPaginationCallback, 500, ctx, ">");
   }
 };
 
 const questionsPaginationCallback = async (ctx, action) => {
-  //let action = ctx.update.callback_query.data;
   let questionsArr = ctx.session.__scenes.state.questionsArr;
   let page = ctx.session.__scenes.state.page;
   let keyboard = [
@@ -81,6 +87,7 @@ const questionsPaginationCallback = async (ctx, action) => {
       { text: "<", callback_data: "<" },
       { text: ">", callback_data: ">" },
     ],
+    [{ text: "Вийти в меню", callback_data: "quit" }],
   ];
   if (page < questionsArr.length && action == ">") {
     page++;
@@ -132,9 +139,19 @@ const sectionsPaginationCallback = async (ctx) => {
             { text: "<<", callback_data: "<<" },
             { text: ">>", callback_data: ">>" },
           ],
+          [{ text: "Вийти в меню", callback_data: "quit" }],
         ],
       },
     });
+  }
+};
+
+const examTimedOut = async (ctx) => {
+  if (typeof ctx.session.__scenes == "undefined") {
+    return;
+  } else if (ctx.session.__scenes.state.answeredQuestionsCount < 20) {
+    await ctx.reply("Час вийшов, екзамен не складено");
+    await ctx.scene.leave();
   }
 };
 
@@ -170,6 +187,7 @@ sectionQuestionsScene.enter(async (ctx) => {
           { text: "<<", callback_data: "<<" },
           { text: ">>", callback_data: ">>" },
         ],
+        [{ text: "Вийти в меню", callback_data: "quit" }],
       ],
     },
   });
@@ -184,12 +202,21 @@ sectionQuestionsScene.action(/^\d+$/, async (ctx) => {
     sectionId: ctx.update.callback_query.data,
   });
 });
-sectionQuestionsScene.hears("Меню", (ctx) => {
-  showMenu(ctx);
-  ctx.scene.leave("sectionQuestions");
+sectionQuestionsScene.action("quit", async (ctx) => {
+  await ctx.scene.leave();
+  await ctx.deleteMessage();
+  await ctx.reply("Ви успішно вийшли, відкрийте Меню та виберіть наступну дію");
 });
 sectionQuestionsScene.on("message", (ctx) => {
-  ctx.reply("Don't know what u mean");
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Ви не можете надсилати повідомлення або команди в даному розділі",
+    {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Вийти", callback_data: "quit" }]],
+      },
+    }
+  );
 });
 
 const showSectionQuestionsScene = new Scene("showSectionQuestions");
@@ -201,7 +228,7 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.session.__scenes.state.rightAnswersCount = 0;
     ctx.session.__scenes.state.startDate = new Date();
 
-    questions = test.getSectionQuestions(sectionId);
+    questions = questionsHandler.getSectionQuestions(sectionId);
 
     let questionsArr = formatQuestions(questions);
     ctx.session.__scenes.state.questionsArr = questionsArr;
@@ -222,6 +249,7 @@ showSectionQuestionsScene.enter(async (ctx) => {
               { text: "<", callback_data: "<" },
               { text: ">", callback_data: ">" },
             ],
+            [{ text: "Вийти в меню", callback_data: "quit" }],
           ],
         },
       }
@@ -232,21 +260,89 @@ showSectionQuestionsScene.enter(async (ctx) => {
 });
 showSectionQuestionsScene.action(
   ["0", "1"],
-  async (ctx) => await answerCallback(ctx)
+  async (ctx) => await answerCallback(ctx, false)
 );
 showSectionQuestionsScene.action(
   [">", "<"],
   async (ctx) =>
     await questionsPaginationCallback(ctx, ctx.update.callback_query.data)
 );
-showSectionQuestionsScene.action("menu", async (ctx) => {
+showSectionQuestionsScene.action("quit", async (ctx) => {
+  await ctx.scene.leave();
   await ctx.deleteMessage();
-  showMenu(ctx);
-  ctx.scene.leave("showSectionQuestions");
+  await ctx.reply("Ви успішно вийшли, відкрийте Меню та виберіть наступну дію");
 });
-showSectionQuestionsScene.on("message", async (ctx) => {
-  showMenu(ctx);
-  ctx.scene.leave("userOrders");
+showSectionQuestionsScene.on("message", (ctx) => {
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Ви не можете надсилати повідомлення або команди в даному розділі",
+    {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Вийти", callback_data: "quit" }]],
+      },
+    }
+  );
+});
+
+// EXAM SCENE
+
+const examScene = new Scene("exam");
+examScene.enter(async (ctx) => {
+  let questions = [];
+  ctx.session.__scenes.state.answeredQuestionsCount = 0;
+  ctx.session.__scenes.state.rightAnswersCount = 0;
+  ctx.session.__scenes.state.wrongAnswersCount = 0;
+  ctx.session.__scenes.state.startDate = new Date();
+
+  questions = questionsHandler.getExamQuestions();
+
+  let questionsArr = formatQuestions(questions);
+  ctx.session.__scenes.state.questionsArr = questionsArr;
+  ctx.session.__scenes.state.page = 1;
+
+  await ctx.telegram.sendPhoto(
+    ctx.chat.id,
+    {
+      url: questionsArr[0].image,
+    },
+    {
+      caption: questionsArr[0].text,
+      parse_mode: "HTML",
+      reply_markup: {
+        inline_keyboard: [
+          [...questionsArr[0].answers],
+          [
+            { text: "<", callback_data: "<" },
+            { text: ">", callback_data: ">" },
+          ],
+          [{ text: "Вийти в меню", callback_data: "quit" }],
+        ],
+      },
+    }
+  );
+  setTimeout(await examTimedOut, 60000, ctx);
+});
+examScene.action(["0", "1"], async (ctx) => await answerCallback(ctx, true));
+examScene.action(
+  [">", "<"],
+  async (ctx) =>
+    await questionsPaginationCallback(ctx, ctx.update.callback_query.data)
+);
+examScene.action("quit", async (ctx) => {
+  await ctx.scene.leave();
+  await ctx.deleteMessage();
+  await ctx.reply("Ви успішно вийшли, відкрийте Меню та виберіть наступну дію");
+});
+examScene.on("message", (ctx) => {
+  ctx.telegram.sendMessage(
+    ctx.chat.id,
+    "Ви не можете надсилати повідомлення або команди в даному розділі",
+    {
+      reply_markup: {
+        inline_keyboard: [[{ text: "Вийти", callback_data: "quit" }]],
+      },
+    }
+  );
 });
 
 function formatQuestions(questionsArr) {
@@ -283,5 +379,6 @@ function formatQuestions(questionsArr) {
 module.exports = {
   sectionQuestionsScene,
   showSectionQuestionsScene,
+  examScene,
   showMenu,
 };
