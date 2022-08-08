@@ -71,7 +71,12 @@ const answerCallback = async (ctx, isExam) => {
 Пройдено за ${parseInt(completionTime)} секунд`;
     ctx.telegram.sendMessage(ctx.chat.id, message, {
       reply_markup: {
-        inline_keyboard: [[{ text: "Меню", callback_data: "menu" }]],
+        inline_keyboard: [
+          [
+            { text: "🔍 Питання до теми", callback_data: "sections" },
+            { text: "😎 Іспит", callback_data: "exam" },
+          ],
+        ],
       },
     });
   } else {
