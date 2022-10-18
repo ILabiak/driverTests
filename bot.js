@@ -21,6 +21,8 @@ const stage = new Stage(
   // { ttl: 10 }
 );
 
+//To do
+
 const bot = new Telegraf(config.bot_token);
 bot.start((ctx) =>
   ctx.telegram.sendMessage(
