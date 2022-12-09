@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const questions = require("./questions.json");
+const questions = require('./questions.json');
 
 const structureArr = [
   [102, 104, 105, 106, 107, 121], // 1
@@ -26,7 +26,7 @@ const structureArr = [
 ];
 
 function getExamQuestions() {
-  let testQuestions = [];
+  const testQuestions = [];
   for (let i = 0; i < 20; i++) {
     let question;
     do {
@@ -39,7 +39,7 @@ function getExamQuestions() {
 
 function getRandomQuestion(...sectionsIds) {
   let arr = [];
-  for (let sectionId of sectionsIds) {
+  for (const sectionId of sectionsIds) {
     arr.push(getSectionQuestions(sectionId));
   }
   arr = arr.flat();
@@ -48,7 +48,7 @@ function getRandomQuestion(...sectionsIds) {
 
 function getSectionQuestions(sectionId) {
   return questions.filter(
-    (element) => element.section_id == sectionId.toString()
+    (element) => element.section_id === sectionId.toString(),
   );
 }
 
