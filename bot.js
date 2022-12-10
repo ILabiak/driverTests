@@ -21,7 +21,15 @@ const stage = new Stage(
   // { ttl: 10 }
 );
 
-//To do
+/*
+To do:
+1. Create database to store data from JSON files (PostgreSQL + Sequalize)
+2. Refactor bot code to work with database instead of JSON files
+3. Make router to provide REST API for future products
+(maybe even deploy it to firebase)
+4. Store user statistics about exams results
+5. Unit tests
+*/
 
 const bot = new Telegraf(config.bot_token);
 bot.start((ctx) =>
