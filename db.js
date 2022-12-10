@@ -1,11 +1,18 @@
 'use strict';
 
+require('dotenv').config();
+
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('driverTests', 'postgres', 'qwerty334455', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+const sequelize = new Sequelize(
+  process.env.DATABASE,
+  process.env.DBUSER,
+  process.env.DBPASSWORD,
+  {
+    host: 'localhost',
+    dialect: 'postgres',
+  },
+);
 
 (async () => {
   try {
