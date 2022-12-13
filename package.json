@@ -252,7 +252,8 @@
     "yocto-queue": "^0.1.0"
   },
   "devDependencies": {
-    "eslint-plugin-jest": "^27.1.6"
+    "eslint-plugin-jest": "^27.1.6",
+    "sequelize-cli": "^6.5.2"
   },
   "scripts": {
     "lint": "eslint --ext .js .",

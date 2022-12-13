@@ -51,6 +51,7 @@ const questionsPaginationCallback = async (ctx, action) => {
 };
 
 const answerCallback = async (ctx, isExam) => {
+  //REFACTOR (too long)
   const answer = ctx.update.callback_query.data === '1';
   const questionsArr = ctx.session.__scenes.state.questionsArr;
   const page = ctx.session.__scenes.state.page;
@@ -133,7 +134,7 @@ const sectionsPaginationCallback = async (ctx) => {
   }
   if (page !== ctx.session.__scenes.state.page) {
     ctx.session.__scenes.state.page = page;
-
+    // put page * 5 in variable
     const pageSections = sectionsArr.slice(page * 5 - 5, page * 5);
     message += sectionNames.slice(page * 5 - 5, page * 5).join('');
 
@@ -153,6 +154,7 @@ const sectionsPaginationCallback = async (ctx) => {
 };
 
 const examTimedOut = async (ctx) => {
+  //REFACTOR IF STATEMENT
   if (typeof ctx.session.__scenes === 'undefined') {
     return;
   } else if (ctx.session.__scenes.state.answeredQuestionsCount < 20) {
@@ -359,7 +361,8 @@ function formatQuestions(questionsArr) {
     const questionObj = {
       text: `Питання №${questionNumber} з ${questionsArr.length}
 <b>${question.text}</b>\n\n`,
-      image: 'https://www.churchnb.org/wp-content/uploads/No.jpg',
+      image:
+        question.image || 'https://www.churchnb.org/wp-content/uploads/No.jpg',
       answers: [],
       answered: false,
     };
@@ -374,9 +377,6 @@ function formatQuestions(questionsArr) {
       counter++;
     }
     answers[question.rightAnswerIndex].callback_data = '1';
-    if (question.image) {
-      questionObj.image = question.image;
-    }
     questionObj.answers = answers;
     resultArr.push(questionObj);
   }

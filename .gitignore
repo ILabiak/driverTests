@@ -103,3 +103,6 @@ dist
 # TernJS port file
 .tern-port
 config/config.json
+
+#Old JSON data
+db/seeders/seed-data/old-data/

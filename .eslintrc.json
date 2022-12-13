@@ -26,7 +26,11 @@
           "callback_data",
           "reply_markup",
           "inline_keyboard",
-          "parse_mode"
+          "parse_mode",
+          "telegram_id",
+          "section_id",
+          "right_answer_index",
+          "answer_ids"
         ]
       }
     ],

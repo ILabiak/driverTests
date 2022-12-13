@@ -23,12 +23,17 @@ const stage = new Stage(
 
 /*
 To do:
-1. Create database to store data from JSON files (PostgreSQL + Sequalize)
+1. Create database to store data (PostgreSQL + Sequalize)
+(instead of storing it in JSON files)
 2. Refactor bot code to work with database instead of JSON files
 3. Make router to provide REST API for future products
 (maybe even deploy it to firebase)
 4. Store user statistics about exams results
-5. Unit tests
+5. Feature to suggest your own questions
+(admin gets them with callback buttons to accept it or decline)
+6. Unit tests
+8. Remove config and use .env file instead
+9. Make dirs for database code, bot scenes and so on
 */
 
 const bot = new Telegraf(config.bot_token);
@@ -59,8 +64,9 @@ bot.on('document', async (ctx) => {
 });
 
 bot.action('sections', (ctx) => ctx.scene.enter('sectionQuestions'));
-bot.action('exam', (ctx) => ctx.scene.enter('exam'));
 bot.command('sections', (ctx) => ctx.scene.enter('sectionQuestions'));
+
+bot.action('exam', (ctx) => ctx.scene.enter('exam'));
 bot.command('exam', (ctx) => ctx.scene.enter('exam'));
 
 bot.command('photo', async (ctx) => {
