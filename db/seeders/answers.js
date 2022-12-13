@@ -1,10 +1,12 @@
 'use strict';
 
-const questions = require('./seed-data/questions-test.json');
+const questionsDataJson = require('./seed-data/questions-test.json');
+
+const questionsData = JSON.parse(JSON.stringify(questionsDataJson));
 
 let answers = [];
 
-questions.forEach((el) => answers.push(el.answers));
+questionsData.forEach((el) => answers.push(el.answers));
 
 answers = answers.flat();
 answers.forEach((el) => {
@@ -12,8 +14,6 @@ answers.forEach((el) => {
   el.createdAt = new Date();
   el.updatedAt = new Date();
 });
-
-console.dir(answers);
 
 module.exports = {
   async up(queryInterface) {

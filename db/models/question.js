@@ -8,8 +8,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'section',
       });
     }
-    // think about assisiation for answers
-    //(use integer array or add question_id to answers table)
   }
   Question.init(
     {

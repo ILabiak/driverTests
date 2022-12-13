@@ -6,9 +6,13 @@ module.exports = {
       {
         telegram_id: 77777,
         username: 'testuser1',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         username: 'testuser2',
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]);
   },
