@@ -1,6 +1,6 @@
 'use strict';
 
-const config = require('./config/config.json');
+require('dotenv').config();
 const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
@@ -36,7 +36,7 @@ To do:
 9. Make dirs for database code, bot scenes and so on
 */
 
-const bot = new Telegraf(config.bot_token);
+const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.start((ctx) =>
   ctx.telegram.sendMessage(
     ctx.chat.id,
