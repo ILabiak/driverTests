@@ -4,9 +4,7 @@ const Answer = require('../models').Answer;
 module.exports = {
   list(req, res) {
     return Answer.findAll({
-      order: [
-        ['createdAt', 'DESC'],
-      ],
+      order: [['createdAt', 'DESC']],
     })
       .then((answers) => res.status(200).send(answers))
       .catch((error) => {

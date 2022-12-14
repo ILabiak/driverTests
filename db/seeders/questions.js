@@ -10,13 +10,10 @@ module.exports = {
 
     for (const question of questionsData) {
       const answerIds = [];
-      console.dir(question);
       for (const answer of question.answers) {
         answerIds.push(answer.id);
       }
-      // console.log(answerIds)
       questions.push({
-        // id: question.id,
         section_id: Number(question.section_id),
         text: question.text,
         answer_ids: sequelize.literal(`array[${[...answerIds]}]`),
@@ -26,7 +23,6 @@ module.exports = {
         updatedAt: new Date(),
       });
     }
-    // console.dir(questions);
 
     await queryInterface.bulkInsert('Questions', questions, {});
   },

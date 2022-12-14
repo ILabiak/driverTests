@@ -11,10 +11,6 @@ const db = require('./models');
     // await db.Answer.create({
     //   text: 'testing',
     // });
-    // await db.Sequelize.QueryInterface.bulkInsert('Answers', {
-    //   id: 1,
-    //   text: '1. Відсутність перетинів на одному рівні з іншими дорогами.',
-    // });
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
