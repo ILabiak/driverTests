@@ -1,6 +1,6 @@
 'use strict';
 
-const sectionsDataJson = require('./seed-data/sections-test.json');
+const sectionsDataJson = require('./seed-data/sections.json');
 
 const sections = JSON.parse(JSON.stringify(sectionsDataJson));
 

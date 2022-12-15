@@ -23,7 +23,7 @@ const stage = new Stage(
 
 /*
 To do:
-1. Create database to store data (PostgreSQL + Sequalize)
+1. Create database to store data (PostgreSQL + Sequalize) DONE
 (instead of storing it in JSON files)
 2. Refactor bot code to work with database instead of JSON files
 3. Make router to provide REST API for future products
@@ -32,7 +32,7 @@ To do:
 5. Feature to suggest your own questions
 (admin gets them with callback buttons to accept it or decline)
 6. Unit tests
-8. Remove config and use .env file instead
+8. Remove config and use .env file instead DONE
 9. Make dirs for database code, bot scenes and so on
 */
 

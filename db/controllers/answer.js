@@ -2,16 +2,6 @@
 const Answer = require('../models').Answer;
 
 module.exports = {
-  list(req, res) {
-    return Answer.findAll({
-      order: [['createdAt', 'DESC']],
-    })
-      .then((answers) => res.status(200).send(answers))
-      .catch((error) => {
-        res.status(400).send(error);
-      });
-  },
-
   getById(req, res) {
     return Answer.findByPk(req.params.id)
       .then((answer) => {
@@ -28,11 +18,30 @@ module.exports = {
       });
   },
 
+  getByIds(req, res) {
+    return Answer.findAll({
+      where: {
+        id: req.body.ids,
+      },
+    })
+      .then((answers) => {
+        if (answers.length === req.body.ids.length) {
+          res.status(200).send(answers);
+        }
+        res
+          .status(400)
+          .send(new Error('Not all the answers are in database, check ids'));
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+  },
+
   add(req, res) {
     return Answer.create({
-      id: req.body.id,
+      text: req.body.text,
     })
-      .then((classroom) => res.status(201).send(classroom))
+      .then((answer) => res.status(201).send(answer))
       .catch((error) => res.status(400).send(error));
   },
 
@@ -46,7 +55,7 @@ module.exports = {
         }
         return answer
           .update({
-            id: req.body.id || answer.id,
+            text: req.body.text || answer.text,
           })
           .then(() => res.status(200).send(answer))
           .catch((error) => res.status(400).send(error));
@@ -64,7 +73,11 @@ module.exports = {
         }
         return answer
           .destroy()
-          .then(() => res.status(204).send())
+          .then(() =>
+            res
+              .status(200)
+              .send({ message: 'Answer was successfully deleted!' }),
+          )
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
