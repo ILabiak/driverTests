@@ -13,7 +13,11 @@ module.exports = {
         type: DataTypes.INTEGER,
         unique: true,
       },
-      username: DataTypes.STRING,
+      username: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      password: DataTypes.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -30,7 +30,7 @@ module.exports = {
     return Section.create({
       name: req.body.name,
     })
-      .then((answer) => res.status(201).send(answer))
+      .then((section) => res.status(201).send(section))
       .catch((error) => res.status(400).send(error));
   },
 

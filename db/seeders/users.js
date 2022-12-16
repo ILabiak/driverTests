@@ -11,6 +11,7 @@ module.exports = {
       },
       {
         username: 'testuser2',
+        password: 'd1231sda3e12edsacdg12vmsmdfklms',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -1,7 +1,9 @@
 'use strict';
 
 const answerController = require('../../db/controllers').answer;
+const questionController = require('../../db/controllers').question;
 const sectionController = require('../../db/controllers').section;
+const userController = require('../../db/controllers').user;
 
 async function routes(fastify /*, options*/) {
   /* Answer Routes */
@@ -11,6 +13,15 @@ async function routes(fastify /*, options*/) {
   fastify.delete('/answer/:id', answerController.delete);
   fastify.post('/answers', answerController.getByIds);
 
+  /* Question Routes */
+  fastify.get(
+    '/sectionquestions/:section_id',
+    questionController.getBySectionId,
+  );
+  fastify.get('/question/:id', questionController.getById);
+  fastify.post('/question', questionController.add);
+  fastify.delete('/question/:id', questionController.delete);
+
   /* Section Routes */
   fastify.get('/section/:id', sectionController.getById);
   fastify.post('/section', sectionController.add);
@@ -18,9 +29,12 @@ async function routes(fastify /*, options*/) {
   fastify.delete('/section/:id', sectionController.delete);
   fastify.get('/sections', sectionController.list);
 
-  /* Question Routes */
-
   /* User Routes */
+  fastify.get('/user/:telegram_id', userController.getByTelegramId);
+  fastify.post('/user', userController.add);
+  fastify.put('/user/:id', userController.update);
+  fastify.delete('/user/:id', userController.delete);
+  fastify.get('/users', userController.list);
 }
 
 module.exports = routes;
