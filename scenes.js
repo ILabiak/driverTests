@@ -3,20 +3,39 @@ const Scene = require('telegraf/scenes/base');
 const Markup = require('telegraf/markup');
 const axios = require('axios').default;
 
-//секції мають підгружатись з бд при кожному запросі
-//а не тільки при старті бота
-let sections;
-(async () => {
+const getSections = async () => {
   const sectionsRequest = await axios
     .get('http://127.0.0.1:3000/sections')
     .catch((err) => {
       console.log(err);
     });
-  sections = sectionsRequest.data || [];
+  return sectionsRequest?.data || [];
+};
 
-})();
+const getSectionQuestions = async (section) => {
+  const questionsRequest = await axios
+    .get('http://127.0.0.1:3000/sectionquestions/' + section.toString())
+    .catch((err) => {
+      console.log(err);
+    });
+  return questionsRequest?.data || [];
+};
 
-const questionsHandler = require('./algorithm');
+const getExamQuestions = async () => {
+  const examQuestionsRequest = await axios
+    .get('http://127.0.0.1:3000/examquestions')
+    .catch((err) => {
+      console.log(err);
+    });
+  return examQuestionsRequest?.data || [];
+};
+
+// (async () => {
+//   const sections = await getSections();
+//   const sectionQustions = await getSectionQuestions(2);
+//   const examQuestions = await getExamQuestions();
+//   console.log(JSON.stringify(examQuestions, 0, 2));
+// })();
 
 const numberEmojies = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 
@@ -139,6 +158,7 @@ const sectionsPaginationCallback = async (ctx) => {
   let page = ctx.session.__scenes.state.page;
   const sectionsArr = ctx.session.__scenes.state.sectionsArr;
   const sectionNames = ctx.session.__scenes.state.sectionNames;
+  const sections = ctx.session.__scenes.state.sections;
   if (page < Math.ceil(sections.length / 5) && action === '>>') {
     page++;
   } else if (page > 1 && action === '<<') {
@@ -183,6 +203,8 @@ sectionQuestionsScene.enter(async (ctx) => {
   let pageSections = [];
   const sectionNames = [];
 
+  const sections = await getSections();
+
   for (const el of sections) {
     sectionNames.push(`🔍 ${el.name}\n`);
     const index = el.name.indexOf('. ');
@@ -191,6 +213,7 @@ sectionQuestionsScene.enter(async (ctx) => {
       callback_data: el.id,
     });
   }
+  ctx.session.__scenes.state.sections = sections;
   ctx.session.__scenes.state.sectionsArr = sectionsArr;
   ctx.session.__scenes.state.sectionNames = sectionNames;
 
@@ -248,7 +271,7 @@ showSectionQuestionsScene.enter(async (ctx) => {
     ctx.session.__scenes.state.rightAnswersCount = 0;
     ctx.session.__scenes.state.startDate = new Date();
 
-    questions = questionsHandler.getSectionQuestions(sectionId);
+    questions = await getSectionQuestions(sectionId);
 
     const questionsArr = formatQuestions(questions);
     ctx.session.__scenes.state.questionsArr = questionsArr;
@@ -314,7 +337,7 @@ examScene.enter(async (ctx) => {
   ctx.session.__scenes.state.wrongAnswersCount = 0;
   ctx.session.__scenes.state.startDate = new Date();
 
-  questions = questionsHandler.getExamQuestions();
+  questions = getExamQuestions();
 
   const questionsArr = formatQuestions(questions);
   ctx.session.__scenes.state.questionsArr = questionsArr;
