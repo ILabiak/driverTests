@@ -101,7 +101,7 @@ const answerCallback = async (ctx, isExam) => {
     ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
     if (isExam && ctx.session.__scenes.state.wrongAnswersCount > 2) {
       await ctx.deleteMessage();
-      await ctx.reply('Ви не склали екзамен.');
+      await ctx.reply('Ви не склали іспит.');
       await ctx.scene.leave();
       return;
     }
@@ -190,7 +190,7 @@ const examTimedOut = async (ctx) => {
   if (typeof ctx.session.__scenes === 'undefined') {
     return;
   } else if (ctx.session.__scenes.state.answeredQuestionsCount < 20) {
-    await ctx.reply('Час вийшов, екзамен не складено');
+    await ctx.reply('Час вийшов, іспит не складено');
     await ctx.scene.leave();
   }
 };
@@ -337,7 +337,7 @@ examScene.enter(async (ctx) => {
   ctx.session.__scenes.state.wrongAnswersCount = 0;
   ctx.session.__scenes.state.startDate = new Date();
 
-  questions = getExamQuestions();
+  questions = await getExamQuestions();
 
   const questionsArr = formatQuestions(questions);
   ctx.session.__scenes.state.questionsArr = questionsArr;
