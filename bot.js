@@ -8,6 +8,7 @@ const Extra = require('telegraf/extra');
 // const Markup = require('telegraf/markup');
 // const fetch = require("node-fetch");
 // const fs = require("fs");
+// const fastify = require('./router/server');
 
 const scenes = require('./scenes');
 
@@ -58,6 +59,11 @@ bot.use(stage.middleware());
 bot.catch((err) => {
   console.log(err);
 });
+
+// fastify.listen({ port: 3000 }, (err) => {
+//   if (err) throw err;
+// });
+
 bot.launch();
 bot.on('document', async (ctx) => {
   ctx.reply('Got document!');

@@ -19,7 +19,9 @@ async function routes(fastify /*, options*/) {
     questionController.getBySectionId,
   );
   fastify.get('/question/:id', questionController.getById);
+  fastify.get('/examquestions', questionController.getExamQuestions);
   fastify.post('/question', questionController.add);
+  fastify.post('/randomquestion', questionController.getRandomQuestion);
   fastify.delete('/question/:id', questionController.delete);
 
   /* Section Routes */

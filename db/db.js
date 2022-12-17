@@ -2,6 +2,7 @@
 
 const db = require('./models');
 
+//test connection
 (async () => {
   try {
     await db.sequelize.authenticate();

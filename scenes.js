@@ -1,8 +1,20 @@
 'use strict';
 const Scene = require('telegraf/scenes/base');
 const Markup = require('telegraf/markup');
+const axios = require('axios').default;
 
-const sections = require('./sections.json');
+//секції мають підгружатись з бд при кожному запросі
+//а не тільки при старті бота
+let sections;
+(async () => {
+  const sectionsRequest = await axios
+    .get('http://127.0.0.1:3000/sections')
+    .catch((err) => {
+      console.log(err);
+    });
+  sections = sectionsRequest.data || [];
+
+})();
 
 const questionsHandler = require('./algorithm');
 

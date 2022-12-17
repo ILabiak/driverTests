@@ -31,6 +31,51 @@ async function handleQuestion(question, res) {
   return questionRes;
 }
 
+async function findRandomQuestion(sectionIds, res) {
+  return Question.findAll({
+    where: {
+      section_id: sectionIds,
+    },
+  })
+    .then(async (questions) => {
+      const randomQuestion =
+        questions[Math.floor(Math.random() * questions.length)];
+      const questionsRes = await handleQuestion(randomQuestion, res);
+      return questionsRes;
+    })
+    .catch((error) => {
+      res.status(400).send(error);
+    });
+}
+
+/*
+This structure is similair to official driving tests
+and it tells from what sections to take question for exam
+For inctance, sixth question contains random question from section 11 or 12
+*/
+const examStructure = [
+  [2, 4, 5, 6, 7, 20], // 1
+  [3, 27, 32], // 2
+  [35, 36, 37, 38, 39, 40, 41], // 3
+  [42], // 4
+  [10, 21], // 5
+  [11, 12], // 6
+  [13, 14, 15], // 7
+  [16, 19], // 8
+  [8, 18, 9, 17], // 9
+  [45], // 10
+  [22, 28, 29, 30, 31, 34], // 11
+  [23, 24, 25, 26], // 12
+  [45], // 13
+  [44, 47, 50], // 14
+  [35, 36, 37, 38, 39, 40, 41], // 15
+  [46], // 16
+  [1, 48], // 17
+  [33, 49], // 18
+  [43, 51], // 19
+  [43], // 20
+];
+
 module.exports = {
   getById(req, res) {
     return Question.findByPk(req.params.id).then(async (question) => {
@@ -61,6 +106,22 @@ module.exports = {
       .catch((error) => {
         res.status(400).send(error);
       });
+  },
+
+  getRandomQuestion(req, res) {
+    return findRandomQuestion(req.body.section_ids, res);
+  },
+
+  async getExamQuestions(req, res) {
+    const examQuestions = [];
+    for (let i = 0; i < 20; i++) {
+      let question;
+      do {
+        question = await findRandomQuestion(examStructure[i], res);
+      } while (examQuestions.includes(question));
+      examQuestions.push(question);
+    }
+    return examQuestions;
   },
 
   add(req, res) {
