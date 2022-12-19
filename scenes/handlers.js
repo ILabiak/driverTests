@@ -5,6 +5,22 @@ const paginationKeyboard = [
   { text: '>', callback_data: '>' },
 ];
 
+async function editMessageMedia(ctx, media, caption, inline_keyboard) {
+  await ctx.editMessageMedia(
+    {
+      type: 'photo',
+      media,
+    },
+    {
+      caption,
+      parse_mode: 'HTML',
+      reply_markup: {
+        inline_keyboard
+      },
+    },
+  );
+}
+
 module.exports = {
   paginationKeyboard,
 
@@ -56,25 +72,17 @@ module.exports = {
     if (page !== ctx.session.__scenes.state.page) {
       const answered = questionsArr[page - 1].answered;
       if (!answered) keyboard.unshift([...questionsArr[page - 1].answers]);
-      await ctx.editMessageMedia(
-        {
-          type: 'photo',
-          media: questionsArr[page - 1].image,
-        },
-        {
-          caption: questionsArr[page - 1].text,
-          parse_mode: 'HTML',
-          reply_markup: {
-            inline_keyboard: keyboard,
-          },
-        },
+      await editMessageMedia(
+        ctx,
+        questionsArr[page - 1].image,
+        questionsArr[page - 1].text,
+        keyboard,
       );
       ctx.session.__scenes.state.page = page;
     }
   },
 
   async answerCallback(ctx, isExam) {
-    //REFACTOR (too long)
     const answer = ctx.update.callback_query.data === '1';
     const questionsArr = ctx.session.__scenes.state.questionsArr;
     const page = ctx.session.__scenes.state.page;
@@ -98,46 +106,42 @@ module.exports = {
         return;
       }
     }
-    await ctx.editMessageMedia(
-      {
-        type: 'photo',
-        media: questionsArr[page - 1].image,
-      },
-      {
-        caption: questionsArr[page - 1].text,
-        parse_mode: 'HTML',
-        reply_markup: {
-          inline_keyboard: [
-            paginationKeyboard,
-            [{ text: 'Вийти в меню', callback_data: 'quit' }],
-          ],
-        },
-      },
+    await editMessageMedia(
+      ctx,
+      questionsArr[page - 1].image,
+      questionsArr[page - 1].text,
+      [paginationKeyboard, [{ text: 'Вийти в меню', callback_data: 'quit' }]],
     );
     ctx.session.__scenes.state.answeredQuestionsCount++;
     if (
       ctx.session.__scenes.state.answeredQuestionsCount === questionsArr.length
     ) {
-      const startDate = ctx.session.__scenes.state.startDate;
-      const endDate = new Date();
-      const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
-      const message = `Запитання по темі пройдено
-    Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
-        questionsArr.length
-      }
-    Пройдено за ${parseInt(completionTime)} секунд`;
-      ctx.telegram.sendMessage(ctx.chat.id, message, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              { text: '🔍 Питання до теми', callback_data: 'sections' },
-              { text: '😎 Іспит', callback_data: 'exam' },
-            ],
-          ],
-        },
-      });
-    } else {
-      setTimeout(this.questionsPaginationCallback, 500, ctx, '>');
+      await this.testCompletedHandler(ctx, isExam);
+      return;
     }
+    setTimeout(this.questionsPaginationCallback, 500, ctx, '>');
   },
+
+  async testCompletedHandler(ctx, isExam) {
+    const questionsArr = ctx.session.__scenes.state.questionsArr;
+    const startDate = ctx.session.__scenes.state.startDate;
+    const endDate = new Date();
+    const completionTime = (endDate.getTime() - startDate.getTime()) / 1000;
+    let message = isExam ? 'Іспит складено\n' : 'Запитання по темі пройдено\n';
+    message += `Правильно: ${ctx.session.__scenes.state.rightAnswersCount} з ${
+      questionsArr.length
+    }
+Пройдено за ${parseInt(completionTime)} секунд`;
+    await ctx.telegram.sendMessage(ctx.chat.id, message, {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: '🔍 Питання до теми', callback_data: 'sections' },
+            { text: '😎 Іспит', callback_data: 'exam' },
+          ],
+        ],
+      },
+    });
+  },
+  editMessageMedia,
 };

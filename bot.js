@@ -4,23 +4,15 @@ require('dotenv').config();
 const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
-const Extra = require('telegraf/extra');
-// const Markup = require('telegraf/markup');
-// const fetch = require("node-fetch");
-// const fs = require("fs");
-// const fastify = require('./router/server');
+const fastify = require('./router/server');
 
 const scenes = require('./scenes');
 
-const stage = new Stage(
-  [
-    scenes.sectionQuestionsScene,
-    scenes.showSectionQuestionsScene,
-    scenes.examScene,
-  ],
-  // ,
-  // { ttl: 10 }
-);
+const stage = new Stage([
+  scenes.sectionQuestionsScene,
+  scenes.showSectionQuestionsScene,
+  scenes.examScene,
+]);
 
 /*
 To do:
@@ -34,7 +26,7 @@ To do:
 (admin gets them with callback buttons to accept it or decline)
 6. Unit tests
 8. Remove config and use .env file instead DONE
-9. Make dirs for database code, bot scenes and so on
+9. Make dirs for database code, bot scenes and so on DONE
 */
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -60,9 +52,9 @@ bot.catch((err) => {
   console.log(err);
 });
 
-// fastify.listen({ port: 3000 }, (err) => {
-//   if (err) throw err;
-// });
+fastify.listen({ port: 3000 }, (err) => {
+  if (err) throw err;
+});
 
 bot.launch();
 bot.on('document', async (ctx) => {
@@ -74,18 +66,3 @@ bot.command('sections', (ctx) => ctx.scene.enter('sectionQuestions'));
 
 bot.action('exam', (ctx) => ctx.scene.enter('exam'));
 bot.command('exam', (ctx) => ctx.scene.enter('exam'));
-
-bot.command('photo', async (ctx) => {
-  ctx.replyWithPhoto(
-    {
-      type: 'photo',
-      url: 'https://green-way.com.ua/storage/app/uploads/public/61d/c2c/60d/61dc2c60dbb16873548078.jpg',
-    },
-    { caption: '<b>Test</b>', parse_mode: 'HTML' },
-  );
-});
-
-bot.on('sticker', async (ctx) => {
-  const messageId = ctx.update.message.message_id;
-  ctx.reply('response', Extra.inReplyTo(messageId));
-});
