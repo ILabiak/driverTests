@@ -26,8 +26,8 @@ const stage = new Stage(
 To do:
 1. Create database to store data (PostgreSQL + Sequalize) DONE
 (instead of storing it in JSON files)
-2. Refactor bot code to work with database instead of JSON files
-3. Make router to provide REST API for future products
+2. Refactor bot code to work with database instead of JSON files DONE
+3. Make router to provide REST API for future products DONE
 (maybe even deploy it to firebase)
 4. Store user statistics about exams results
 5. Feature to suggest your own questions
