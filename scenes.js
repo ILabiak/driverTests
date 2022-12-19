@@ -6,36 +6,23 @@ const axios = require('axios').default;
 const getSections = async () => {
   const sectionsRequest = await axios
     .get('http://127.0.0.1:3000/sections')
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
   return sectionsRequest?.data || [];
 };
 
 const getSectionQuestions = async (section) => {
   const questionsRequest = await axios
     .get('http://127.0.0.1:3000/sectionquestions/' + section.toString())
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
   return questionsRequest?.data || [];
 };
 
 const getExamQuestions = async () => {
   const examQuestionsRequest = await axios
     .get('http://127.0.0.1:3000/examquestions')
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
   return examQuestionsRequest?.data || [];
 };
-
-// (async () => {
-//   const sections = await getSections();
-//   const sectionQustions = await getSectionQuestions(2);
-//   const examQuestions = await getExamQuestions();
-//   console.log(JSON.stringify(examQuestions, 0, 2));
-// })();
 
 const numberEmojies = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
 
@@ -186,10 +173,7 @@ const sectionsPaginationCallback = async (ctx) => {
 };
 
 const examTimedOut = async (ctx) => {
-  //REFACTOR IF STATEMENT
-  if (typeof ctx.session.__scenes === 'undefined') {
-    return;
-  } else if (ctx.session.__scenes.state.answeredQuestionsCount < 20) {
+if (ctx.session.__scenes.state?.answeredQuestionsCount < 20) {
     await ctx.reply('Час вийшов, іспит не складено');
     await ctx.scene.leave();
   }
