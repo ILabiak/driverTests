@@ -15,7 +15,7 @@ async function editMessageMedia(ctx, media, caption, inline_keyboard) {
       caption,
       parse_mode: 'HTML',
       reply_markup: {
-        inline_keyboard
+        inline_keyboard,
       },
     },
   );

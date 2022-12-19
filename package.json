@@ -258,6 +258,7 @@
     "sequelize-cli": "^6.5.2"
   },
   "scripts": {
+    "start": "node bot.js",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
     "format": "prettier . --check --ignore-path .gitignore",
