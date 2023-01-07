@@ -19,13 +19,12 @@ const examTimedOut = async (ctx) => {
 
 const examScene = new Scene('exam');
 examScene.enter(async (ctx) => {
-  let questions = [];
   ctx.session.__scenes.state.answeredQuestionsCount = 0;
   ctx.session.__scenes.state.rightAnswersCount = 0;
   ctx.session.__scenes.state.wrongAnswersCount = 0;
   ctx.session.__scenes.state.startDate = new Date();
 
-  questions = await getExamQuestions();
+  const questions = await getExamQuestions();
 
   const questionsArr = handlers.formatQuestions(questions);
   ctx.session.__scenes.state.questionsArr = questionsArr;

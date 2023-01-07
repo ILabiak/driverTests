@@ -10,12 +10,36 @@ const getSections = async () => {
   return sectionsRequest?.data || [];
 };
 
-const sectionsPaginationCallback = async (ctx) => {
-  const action = ctx.update.callback_query.data;
-  let message = 'Список тем:\n';
-  let page = ctx.session.__scenes.state.page;
+const changePage = async (ctx, page) => {
+  ctx.session.__scenes.state.page = page;
   const sectionsArr = ctx.session.__scenes.state.sectionsArr;
   const sectionNames = ctx.session.__scenes.state.sectionNames;
+
+  const pageQuestionsNumber = 5;
+  const pagination = page * pageQuestionsNumber;
+  const pageSections = sectionsArr.slice(
+    pagination - pageQuestionsNumber,
+    pagination,
+  );
+  const message =
+    'Список тем:\n' +
+    sectionNames.slice(pagination - pageQuestionsNumber, pagination).join('');
+
+  await ctx.editMessageText(message, {
+    reply_markup: {
+      inline_keyboard: [
+        [...pageSections],
+        handlers.paginationKeyboard,
+        [{ text: 'Вийти в меню', callback_data: 'quit' }],
+      ],
+    },
+  });
+};
+
+const sectionsPaginationCallback = async (ctx) => {
+  const action = ctx.update.callback_query.data;
+  let page = ctx.session.__scenes.state.page;
+
   const sections = ctx.session.__scenes.state.sections;
   if (page < Math.ceil(sections.length / 5) && action === '>') {
     page++;
@@ -23,27 +47,7 @@ const sectionsPaginationCallback = async (ctx) => {
     page--;
   }
   if (page !== ctx.session.__scenes.state.page) {
-    ctx.session.__scenes.state.page = page;
-
-    const pageQuestionsNumber = 5;
-    const pagination = page * pageQuestionsNumber;
-    const pageSections = sectionsArr.slice(
-      pagination - pageQuestionsNumber,
-      pagination,
-    );
-    message += sectionNames
-      .slice(pagination - pageQuestionsNumber, pagination)
-      .join('');
-
-    await ctx.editMessageText(message, {
-      reply_markup: {
-        inline_keyboard: [
-          [...pageSections],
-          handlers.paginationKeyboard,
-          [{ text: 'Вийти в меню', callback_data: 'quit' }],
-        ],
-      },
-    });
+    await changePage(ctx, page);
   }
 };
 
