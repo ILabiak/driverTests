@@ -52,11 +52,7 @@ showSectionQuestionsScene.action(
 );
 showSectionQuestionsScene.action(
   ['>', '<'],
-  async (ctx) =>
-    await handlers.questionsPaginationCallback(
-      ctx,
-      ctx.update.callback_query.data,
-    ),
+  async (ctx) => await handlers.questionsPaginationCallback(ctx),
 );
 showSectionQuestionsScene.action('quit', async (ctx) => {
   await ctx.scene.leave();

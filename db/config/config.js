@@ -10,6 +10,7 @@ const creds = {
     host: '127.0.0.1',
     dialect: 'postgresql',
     seedersTimestamps: true,
+    logging: false,
   },
   test: {
     username: process.env.DB_USERNAME,
@@ -18,6 +19,7 @@ const creds = {
     host: '127.0.0.1',
     dialect: 'postgresql',
     seedersTimestamps: true,
+    logging: false,
   },
   production: {
     username: process.env.DBUSER,
@@ -26,6 +28,7 @@ const creds = {
     host: '127.0.0.1',
     dialect: 'postgresql',
     seedersTimestamps: true,
+    logging: false,
   },
 };
 

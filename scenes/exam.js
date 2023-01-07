@@ -56,11 +56,7 @@ examScene.action(
 );
 examScene.action(
   ['>', '<'],
-  async (ctx) =>
-    await handlers.questionsPaginationCallback(
-      ctx,
-      ctx.update.callback_query.data,
-    ),
+  async (ctx) => await handlers.questionsPaginationCallback(ctx),
 );
 examScene.action('quit', async (ctx) => {
   await ctx.scene.leave();

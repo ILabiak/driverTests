@@ -57,7 +57,8 @@ module.exports = {
     return resultArr;
   },
 
-  async questionsPaginationCallback(ctx, action) {
+  async questionsPaginationCallback(ctx) {
+    const action = ctx.update.callback_query.data;
     const questionsArr = ctx.session.__scenes.state.questionsArr;
     let page = ctx.session.__scenes.state.page;
     const keyboard = [
@@ -119,7 +120,8 @@ module.exports = {
       await this.testCompletedHandler(ctx, isExam);
       return;
     }
-    setTimeout(this.questionsPaginationCallback, 500, ctx, '>');
+    ctx.update.callback_query.data = '>';
+    setTimeout(this.questionsPaginationCallback, 500, ctx);
   },
 
   async testCompletedHandler(ctx, isExam) {
