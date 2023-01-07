@@ -1,6 +1,5 @@
 'use strict';
 
-require('dotenv').config();
 const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
@@ -15,21 +14,22 @@ const stage = new Stage([
 ]);
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-bot.start((ctx) =>
-  ctx.telegram.sendMessage(
-    ctx.chat.id,
-    'Привіт, це бот для практики здачі теоретичного іспиту ПДР!',
-    {
-      reply_markup: {
-        inline_keyboard: [
-          [
-            { text: '🔍 Питання до теми', callback_data: 'sections' },
-            { text: '😎 Іспит', callback_data: 'exam' },
+bot.start(
+  async (ctx) =>
+    await ctx.telegram.sendMessage(
+      ctx.chat.id,
+      'Привіт, це бот для практики здачі теоретичного іспиту ПДР!',
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: '🔍 Питання до теми', callback_data: 'sections' },
+              { text: '😎 Іспит', callback_data: 'exam' },
+            ],
           ],
-        ],
+        },
       },
-    },
-  ),
+    ),
 );
 bot.use(session());
 bot.use(stage.middleware());
@@ -43,7 +43,7 @@ fastify.listen({ port: 3000 }, (err) => {
 
 bot.launch();
 bot.on('document', async (ctx) => {
-  ctx.reply('Got document!');
+  await ctx.reply('Got document!');
 });
 
 bot.action('sections', (ctx) => ctx.scene.enter('sectionQuestions'));

@@ -83,11 +83,10 @@ module.exports = {
     }
   },
 
-  async answerCallback(ctx, isExam) {
+  async handleAnswer(ctx) {
     const answer = ctx.update.callback_query.data === '1';
     const questionsArr = ctx.session.__scenes.state.questionsArr;
     const page = ctx.session.__scenes.state.page;
-    questionsArr[page - 1].answered = true;
     if (answer) {
       ctx.session.__scenes.state.rightAnswersCount++;
       questionsArr[page - 1].text += '\n✅ Правильно';
@@ -100,12 +99,19 @@ module.exports = {
       questionsArr[
         page - 1
       ].text += `\n❌ Неправильно\nПравильна відповіть - №${rightAnswerIndex}`;
-      if (isExam && ctx.session.__scenes.state.wrongAnswersCount > 2) {
-        await ctx.deleteMessage();
-        await ctx.reply('Ви не склали іспит.');
-        await ctx.scene.leave();
-        return;
-      }
+    }
+  },
+
+  async answerCallback(ctx, isExam) {
+    const questionsArr = ctx.session.__scenes.state.questionsArr;
+    const page = ctx.session.__scenes.state.page;
+    questionsArr[page - 1].answered = true;
+    await this.handleAnswer(ctx);
+    if (isExam && ctx.session.__scenes.state.wrongAnswersCount > 2) {
+      await ctx.deleteMessage();
+      await ctx.reply('Ви не склали іспит.');
+      await ctx.scene.leave();
+      return false;
     }
     await editMessageMedia(
       ctx,
