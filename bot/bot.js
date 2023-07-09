@@ -3,7 +3,7 @@
 const Telegraf = require('telegraf');
 const session = require('telegraf/session');
 const Stage = require('telegraf/stage');
-const fastify = require('./router/server');
+const fastify = require('../router/server');
 
 const scenes = require('./scenes');
 
