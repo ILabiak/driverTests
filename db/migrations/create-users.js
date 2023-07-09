@@ -17,6 +17,15 @@ module.exports = {
         type: DataTypes.STRING,
         unique: true,
       },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          isEmail: {
+            msg: 'Must be a valid email address',
+          }
+        }
+      },
       password: DataTypes.STRING,
       createdAt: {
         allowNull: false,

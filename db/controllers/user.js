@@ -28,6 +28,7 @@ module.exports = {
     return User.create({
       telegram_id: req.body.telegram_id,
       username: req.body.username,
+      email: req.body.email,
       password: req.body.password,
     })
       .then((user) => res.status(201).send(user))
@@ -45,6 +46,7 @@ module.exports = {
         return user
           .update({
             username: req.body.username || user.username,
+            email: req.body.email || user.email,
             telegram_id: req.body.telegram_id || user.telegram_id,
             password: req.body.password || user.password,
           })
