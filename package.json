@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Telegram Bot with driving tests",
   "main": "bot.js",
-  "dependencies": {
-  },
   "devDependencies": {
+    "eslint": "^8.44.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jest": "^27.2.2",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "3.0.0"
   },
   "scripts": {
-    "start": "node bot.js",
+    "start": "node bot/bot.js",
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
     "format": "prettier . --check --ignore-path .gitignore",
@@ -25,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/ILabiak/driverTests/issues"
   },
-  "homepage": "https://github.com/ILabiak/driverTests#readme"
+  "homepage": "https://github.com/ILabiak/driverTests#readme",
+  "dependencies": {
+    "jest": "^29.6.1"
+  }
 }
