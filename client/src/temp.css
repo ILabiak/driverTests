@@ -1,0 +1,493 @@
+/* div.container */
+
+position: absolute;
+width: 1170px;
+height: 67px;
+left: calc(50% - 1170px/2);
+top: 0px;
+
+
+
+/* UA */
+
+position: absolute;
+width: 24.7px;
+height: 24px;
+left: 260px;
+top: 22px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 26px;
+/* or 143% */
+display: flex;
+align-items: center;
+
+color: #333333;
+
+
+
+/* Link ⏵ logo.svg */
+
+position: absolute;
+width: 213px;
+height: 54.33px;
+left: 15px;
+top: 6px;
+
+
+
+/* logo.svg */
+
+position: absolute;
+width: 212.99px;
+height: 54.33px;
+left: calc(50% - 212.99px/2 - 0px);
+top: calc(50% - 54.33px/2 - 0px);
+
+
+
+/* Слой_x0020_1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 26.28%;
+right: 0%;
+top: 73.59%;
+bottom: 0.08%;
+
+background: #3CAA32;
+
+
+/* _3108551612848 */
+
+position: absolute;
+left: 0%;
+right: 74.44%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 0.24%;
+right: 74.67%;
+top: 0.83%;
+bottom: 0.83%;
+
+background: #FFFFFF;
+
+
+/* Group */
+
+position: absolute;
+left: 0%;
+right: 74.44%;
+top: 0%;
+bottom: 0%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 74.44%;
+top: 0%;
+bottom: 0%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 4.92%;
+right: 79.35%;
+top: 19.17%;
+bottom: 19.17%;
+
+background: #FFF200;
+
+
+/* Vector */
+
+position: absolute;
+left: 4.69%;
+right: 79.13%;
+top: 18.29%;
+bottom: 18.29%;
+
+background: #231F20;
+
+
+/* Group */
+
+position: absolute;
+left: 8.82%;
+right: 77.35%;
+top: 5.15%;
+bottom: 32.97%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 8.82%;
+right: 77.35%;
+top: 5.15%;
+bottom: 32.97%;
+
+background: #3CAA32;
+
+
+/* Vector */
+
+position: absolute;
+left: 26.95%;
+right: 66.72%;
+top: 4.92%;
+bottom: 35.25%;
+
+background: #000000;
+
+
+/* 1 */
+
+position: absolute;
+left: 36.16%;
+right: 57.84%;
+top: 5.87%;
+bottom: 36.29%;
+
+background: #000000;
+
+
+/* 2 */
+
+position: absolute;
+left: 44.83%;
+right: 50.13%;
+top: 5.87%;
+bottom: 36.29%;
+
+background: #000000;
+
+
+/* 3 */
+
+position: absolute;
+left: 52.45%;
+right: 42.51%;
+top: 5.87%;
+bottom: 36.29%;
+
+background: #000000;
+
+
+/* 4 */
+
+position: absolute;
+left: 60.07%;
+right: 33.74%;
+top: 5.87%;
+bottom: 36.29%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.75%;
+right: 59.53%;
+top: 81.17%;
+bottom: 6.92%;
+
+background: #FFFFFF;
+
+
+/* 1 */
+
+position: absolute;
+left: 48.36%;
+right: 49.34%;
+top: 81.35%;
+bottom: 7.08%;
+
+background: #FFFFFF;
+
+
+/* 2 */
+
+position: absolute;
+left: 58.7%;
+right: 39.65%;
+top: 81.36%;
+bottom: 7.08%;
+
+background: #FFFFFF;
+
+
+/* 3 */
+
+position: absolute;
+left: 68.08%;
+right: 31.58%;
+top: 81.36%;
+bottom: 7.08%;
+
+background: #FFFFFF;
+
+
+/* 4 */
+
+position: absolute;
+left: 76.47%;
+right: 21.23%;
+top: 81.35%;
+bottom: 7.08%;
+
+background: #FFFFFF;
+
+
+/* 5 */
+
+position: absolute;
+left: 86.81%;
+right: 11.55%;
+top: 81.36%;
+bottom: 7.08%;
+
+background: #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 69.82%;
+right: 17.82%;
+top: 6.02%;
+bottom: 36.14%;
+
+background: #333333;
+
+
+/* 1 */
+
+position: absolute;
+left: 82.36%;
+right: 8.97%;
+top: 6.02%;
+bottom: 36.14%;
+
+background: #333333;
+
+
+/* 2 */
+
+position: absolute;
+left: 90.52%;
+right: 0.39%;
+top: 6.02%;
+bottom: 36.14%;
+
+background: #333333;
+
+
+/* Link */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 27px;
+height: 27px;
+left: 347px;
+top: 21px;
+
+border: 1px solid #DDDDDD;
+border-radius: 100px;
+
+
+/* ? */
+
+position: absolute;
+width: 8.79px;
+height: 24px;
+left: 9.2px;
+top: 1px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 26px;
+/* or 143% */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #DDDDDD;
+
+
+
+/* List */
+
+position: absolute;
+width: 549.45px;
+height: 67px;
+left: 620.55px;
+top: 0px;
+
+
+
+/* Item ⏵ Link ⏵ Довідники */
+
+position: absolute;
+width: 71.62px;
+height: 19px;
+left: 12px;
+top: 24px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+display: flex;
+align-items: center;
+
+color: #333333;
+
+
+
+/* Item ⏵ Link */
+
+position: absolute;
+width: 100px;
+height: 58px;
+left: 95.42px;
+top: 9px;
+
+
+
+/* Навчання теорії */
+
+position: absolute;
+width: 68.1px;
+height: 33px;
+left: 16.05px;
+top: 8px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 14px;
+/* or 100% */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #333333;
+
+
+
+/* Item ⏵ Link */
+
+position: absolute;
+width: 80px;
+height: 58px;
+left: 195.42px;
+top: 9px;
+
+
+
+/* Тести з ПДР */
+
+position: absolute;
+width: 48.28px;
+height: 33px;
+left: 15.95px;
+top: 8px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 14px;
+/* or 100% */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #333333;
+
+
+
+/* Item ⏵ Link */
+
+position: absolute;
+width: 110px;
+height: 58px;
+left: 275.42px;
+top: 9px;
+
+
+
+/* Iспит з водіння */
+
+position: absolute;
+width: 53.68px;
+height: 33px;
+left: 28.25px;
+top: 8px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 14px;
+/* or 100% */
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #333333;
+
+
+
+/* Item ⏵ Link ⏵ Особистий кабінет */
+
+position: absolute;
+width: 128.23px;
+height: 19px;
+left: 403.42px;
+top: 24px;
+
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* or 143% */
+display: flex;
+align-items: center;
+
+color: #333333;
+
