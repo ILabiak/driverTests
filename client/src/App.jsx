@@ -10,15 +10,17 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           </a>
           <ul className='headerList'>
-            <div className='pdrTestContainer'>
+            
               <li><a href="/tests">Тести з ПДР</a></li>
-            </div>
-            <div className='pdrTestContainer'>
+            
+            
             <li><a href="/exam">Іспит з водіння</a></li>
-            </div>
+            
+            
+            <li><a href="/profile">Особистий кабінет</a></li>
+            
           </ul>
         </div>
-
       </header>
     </div>
   );
