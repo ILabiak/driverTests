@@ -19,6 +19,28 @@ function App() {
       <div className='bannerContainer'>
         <div className='bannerLong'></div>
       </div>
+      <div className='container homepage'>
+        <div className='row'>
+          <div className='row1'>
+            <h1>Підготуватися до складання іспиту на отримання водійського посвідчення дуже просто!</h1>
+          </div>
+          <div className='row2'>
+            <div className='col1'>
+              <span className='iconLearn'></span>
+              <span>Вчися</span>
+            </div>
+            <div className='col1'>
+              <span className='iconLearn'></span>
+              <span>Проходь тести</span>
+            </div>
+            <div className='col1'>
+              <span className='iconLearn'></span>
+              <span>Складай іспит</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
