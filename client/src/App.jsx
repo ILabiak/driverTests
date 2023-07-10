@@ -7,21 +7,18 @@ function App() {
       <header className="App-header">
         <div className='headerContainer'>
           <a href="/">
-          <img src={logo} className="App-logo" alt="logo" />
+            <img src={logo} className="App-logo" alt="logo" />
           </a>
           <ul className='headerList'>
-            
-              <li><a href="/tests">Тести з ПДР</a></li>
-            
-            
+            <li><a href="/tests">Тести з ПДР</a></li>
             <li><a href="/exam">Іспит з водіння</a></li>
-            
-            
             <li><a href="/profile">Особистий кабінет</a></li>
-            
           </ul>
         </div>
       </header>
+      <div className='bannerContainer'>
+        <div className='bannerLong'></div>
+      </div>
     </div>
   );
 }

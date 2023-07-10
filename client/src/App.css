@@ -80,3 +80,31 @@
   line-height: 1;
   text-decoration: none;
 }
+
+.bannerContainer{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  color: #333;
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0;
+  position: relative;
+  border-bottom: 2px solid #a6a6a6;
+}
+
+.bannerLong{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+  font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  box-sizing: border-box;
+  display: block;
+  height: 296px;
+  background-size: 5500px 296px;
+  background-position: center center;
+  background-image: url('./media/banner.png');
+}
