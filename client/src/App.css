@@ -164,3 +164,31 @@
   background-position: center center;
   padding: 5px;
 }
+
+.row3 {
+  /* border: 2px solid #a6a6a6; */
+  margin-top: 1vh;
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row3 a{
+  /* margin: 10vh; */
+  width: 26vh;
+  margin: 5.5vh;
+  color:#fff;
+  text-align: center;
+  font-family: "Gill Sans";
+  font-size: calc(12px + 0.9vmin);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  background: #99c571;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  border-bottom: 2px solid #72a248;
+  padding: 10px 0;
+}

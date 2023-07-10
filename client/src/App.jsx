@@ -38,6 +38,11 @@ function App() {
               <span>Складай іспит</span>
             </div>
           </div>
+          <div className='row3'>
+            <a href="start-testing">Розпочати тестування</a>
+            <a href="read-pdr">Читати ПДР</a>
+            <a href="start-learning">Пройти навчання</a>
+          </div>
         </div>
       </div>
 
