@@ -26,45 +26,45 @@ function Login() {
     return (
         <div className="loginform">
             <div className="title-text">
-                <div className="title login">Login Form</div>
-                <div className="title signup">Signup Form</div>
+                <div className="title login">Авторизація</div>
+                <div className="title signup">Реєстрація</div>
             </div>
             <div className="form-container">
                 <div className="slide-controls">
                     <input type="radio" name="slide" id="login" />
                     <input type="radio" name="slide" id="signup" />
-                    <label onClick={handleLoginClick} htmlFor="login" className="slide login">Login</label>
-                    <label onClick={handleSignupClick} htmlFor="signup" className="slide signup">Signup</label>
+                    <label onClick={handleLoginClick} htmlFor="login" className="slide login">Вхід</label>
+                    <label onClick={handleSignupClick} htmlFor="signup" className="slide signup">Реєстрація</label>
                     <div className="slider-tab"></div>
                 </div>
                 <div className="form-inner">
                     <form action="#" className="login">
                         <div className="field">
-                            <input type="text" placeholder="Email Address" required />
+                            <input type="text" placeholder="Електронна пошта" required />
                         </div>
                         <div className="field">
-                            <input type="password" placeholder="Password" required />
+                            <input type="password" placeholder="Пароль" required />
                         </div>
-                        <div className="pass-link"><a href="#">Forgot password?</a></div>
+                        <div className="pass-link"><a href="#">Забули пароль?</a></div>
                         <div className="field btn">
                             <div className="btn-layer"></div>
-                            <input type="submit" value="Login" />
+                            <input type="submit" value="Увійти" />
                         </div>
-                        <div className="signup-link">Not a member? <a onClick={handleSignupLinkClick}>Signup now</a></div>
+                        <div className="signup-link">Не учасник? <a onClick={handleSignupLinkClick}>Зареєструватися</a></div>
                     </form>
                     <form action="#" className="signup">
                         <div className="field">
-                            <input type="text" placeholder="Email Address" required />
+                            <input type="text" placeholder="Електронна пошта" required />
                         </div>
                         <div className="field">
-                            <input type="password" placeholder="Password" required />
+                            <input type="password" placeholder="Пароль" required />
                         </div>
                         <div className="field">
-                            <input type="password" placeholder="Confirm password" required />
+                            <input type="password" placeholder="Підтвердіть пароль" required />
                         </div>
                         <div className="field btn">
                             <div className="btn-layer"></div>
-                            <input type="submit" value="Signup" />
+                            <input type="submit" value="Зареєструватись" />
                         </div>
                     </form>
                 </div>
