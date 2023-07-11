@@ -1,10 +1,14 @@
 import logo from './media/logo.png';
 import './App.css';
-import Login from './components/Login'
+import Login from './components/Login';
+import React, { useState } from 'react';
 
 function App() {
+  const [showLoginForm, setShowLoginForm] = useState(false);
+
   return (
-    <div className="App">
+    <div className={"App" + (showLoginForm ? " active" : "")}>
+      <div className='container'>
       <header className="App-header">
         <div className='headerContainer'>
           <a href="/">
@@ -13,10 +17,16 @@ function App() {
           <ul className='headerList'>
             <li><a href="/tests">Тести з ПДР</a></li>
             <li><a href="/exam">Іспит з водіння</a></li>
-            <li><a href="/profile">Особистий кабінет</a></li>
+            <li><a href='#' onClick={() => setShowLoginForm(true)}>Особистий кабінет</a></li>
           </ul>
         </div>
       </header>
+      </div>
+      
+      <div className='loginContainer'>
+      {showLoginForm && <Login />}
+      </div>
+      
       <div className='bannerContainer'>
         <div className='bannerLong'></div>
       </div>
@@ -46,7 +56,7 @@ function App() {
           </div>
         </div>
       </div>
-      <Login></Login>
+      {/* <Login></Login> */}
     </div>
   );
 }
