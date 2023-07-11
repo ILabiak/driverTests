@@ -24,8 +24,8 @@
   height: 67px;
   width: 120vh;
   justify-content: space-between;
-  border-left: 2px solid #a6a6a6;
-  border-right: 2px solid #a6a6a6;
+  /* border-left: 2px solid #a6a6a6; */
+  /* border-right: 2px solid #a6a6a6; */
   align-items: center;
 }
 
@@ -114,7 +114,7 @@
     width: 120vh;
     justify-content: space-between;
     align-items: center;
-    border: 2px solid #a6a6a6;
+    /* border: 2px solid #a6a6a6; */
     position: relative;
 }
 
