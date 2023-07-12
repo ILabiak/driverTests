@@ -4,6 +4,10 @@ const fastify = require('fastify')({
   // logger: true,
 });
 
+fastify.register(require('@fastify/cors'), {
+  origin: '*',
+});
+
 fastify.register(require('./routes'));
 
 // Run the server!

@@ -1,6 +1,12 @@
 import './login.css';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSignupClick = () => {
         const loginText = document.querySelector(".title-text .login");
@@ -22,6 +28,46 @@ function Login() {
         return false;
     };
 
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
+    const handleLoginSubmit = async (event) => {
+
+
+        event.preventDefault(); // Prevents form submission and page reload
+
+        // Make the API call to the login endpoint
+        try {
+            const response = await fetch("http://localhost:3005/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            if (response.status === 200) {
+                alert("Login successfull");
+
+            } else if (response.status === 401) {
+                alert("Invalid email or password");
+                console.log(await response.json())
+            } else {
+                console.log("Some other error")
+            }
+        } catch (error) {
+            console.log("Error while logging in", error);
+        }
+    };
+
     return (
         <div className="loginform">
             <div className="title-text">
@@ -39,15 +85,18 @@ function Login() {
                 <div className="form-inner">
                     <form action="#" className="login">
                         <div className="field">
-                            <input type="text" placeholder="Електронна пошта" required />
+                            <input type="text" placeholder="Електронна пошта" onChange={handleEmailChange} required />
                         </div>
-                        <div className="field">
-                            <input type="password" placeholder="Пароль" required />
+                        <div className="field password-field">
+                            <input type={showPassword ? 'text' : 'password'} placeholder="Пароль" onChange={handlePasswordChange} required />
+                            <span className="password-toggle" onClick={handleTogglePasswordVisibility}>
+                                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                            </span>
                         </div>
                         <div className="pass-link"><a href="#">Забули пароль?</a></div>
                         <div className="field btn">
                             <div className="btn-layer"></div>
-                            <input type="submit" value="Увійти" />
+                            <input type="submit" onClick={handleLoginSubmit} value="Увійти" />
                         </div>
                         <div className="signup-link">Не учасник? <a onClick={handleSignupLinkClick}>Зареєструватися</a></div>
                     </form>

@@ -114,6 +114,7 @@ input[type="radio"]{
   transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
 }
 .form-inner form .field{
+  align-items: flex-start;
   height: 50px;
   width: 100%;
   margin-top: 20px;
@@ -187,4 +188,32 @@ form .btn input[type="submit"]{
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
+}
+
+
+.field .password-field {
+  position: relative;
+}
+
+.field .password-field input {
+  padding-right: 35px;
+}
+
+.password-toggle {
+  margin-top: 25px;
+  position: absolute;
+  right: 45px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+}
+
+.password-toggle svg {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  height: 20px; /* Adjust the icon size as needed */
+  width: 20px; /* Adjust the icon size as needed */
+  color: #888; /* Adjust the icon color as needed */
 }
