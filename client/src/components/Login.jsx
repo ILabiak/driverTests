@@ -7,6 +7,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loginError, setloginError] = useState('');
 
     const handleSignupClick = () => {
         const loginText = document.querySelector(".title-text .login");
@@ -84,6 +85,12 @@ function Login() {
                 </div>
                 <div className="form-inner">
                     <form action="#" className="login">
+                        {!loginError && (
+                            <div className="field">
+                                <p className='errorForm'></p>
+                            </div>
+                        )}
+
                         <div className="field">
                             <input type="text" placeholder="Електронна пошта" onChange={handleEmailChange} required />
                         </div>
