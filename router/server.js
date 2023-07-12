@@ -7,8 +7,8 @@ const fastify = require('fastify')({
 fastify.register(require('./routes'));
 
 // Run the server!
-// fastify.listen({ port: 3000 }, (err) => {
-//   if (err) throw err;
-// });
+fastify.listen({ port: 3005 }, (err) => {
+  if (err) throw err;
+});
 
 module.exports = fastify;

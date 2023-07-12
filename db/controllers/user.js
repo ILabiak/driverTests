@@ -1,5 +1,17 @@
 'use strict';
 const User = require('../models').User;
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
+
+const hashPassword = (password) => {
+  try {
+    const hash = bcrypt.hashSync(password, saltRounds);
+    return hash;
+  } catch (err) {
+    return;
+  }
+};
 
 module.exports = {
   getByTelegramId(req, res) {
@@ -25,14 +37,19 @@ module.exports = {
   },
 
   add(req, res) {
-    return User.create({
-      telegram_id: req.body.telegram_id,
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    })
-      .then((user) => res.status(201).send(user))
-      .catch((error) => res.status(400).send(error));
+    const passwordHash = hashPassword(req.body.password);
+    if (passwordHash) {
+      return User.create({
+        telegram_id: req.body.telegram_id,
+        username: req.body.username,
+        email: req.body.email,
+        password: passwordHash,
+      })
+        .then((user) => res.status(201).send(user))
+        .catch((error) => res.status(400).send(error));
+    } else {
+      res.status(400).send(new Error('Couldn\'t hash password'));
+    }
   },
 
   update(req, res) {
@@ -70,6 +87,32 @@ module.exports = {
             res.status(200).send({ message: 'User was successfully deleted!' }),
           )
           .catch((error) => res.status(400).send(error));
+      })
+      .catch((error) => res.status(400).send(error));
+  },
+
+  login(req, res) {
+    const { email, password } = req.body;
+
+    User.findOne({ where: { email } })
+      .then((user) => {
+        if (!user) {
+          return res
+            .status(401)
+            .send({ message: 'Invalid email or password' });
+        }
+
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (result === true) {
+            // Passwords match, user is authenticated
+            return res.status(200).send({ message: 'Login successful' });
+          } else {
+            // Passwords don't match, authentication failed
+            return res
+              .status(401)
+              .send({ message: 'Invalid email or password' });
+          }
+        });
       })
       .catch((error) => res.status(400).send(error));
   },

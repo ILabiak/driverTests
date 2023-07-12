@@ -1,6 +1,5 @@
 import './login.css';
 
-
 function Login() {
 
     const handleSignupClick = () => {
