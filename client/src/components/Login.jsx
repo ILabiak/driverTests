@@ -6,7 +6,11 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState({
+        login: false,
+        signup: false,
+        signupConfirm: false,
+    });
     const [loginError, setloginError] = useState('');
 
     const handleSignupClick = () => {
@@ -37,8 +41,11 @@ function Login() {
         setPassword(event.target.value);
     };
 
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
+    const handleTogglePasswordVisibility = (field) => {
+        setShowPassword((prevShowPassword) => ({
+            ...prevShowPassword,
+            [field]: !prevShowPassword[field],
+        }));
     };
 
     const handleLoginSubmit = async (event) => {
@@ -95,9 +102,9 @@ function Login() {
                             <input type="text" placeholder="Електронна пошта" onChange={handleEmailChange} required />
                         </div>
                         <div className="field password-field">
-                            <input type={showPassword ? 'text' : 'password'} placeholder="Пароль" onChange={handlePasswordChange} required />
-                            <span className="password-toggle" onClick={handleTogglePasswordVisibility}>
-                                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                            <input type={showPassword.login ? 'text' : 'password'} placeholder="Пароль" onChange={handlePasswordChange} required />
+                            <span className="password-toggle" onClick={() => handleTogglePasswordVisibility('login')}>
+                                <FontAwesomeIcon icon={showPassword.login ? faEyeSlash : faEye} />
                             </span>
                         </div>
                         <div className="pass-link"><a href="#">Забули пароль?</a></div>
@@ -112,14 +119,21 @@ function Login() {
                             <input type="text" placeholder="Електронна пошта" required />
                         </div>
                         <div className="field">
-                            <input type="password" placeholder="Пароль" required />
+                            <input type={showPassword.signup ? 'text' : 'password'} placeholder="Пароль" required />
+                            <span className="password-toggle" onClick={() => handleTogglePasswordVisibility('signup')}>
+                                <FontAwesomeIcon icon={showPassword.signup ? faEyeSlash : faEye} />
+                            </span>
                         </div>
                         <div className="field">
-                            <input type="password" placeholder="Підтвердіть пароль" required />
+                            <input type={showPassword.signupConfirm ? 'text' : 'password'} placeholder="Підтвердіть пароль" required />
+                            <span className="password-toggle" onClick={() => handleTogglePasswordVisibility('signupConfirm')}>
+                                <FontAwesomeIcon icon={showPassword.signupConfirm ? faEyeSlash : faEye} />
+                            </span>
                         </div>
                         <div className="field btn">
                             <div className="btn-layer"></div>
                             <input type="submit" value="Зареєструватись" />
+
                         </div>
                     </form>
                 </div>
