@@ -1,7 +1,7 @@
 import './login.css';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -11,7 +11,8 @@ function Login() {
         signup: false,
         signupConfirm: false,
     });
-    const [loginError, setloginError] = useState('');
+    const [loginStatusText, setloginStatusText] = useState('');
+    const [loginSuccess, setloginSuccess] = useState(false)
 
     const handleSignupClick = () => {
         const loginText = document.querySelector(".title-text .login");
@@ -48,6 +49,11 @@ function Login() {
         }));
     };
 
+    const handleErrorCancelClick = () => {
+        setloginSuccess(false);
+        setloginStatusText("");
+    };
+
     const handleLoginSubmit = async (event) => {
 
 
@@ -63,15 +69,23 @@ function Login() {
                 body: JSON.stringify({ email, password }),
             });
             if (response.status === 200) {
-                alert("Login successfull");
+                // alert("Login successfull");
+                setloginSuccess(true);
+                setloginStatusText("Успішна авторизація")
 
             } else if (response.status === 401) {
-                alert("Invalid email or password");
-                console.log(await response.json())
+                // alert("Invalid email or password");
+                setloginSuccess(false);
+                setloginStatusText("Неправильна пошта чи пароль")
+                // console.log(await response.json())
             } else {
+                setloginSuccess(false);
+                setloginStatusText("Помилка на сервері")
                 console.log("Some other error")
             }
         } catch (error) {
+            setloginSuccess(false);
+            setloginStatusText("Помилка на сервері")
             console.log("Error while logging in", error);
         }
     };
@@ -92,9 +106,12 @@ function Login() {
                 </div>
                 <div className="form-inner">
                     <form action="#" className="login">
-                        {!loginError && (
-                            <div className="field">
-                                <p className='errorForm'></p>
+                        {loginStatusText && (
+                            <div className="field loginStatusField">
+                                <p className={loginSuccess ? "loginSuccessForm" : "loginErrorForm"}>{loginStatusText}</p>
+                                <button onClick={handleErrorCancelClick} className={loginSuccess ? "closeSuccessButton" : "closeErrorButton"}>
+                                    <FontAwesomeIcon icon={loginSuccess ? faCheck : faTimes} />
+                                </button>
                             </div>
                         )}
 

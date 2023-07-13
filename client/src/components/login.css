@@ -17,6 +17,7 @@
   background: #006400;
   color: #fff;
 }
+
 .loginform{
   overflow: hidden;
   max-width: 390px;
@@ -216,6 +217,77 @@ form .btn input[type="submit"]{
   color: #888;
 }
 
-.field .errorForm {
+.loginSuccessForm {
+  background: -webkit-linear-gradient(left, #3cb371, #2e8b57, #228b22);
+  border: 1px solid lightgrey;
+  height: 50px;
+  width: 100%;
+  border-radius: 15px;
+  display: flex;
+  justify-content: start;
+  padding-left: 10px;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
 
+.loginErrorForm {
+  background: -webkit-linear-gradient(left, #f13c1c, #ff2f00, #DC143C);
+  border: 1px solid lightgrey;
+  height: 50px;
+  width: 100%;
+  border-radius: 15px;
+  display: flex;
+  justify-content: start;
+  padding-left: 10px;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.closeSuccessButton {
+  position: relative;
+  width: 5%;
+  left: 135px;
+  bottom: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.closeSuccessButton svg {
+  right: 0;
+  height: 20px;
+  width: 20px;
+  color: #ffffff;
+}
+
+.closeErrorButton {
+  position: relative;
+  width: 5%;
+  left: 135px;
+  bottom: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.closeErrorButton svg {
+  right: 0;
+  height: 20px;
+  width: 20px;
+  color: #ffffff;
+}
+
+.loginStatusField {
+  display: relative;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
 }
