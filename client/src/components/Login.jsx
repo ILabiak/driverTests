@@ -1,5 +1,5 @@
 import './login.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,7 +12,8 @@ function Login() {
         signupConfirm: false,
     });
     const [loginStatusText, setloginStatusText] = useState('');
-    const [loginSuccess, setloginSuccess] = useState(false)
+    const [loginSuccess, setloginSuccess] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const handleSignupClick = () => {
         const loginText = document.querySelector(".title-text .login");
@@ -71,16 +72,22 @@ function Login() {
             if (response.status === 200) {
                 // alert("Login successfull");
                 setloginSuccess(true);
-                setloginStatusText("Успішна авторизація")
+                setloginStatusText("Успішна авторизація");
+                setIsAuthenticated(true);
+                localStorage.setItem("isAuthenticated", "true");
 
             } else if (response.status === 401) {
                 // alert("Invalid email or password");
                 setloginSuccess(false);
-                setloginStatusText("Неправильна пошта чи пароль")
+                setloginStatusText("Неправильна пошта чи пароль");
+                setIsAuthenticated(false);
+                localStorage.removeItem("isAuthenticated");
                 // console.log(await response.json())
             } else {
                 setloginSuccess(false);
                 setloginStatusText("Помилка на сервері")
+                setIsAuthenticated(false);
+                localStorage.removeItem("isAuthenticated");
                 console.log("Some other error")
             }
         } catch (error) {
@@ -89,6 +96,14 @@ function Login() {
             console.log("Error while logging in", error);
         }
     };
+
+    useEffect(() => {
+        const storedAuthStatus = localStorage.getItem("isAuthenticated");
+    
+        if (storedAuthStatus === "true") {
+            setIsAuthenticated(true);
+        }
+    }, []);
 
     return (
         <div className="loginform">
