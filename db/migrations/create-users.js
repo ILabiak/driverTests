@@ -23,8 +23,8 @@ module.exports = {
         validate: {
           isEmail: {
             msg: 'Must be a valid email address',
-          }
-        }
+          },
+        },
       },
       password: DataTypes.STRING,
       createdAt: {

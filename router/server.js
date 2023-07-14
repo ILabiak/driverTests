@@ -1,11 +1,17 @@
 'use strict';
 
+require('dotenv').config();
+
 const fastify = require('fastify')({
-  // logger: true,
+  logger: true,
 });
 
 fastify.register(require('@fastify/cors'), {
   origin: '*',
+});
+
+fastify.register(require('@fastify/cookie'), {
+  secret: process.env.COOKIE_SECRET,
 });
 
 fastify.register(require('./routes'));

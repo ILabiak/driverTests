@@ -13,6 +13,7 @@
     "BigInt": true
   },
   "rules": {
+    // "prettier/prettier": ["error", { "singleQuote": true }],
     "indent": "off",
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
@@ -30,7 +31,9 @@
           "telegram_id",
           "section_id",
           "right_answer_index",
-          "answer_ids"
+          "answer_ids",
+          "session_id",
+          "user_id"
         ]
       }
     ],

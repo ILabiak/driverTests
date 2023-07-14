@@ -1,6 +1,8 @@
 'use strict';
 const User = require('../models').User;
+const Session = require('../models').Session;
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 const saltRounds = 10;
 
@@ -48,7 +50,7 @@ module.exports = {
         .then((user) => res.status(201).send(user))
         .catch((error) => res.status(400).send(error));
     } else {
-      res.status(400).send(new Error('Couldn\'t hash password'));
+      res.status(400).send(new Error('Could not hash password'));
     }
   },
 
@@ -97,15 +99,28 @@ module.exports = {
     User.findOne({ where: { email } })
       .then((user) => {
         if (!user) {
-          return res
-            .status(401)
-            .send({ message: 'Invalid email or password' });
+          return res.status(401).send({ message: 'Invalid email or password' });
         }
 
         bcrypt.compare(password, user.password, (err, result) => {
           if (result === true) {
             // Passwords match, user is authenticated
-            return res.status(200).send({ message: 'Login successful' });
+            const sessionId = crypto.randomBytes(32).toString('hex');
+            return Session.create({
+              session_id: sessionId,
+              user_id: user.id,
+              expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            })
+              .then((session) => {
+                console.log('added');
+                res.setCookie('sessionID', session.session_id, {
+                  path: '/',
+                  httpOnly: true,
+                  secure: true,
+                });
+                res.status(200).send({ message: 'Login successful' });
+              })
+              .catch((error) => res.status(400).send(error));
           } else {
             // Passwords don't match, authentication failed
             return res
