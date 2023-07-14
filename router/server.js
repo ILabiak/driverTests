@@ -3,11 +3,12 @@
 require('dotenv').config();
 
 const fastify = require('fastify')({
-  logger: true,
+  // logger: true,
 });
 
 fastify.register(require('@fastify/cors'), {
-  origin: '*',
+  origin: true,
+  credentials: true,
 });
 
 fastify.register(require('@fastify/cookie'), {

@@ -71,6 +71,7 @@ function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include'
       });
       if (response.status === 200) {
         // alert("Login successfull");

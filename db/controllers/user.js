@@ -112,7 +112,6 @@ module.exports = {
               expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
             })
               .then((session) => {
-                console.log('added');
                 res.setCookie('sessionID', session.session_id, {
                   path: '/',
                   httpOnly: true,
