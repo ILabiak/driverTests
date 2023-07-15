@@ -8,13 +8,41 @@ import profileIcon from '../media/profile-icon.png'
 function Main() {
     const [showLoginForm, setShowLoginForm] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
     const loginContainerRef = useRef(null);
     const [cookies] = useCookies();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:3005/usermail', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ session_id: cookies.sessionID }),
+                    credentials: 'include'
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    setUserEmail(data.email || '')
+                } else if (response.status === 401) {
+                    //delete cookie, reload page
+                    document.cookie = 'sessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    window.location.reload(false);
+                } else {
+                    console.log('Some other error');
+                }
+            } catch (error) {
+                console.log('Error while getting user data', error);
+            }
+        }
+
         if (cookies.sessionID) {
             setIsAuthenticated(true);
+            fetchData().catch(console.error)
+
         } else {
             setIsAuthenticated(false);
         }
@@ -71,22 +99,22 @@ function Main() {
                                 className={showDropdown ? 'headerProfileActive' : ''}
                             >
                                 {isAuthenticated ?
-                                    <div class="profileContainer">
-                                        <div class="action" onClick={handleProfileIconClick}>
-                                            <div class="profile">
+                                    <div className="profileContainer">
+                                        <div className="action" onClick={handleProfileIconClick}>
+                                            <div className="profile">
                                                 <img src={profileIcon} alt="profile-img" />
                                             </div>
-                                            <div class={`menu ${showDropdown ? 'active' : ''}`}>
-                                                <h3>Someon Famous<br /><span>Звичайний користувач</span></h3>
+                                            <div className={`menu ${showDropdown ? 'active' : ''}`}>
+                                                <h3>{userEmail}<br /><span>Звичайний користувач</span></h3>
                                                 <ul>
                                                     <li>
                                                         <a href="#">Мій профіль</a>
                                                     </li>
                                                     <li>
-                                                        <a href="#">Teсти</a>
+                                                        <a href="/tests">Teсти</a>
                                                     </li>
                                                     <li>
-                                                        <i class="far fa-envelope"></i>
+                                                        <i className="far fa-envelope"></i>
                                                         <a href="#">Вийти</a>
                                                     </li>
                                                 </ul>
@@ -96,8 +124,6 @@ function Main() {
                                     : <a href='#' onClick={handleLoginLinkClick}>
                                         Особистий кабінет
                                     </a>}
-
-
                             </li>
                         </ul>
                     </div>

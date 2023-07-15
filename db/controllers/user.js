@@ -3,6 +3,7 @@ const User = require('../models').User;
 const Session = require('../models').Session;
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const { Op } = require('sequelize');
 
 const saltRounds = 10;
 
@@ -130,5 +131,30 @@ module.exports = {
         });
       })
       .catch((error) => res.status(400).send(error));
+  },
+
+  getUserMail(req, res) {
+    const { session_id } = req.body;
+
+    Session.findOne({
+      where: {
+        [Op.and]: [{ session_id }, { expirationDate: { [Op.gt]: new Date() } }],
+      },
+      include: User,
+    }).then((data) => {
+      if (!data) {
+        return res
+          .status(401)
+          .send({ message: 'No user found with this session' });
+      }
+      // console.log(JSON.stringify(data, null, 2));
+      res
+        .status(200)
+        .send({
+          user_id: data.user_id,
+          email: data.User.email,
+          username: data.User.username,
+        });
+    });
   },
 };

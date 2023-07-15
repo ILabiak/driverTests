@@ -242,18 +242,8 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* body{
-  background:rgba(128, 234, 209,1);
-} */
+
 .profileContainer {
-  /* display:flex;
-  align-items:right;
-  justify-content:center;
-  height:100%;
-  display: flex;
-  width: 11vh;
-  height: 100%;
-  margin-right: 0.5vh; */
   display: flex;
   width: 11vh;
   height: 100%;
@@ -291,7 +281,7 @@
 .action .menu {
   position: absolute;
   padding: 10px 20px;
-  right: 10px;
+  right: 12px;
   top: 140px;
   background: #ffffff;
   width: 250px;
