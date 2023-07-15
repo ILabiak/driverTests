@@ -42,7 +42,6 @@ function Main() {
         if (cookies.sessionID) {
             setIsAuthenticated(true);
             fetchData().catch(console.error)
-
         } else {
             setIsAuthenticated(false);
         }
@@ -80,6 +79,11 @@ function Main() {
         setShowDropdown(!showDropdown);
     }
 
+    const handleLogout = () => {
+        document.cookie = 'sessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.reload(false);
+    }
+
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
             <div className='container'>
@@ -115,7 +119,7 @@ function Main() {
                                                     </li>
                                                     <li>
                                                         <i className="far fa-envelope"></i>
-                                                        <a href="#">Вийти</a>
+                                                        <a href="#" onClick={handleLogout}>Вийти</a>
                                                     </li>
                                                 </ul>
                                             </div>
