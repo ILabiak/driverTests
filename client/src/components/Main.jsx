@@ -3,15 +3,14 @@ import './main.css';
 import Login from './Login';
 import React, { useState, useEffect, useRef } from 'react';
 import { useCookies } from 'react-cookie';
+import profileIcon from '../media/profile-icon.png'
 
 function Main() {
     const [showLoginForm, setShowLoginForm] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const loginContainerRef = useRef(null);
-    const dropdownRef = useRef(null);
     const [cookies] = useCookies();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    // console.log("cookies:", JSON.stringify(cookies, null, 2))
 
     useEffect(() => {
         if (cookies.sessionID) {
@@ -49,13 +48,6 @@ function Main() {
         setShowLoginForm(true);
     };
 
-    // const handleProfileMouseEnter = () => {
-    //     setShowDropdown(true);
-    // };
-
-    // const handleProfileMouseLeave = () => {
-    //     setShowDropdown(false);
-    // };
     const handleProfileIconClick = () => {
         setShowDropdown(!showDropdown);
     }
@@ -76,21 +68,16 @@ function Main() {
                                 <a href='/exam'>Іспит з водіння</a>
                             </li>
                             <li
-                                // onMouseEnter={handleProfileMouseEnter}
-                                //     onMouseLeave={handleProfileMouseLeave}
                                 className={showDropdown ? 'headerProfileActive' : ''}
                             >
                                 {isAuthenticated ?
-                                    // < a href='#'>
-                                    //     Профіль
-                                    // </a>
                                     <div class="profileContainer">
                                         <div class="action" onClick={handleProfileIconClick}>
                                             <div class="profile">
-                                                <img src="https://graeweb.github.io/expire/images/reviewer2.jpg" alt="profile-img" />
+                                                <img src={profileIcon} alt="profile-img" />
                                             </div>
                                             <div class={`menu ${showDropdown ? 'active' : ''}`}>
-                                                <h3>Someon Famous<br /><span>Website Designer</span></h3>
+                                                <h3>Someon Famous<br /><span>Звичайний користувач</span></h3>
                                                 <ul>
                                                     <li>
                                                         <a href="#">Мій профіль</a>
