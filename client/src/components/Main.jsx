@@ -6,18 +6,20 @@ import { useCookies } from 'react-cookie';
 
 function Main() {
     const [showLoginForm, setShowLoginForm] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(false);
     const loginContainerRef = useRef(null);
+    const dropdownRef = useRef(null);
     const [cookies] = useCookies();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    console.log("cookies:", JSON.stringify(cookies, null, 2))
+    // console.log("cookies:", JSON.stringify(cookies, null, 2))
 
     useEffect(() => {
-        if(cookies.sessionID){
+        if (cookies.sessionID) {
             setIsAuthenticated(true);
-        }else {
+        } else {
             setIsAuthenticated(false);
         }
-      }, [cookies]);
+    }, [cookies]);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -47,6 +49,17 @@ function Main() {
         setShowLoginForm(true);
     };
 
+    // const handleProfileMouseEnter = () => {
+    //     setShowDropdown(true);
+    // };
+
+    // const handleProfileMouseLeave = () => {
+    //     setShowDropdown(false);
+    // };
+    const handleProfileIconClick = () => {
+        setShowDropdown(!showDropdown);
+    }
+
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
             <div className='container'>
@@ -62,12 +75,41 @@ function Main() {
                             <li>
                                 <a href='/exam'>Іспит з водіння</a>
                             </li>
-                            <li>
-                                {isAuthenticated ? < a href='#'>
-                                    Профіль
-                                </a> : <a href='#' onClick={handleLoginLinkClick}>
-                                    Особистий кабінет
-                                </a>}
+                            <li
+                                // onMouseEnter={handleProfileMouseEnter}
+                                //     onMouseLeave={handleProfileMouseLeave}
+                                className={showDropdown ? 'headerProfileActive' : ''}
+                            >
+                                {isAuthenticated ?
+                                    // < a href='#'>
+                                    //     Профіль
+                                    // </a>
+                                    <div class="profileContainer">
+                                        <div class="action" onClick={handleProfileIconClick}>
+                                            <div class="profile">
+                                                <img src="https://graeweb.github.io/expire/images/reviewer2.jpg" alt="profile-img" />
+                                            </div>
+                                            <div class={`menu ${showDropdown ? 'active' : ''}`}>
+                                                <h3>Someon Famous<br /><span>Website Designer</span></h3>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#">Мій профіль</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Teсти</a>
+                                                    </li>
+                                                    <li>
+                                                        <i class="far fa-envelope"></i>
+                                                        <a href="#">Вийти</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    : <a href='#' onClick={handleLoginLinkClick}>
+                                        Особистий кабінет
+                                    </a>}
+
 
                             </li>
                         </ul>
