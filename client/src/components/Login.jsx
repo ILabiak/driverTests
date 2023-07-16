@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import './login.css';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -78,7 +79,7 @@ function Login() {
                 setloginStatusText('Успішна авторизація');
                 setTimeout(() => {
                     window.location.reload(false)
-                }, 2000)
+                }, 1500)
             } else if (response.status === 401) {
                 // alert("Invalid email or password");
                 setloginSuccess(false);

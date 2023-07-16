@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import logo from '../media/logo.png';
 import './main.css';
 import Login from './Login';
@@ -132,14 +133,15 @@ function Main() {
                         </ul>
                     </div>
                 </header>
-            </div >
 
-            {showLoginForm && (
+            </div >
+                {showLoginForm && (
                 <div className='loginContainer' ref={loginContainerRef}>
                     <Login />
                 </div>
             )
             }
+
             <div className='bannerContainer'>
                 <div className='bannerLong'></div>
             </div>

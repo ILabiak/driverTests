@@ -1,0 +1,19 @@
+.App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    place-items: center;
+    background-color: #fff;
+    z-index: 4;
+}
+
+.App.active>*:not(.loginContainer) {
+    backdrop-filter: brightness(0.6) !important;
+    filter: brightness(0.6) !important;
+  }
+
+.container {
+    width: 100%;
+}
+

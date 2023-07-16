@@ -18,6 +18,7 @@
   color: #fff;
 }
 
+
 .loginform {
   overflow: hidden;
   max-width: 390px;
@@ -191,6 +192,8 @@ form .btn input[type='submit'] {
 }
 
 .field .password-field {
+  display: flex;
+  align-items: center;
   position: relative;
 }
 
@@ -205,6 +208,14 @@ form .btn input[type='submit'] {
   cursor: pointer;
   user-select: none;
 }
+
+/* .password-toggle {
+  flex-shrink: 0;
+  margin-left: 10px;
+  cursor: pointer;
+  user-select: none;
+} */
+
 
 .password-toggle svg {
   top: 50%;
