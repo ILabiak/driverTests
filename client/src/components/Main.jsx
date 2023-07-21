@@ -5,6 +5,7 @@ import Login from './Login';
 import React, { useState, useEffect, useRef } from 'react';
 import { useCookies } from 'react-cookie';
 import profileIcon from '../media/profile-icon.png'
+import Layout from './Layout';
 
 function Main() {
     const [showLoginForm, setShowLoginForm] = useState(false);
@@ -88,54 +89,15 @@ function Main() {
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
             <div className='container'>
-                <header className='App-header'>
-                    <div className='headerContainer'>
-                        <a href='/'>
-                            <img src={logo} className='App-logo' alt='logo' />
-                        </a>
-                        <ul className='headerList'>
-                            <li>
-                                <a href='/tests'>Тести з ПДР</a>
-                            </li>
-                            <li>
-                                <a href='/exam'>Іспит з водіння</a>
-                            </li>
-                            <li
-                                className={showDropdown ? 'headerProfileActive' : ''}
-                            >
-                                {isAuthenticated ?
-                                    <div className="profileContainer">
-                                        <div className="action" onClick={handleProfileIconClick}>
-                                            <div className="profile">
-                                                <img src={profileIcon} alt="profile-img" />
-                                            </div>
-                                            <div className={`menu ${showDropdown ? 'active' : ''}`}>
-                                                <h3>{userEmail}<br /><span>Звичайний користувач</span></h3>
-                                                <ul>
-                                                    <li>
-                                                        <a href="#">Мій профіль</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="/tests">Teсти</a>
-                                                    </li>
-                                                    <li>
-                                                        <i className="far fa-envelope"></i>
-                                                        <a href="#" onClick={handleLogout}>Вийти</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    : <a href='#' onClick={handleLoginLinkClick}>
-                                        Особистий кабінет
-                                    </a>}
-                            </li>
-                        </ul>
-                    </div>
-                </header>
-
+                <Layout showDropdown={showDropdown}
+                    isAuthenticated={isAuthenticated}
+                    userEmail={userEmail}
+                    handleProfileIconClick={handleProfileIconClick}
+                    handleLogout={handleLogout}
+                    handleLoginLinkClick={handleLoginLinkClick}
+                />
             </div >
-                {showLoginForm && (
+            {showLoginForm && (
                 <div className='loginContainer' ref={loginContainerRef}>
                     <Login />
                 </div>
