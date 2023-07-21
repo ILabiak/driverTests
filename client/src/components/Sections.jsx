@@ -1,10 +1,10 @@
-import './tests.css';
+import './sections.css';
 import Layout from './Layout';
 import Login from './Login'
 import React, { useState, useEffect, useRef } from 'react';
 import { useCookies } from 'react-cookie';
 
-function Main() {
+function Section() {
     const [showLoginForm, setShowLoginForm] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -107,4 +107,4 @@ function Main() {
     );
 }
 
-export default Main;
+export default Section;

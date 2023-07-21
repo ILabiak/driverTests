@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import Main from './components/Main';
-import Tests from './components/Tests';
+import Tests from './components/Sections';
 
 function App() {
   return (
