@@ -3,26 +3,18 @@ import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
 import React from 'react';
-import { useCookies } from 'react-cookie';
 
 function Section() {
-    const [cookies] = useCookies();
     const {
         showLoginForm,
-        setShowLoginForm,
         showDropdown,
-        setShowDropdown,
         isAuthenticated,
-        setIsAuthenticated,
         userEmail,
-        setUserEmail,
         loginContainerRef,
         handleLoginLinkClick,
         handleProfileIconClick,
         handleLogout,
       } = useAuthData();
-
-
 
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>

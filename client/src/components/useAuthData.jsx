@@ -81,6 +81,7 @@ const useAuthData = () => {
   }
 
   return {
+    cookies,
     showLoginForm,
     setShowLoginForm,
     showDropdown,

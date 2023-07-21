@@ -79,7 +79,7 @@ function Login() {
                 setloginStatusText('Успішна авторизація');
                 setTimeout(() => {
                     window.location.reload(false)
-                }, 1500)
+                }, 750)
             } else if (response.status === 401) {
                 // alert("Invalid email or password");
                 setloginSuccess(false);
