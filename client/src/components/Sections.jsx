@@ -2,7 +2,7 @@ import './sections.css';
 import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useCookies } from 'react-cookie';
 
 function Section() {

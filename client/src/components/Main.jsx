@@ -2,10 +2,10 @@
 import './main.css';
 import Login from './Login';
 import Layout from './Layout';
-
 import useAuthData from './useAuthData';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useCookies } from 'react-cookie';
+
 
 function Main() {
     const [cookies] = useCookies();
