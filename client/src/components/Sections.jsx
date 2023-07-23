@@ -4,7 +4,7 @@ import Login from './Login'
 import useAuthData from './useAuthData';
 import React from 'react';
 
-function Section() {
+function Sections() {
     const {
         showLoginForm,
         showDropdown,
@@ -40,4 +40,4 @@ function Section() {
     );
 }
 
-export default Section;
+export default Sections;

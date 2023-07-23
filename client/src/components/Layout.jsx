@@ -22,7 +22,7 @@ function Layout(props) {
       </a>
       <ul className='headerList'>
         <li>
-          <a href='/tests'>Тести з ПДР</a>
+          <a href='/sections'>Тести з ПДР</a>
         </li>
         <li>
           <a href='/exam'>Іспит з водіння</a>
@@ -44,7 +44,7 @@ function Layout(props) {
                       <a href="#">Мій профіль</a>
                     </li>
                     <li>
-                      <a href="/tests">Teсти</a>
+                      <a href="/sections">Teсти</a>
                     </li>
                     <li>
                       <i className="far fa-envelope"></i>
