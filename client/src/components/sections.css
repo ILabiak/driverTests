@@ -52,26 +52,26 @@
 
 .menuHeader .singleton {
     height: 30px;
+    pointer-events: auto;
     display: flex;
     justify-content: center;
-    pointer-events: auto;
     align-items: center;
+
 }
 
 .menuHeader a {
-    height: 26px;
-    text-justify: center;
+    vertical-align: top;
+    line-height: calc(2vmin);
     color: #333;
     text-decoration: none;
-    font-size: calc(5px + 2vmin);
+    font-size: calc(2vmin);
     font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-    box-sizing: border-box;
     background-color: transparent;
     /* border: 1px solid #a6a6a6; */
 }
 
 .menuHeader .current-menu-li {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .menuHeader ul li {
@@ -88,16 +88,6 @@
     align-items: center;
     border: 2px solid #a6a6a6;
     position: relative;
+    
 }
 
-
-/* -webkit-tap-highlight-color: transparent;
--webkit-text-size-adjust: 100%;
-font-size: 14px;
-line-height: 1.42857143;
-font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
-box-sizing: border-box;
-background-color: transparent;
-text-decoration: none;
-color: #333;
-cursor: pointer; */
