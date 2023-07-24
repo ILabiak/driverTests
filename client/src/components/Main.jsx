@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import './main.css';
 import Login from './Login';
 import Layout from './Layout';
