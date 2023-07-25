@@ -5,13 +5,15 @@
     height: 100vh;
     place-items: center;
     background-color: #fff;
-    z-index: 4;
+    z-index: 100;
 }
 
 .App.active>*:not(.loginContainer) {
     backdrop-filter: brightness(0.6) !important;
     filter: brightness(0.6) !important;
 }
+
+
 
 .testpageContainer {
     display: flex;
@@ -22,6 +24,7 @@
     height: 100%;
     border-top: 2px solid #a6a6a6;
     width: 100%;
+    z-index: 25;
 }
 
 .questionsContainer {
@@ -76,8 +79,7 @@
     width: 20vw;
 }
 
-.questionButtons {
-}
+.questionButtons {}
 
 .questionButtons a:hover {
     cursor: pointer;
@@ -88,3 +90,12 @@
     margin-right: 5px;
     margin-left: 5px;
 }
+
+.questionPagination {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+    /* border: 1px solid #a6a6a6; */
+}
+
+
