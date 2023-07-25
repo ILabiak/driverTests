@@ -1,0 +1,90 @@
+.App {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    place-items: center;
+    background-color: #fff;
+    z-index: 4;
+}
+
+.App.active>*:not(.loginContainer) {
+    backdrop-filter: brightness(0.6) !important;
+    filter: brightness(0.6) !important;
+}
+
+.testpageContainer {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    background: #fff;
+    height: 100%;
+    border-top: 2px solid #a6a6a6;
+    width: 100%;
+}
+
+.questionsContainer {
+    margin-top: 40px;
+    height: 70vh;
+    width: 120vh;
+    border: 1px solid #a6a6a6;
+}
+
+.testNameRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30px;
+    border: 1px solid #a6a6a6;
+}
+
+.testNameRow h5 {
+    font-weight: 400;
+}
+
+.questionsTimeRow {
+    width: 100%;
+    height: 6vh;
+    border: 1px solid #a6a6a6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.questionsTimeRow span {
+    font-size: medium;
+    text-align: center;
+}
+
+.questionTime {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-left: 15px;
+    height: 100%;
+    width: 20vw;
+}
+
+.testTime {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin-right: 15px;
+    height: 100%;
+    width: 20vw;
+}
+
+.questionButtons {
+}
+
+.questionButtons a:hover {
+    cursor: pointer;
+}
+
+.questionButton {
+    color: #555555;
+    margin-right: 5px;
+    margin-left: 5px;
+}
