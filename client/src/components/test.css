@@ -79,8 +79,6 @@
     width: 20vw;
 }
 
-.questionButtons {}
-
 .questionButtons a:hover {
     cursor: pointer;
 }

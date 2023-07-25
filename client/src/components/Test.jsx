@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import './test.css';
 import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
