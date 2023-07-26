@@ -11,7 +11,7 @@ import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 
-function Test(props) {
+function Test() {
     const [questions, setQuestions] = useState([]);
     const [question, setQuestion] = useState({});
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -111,10 +111,10 @@ function Test(props) {
                             {question && question.answers && question.answers.map((answer, index) => {
                                 const answerId = answer.id;
                                 let isSelected = selectedAnswer === answerId;
-                                if(isSelected){
+                                if (isSelected) {
                                     question.selected = index
                                 }
-                                if(question.selected && question.selected == index){
+                                if (question.selected && question.selected === index) {
                                     isSelected = true
                                 }
                                 const isCorrect = question.rightAnswerIndex === index;
@@ -124,13 +124,12 @@ function Test(props) {
                                         : 'wrong-answer'
                                     : 'defaultli';
 
-                                if(question.answered){
-                                    if(isCorrect) {
+                                if (question.answered) {
+                                    if (isCorrect) {
                                         answerClass = 'correct-answer'
-                                    }else if (answerClass != 'wrong-answer'){
+                                    } else if (answerClass !== 'wrong-answer') {
                                         answerClass = 'disabledLi'
                                     }
-
                                 }
 
                                 return (
@@ -138,7 +137,7 @@ function Test(props) {
                                         key={answerId}
                                         id={answerId}
                                         className={answerClass}
-                                        onClick={question.answered ? ()=> {} :handleAnswerClick}
+                                        onClick={question.answered ? () => { } : handleAnswerClick}
                                     >
                                         <label>{answer.text}</label>
                                     </li>
@@ -146,7 +145,7 @@ function Test(props) {
                             })}
                         </ul>
                         <div className='image'>
-                            <img src={question.image == null ? noImage : question.image} />
+                            <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
                         </div>
                     </div>
                 </div>

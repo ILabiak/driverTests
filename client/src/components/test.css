@@ -193,10 +193,6 @@
     transition: background-color 0.5s ease;
 }
 
-.correct-answer label{
-    /* color: white; */
-}
-
 .wrong-answer {
     display: flex;
     list-style: none;
