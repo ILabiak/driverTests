@@ -122,12 +122,15 @@ function Test(props) {
                                     ? isCorrect
                                         ? 'correct-answer'
                                         : 'wrong-answer'
-                                    : '';
+                                    : 'defaultli';
 
                                 if(question.answered){
                                     if(isCorrect) {
                                         answerClass = 'correct-answer'
+                                    }else if (answerClass != 'wrong-answer'){
+                                        answerClass = 'disabledLi'
                                     }
+
                                 }
 
                                 return (

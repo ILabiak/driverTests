@@ -29,7 +29,7 @@
     margin-top: 40px;
     height: 70vh;
     width: 120vh;
-    border: 1px solid #a6a6a6;
+    /* border: 1px solid #a6a6a6; */
 }
 
 .testNameRow {
@@ -38,7 +38,7 @@
     justify-content: center;
     width: 100%;
     height: 30px;
-    border: 1px solid #a6a6a6;
+    /* border: 1px solid #a6a6a6; */
 }
 
 .testNameRow h5 {
@@ -48,7 +48,8 @@
 .questionsTimeRow {
     width: 100%;
     height: 6vh;
-    border: 1px solid #a6a6a6;
+    margin-top: 20px;
+    /* border: 1px solid #a6a6a6; */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -122,12 +123,27 @@
     width: 50%;
 }
 
-.answers li {
+/* .answers li {
     display: flex;
     list-style: none;
     justify-content: left;
     text-align: left;
     border: 1px solid #a6a6a6;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+} */
+
+.defaultli {
+    display: flex;
+    list-style: none;
+    justify-content: left;
+    text-align: left;
+    border: 1px solid #a6a6a6;
+    background-color: white;
     border-radius: 10px;
     padding: 10px 10px;
     margin-bottom: 10px;
@@ -154,19 +170,61 @@
     width: 95%;
     border-radius: 5px;
     border: 1px solid #a6a6a6;
+    transition: width 1s ease;
+}
+.image img:hover {
+    width: 150%;
+    align-self: center;
+    border-radius: 5px;
+    border: 1px solid #a6a6a6;
 }
 
 .correct-answer {
-    background-color: #2e8b58;
+    display: flex;
+    list-style: none;
+    justify-content: left;
+    text-align: left;
+    border: 2px solid #2e8b58;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
 }
 
 .correct-answer label{
-    color: white;
+    /* color: white; */
 }
 
 .wrong-answer {
+    display: flex;
+    list-style: none;
+    justify-content: left;
+    text-align: left;
+    border: 1px solid #a6a6a6;
     background-color: red;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
 }
+
+.disabledLi {
+    display: flex;
+    list-style: none;
+    justify-content: left;
+    text-align: left;
+    border: 1px solid #a6a6a6;
+    background-color: #d7d7d7;
+    border-radius: 10px;
+    padding: 10px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+}
+
 
 .wrong-answer label{
     color: white;
