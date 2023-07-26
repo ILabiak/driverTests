@@ -96,4 +96,18 @@
     /* border: 1px solid #a6a6a6; */
 }
 
+.questionTextDiv {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    align-items: top;
+}
 
+.questionTextDiv span {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+}

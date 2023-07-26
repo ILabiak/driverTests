@@ -33,7 +33,8 @@ function Test(props) {
                     throw new Error('Failed to fetch questions');
                 }
                 const fetchedQuestions = await response.json();
-                setQuestions(fetchedQuestions);
+                await setQuestions(fetchedQuestions);
+                await setQuestion(fetchedQuestions[0])
             } catch (error) {
                 console.error('Error fetching questions:', error);
             }
@@ -86,9 +87,18 @@ function Test(props) {
                         </div>
                     </div>
                     <div className='questionPagination'>
-                        <Pagination count={questions.length} showFirstButton showLastButton variant="outlined" shape="rounded" size='large' onChange={handleChange} />
+                        <Pagination count={questions.length} showFirstButton showLastButton variant="outlined" shape="rounded" size='large' onChange={handleChange}
+                            sx={{
+                                '& .MuiPaginationItem-root:nth-child(5)': {
+                                    backgroundColor: 'green',
+                                },
+                            }}
+                        />
                     </div>
-                    <h2>{question.id}</h2>
+                    <div className='questionTextDiv'><span>{question.text || 'loading'}</span></div>
+                    <div className='answersBlock'>
+
+                    </div>
                 </div>
             </div>
         </div>
