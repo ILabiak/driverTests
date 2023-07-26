@@ -9,10 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePause } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { Pagination } from '@mui/material';
+import noImage from '../media/no_image_uk.png';
 
 function Test(props) {
     const [questions, setQuestions] = useState([]);
     const [question, setQuestion] = useState({});
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
     const { sectionId } = useParams();
     const {
         showLoginForm,
@@ -47,6 +49,12 @@ function Test(props) {
         await setQuestion(questions[value - 1])
         console.log(question)
     }
+
+    const handleAnswerClick = (event) => {
+        const selectedId = parseInt(event.currentTarget.id);
+        question.answered = true;
+        setSelectedAnswer(selectedId);
+    };
 
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
@@ -95,9 +103,48 @@ function Test(props) {
                             }}
                         />
                     </div>
-                    <div className='questionTextDiv'><span>{question.text || 'loading'}</span></div>
+                    <div className='questionTextDiv'>
+                        <span>{question.text || 'loading'}</span>
+                    </div>
                     <div className='answersBlock'>
+                        <ul className='answers'>
+                            {question && question.answers && question.answers.map((answer, index) => {
+                                const answerId = answer.id;
+                                let isSelected = selectedAnswer === answerId;
+                                if(isSelected){
+                                    question.selected = index
+                                }
+                                if(question.selected && question.selected == index){
+                                    isSelected = true
+                                }
+                                const isCorrect = question.rightAnswerIndex === index;
+                                let answerClass = isSelected
+                                    ? isCorrect
+                                        ? 'correct-answer'
+                                        : 'wrong-answer'
+                                    : '';
 
+                                if(question.answered){
+                                    if(isCorrect) {
+                                        answerClass = 'correct-answer'
+                                    }
+                                }
+
+                                return (
+                                    <li
+                                        key={answerId}
+                                        id={answerId}
+                                        className={answerClass}
+                                        onClick={question.answered ? ()=> {} :handleAnswerClick}
+                                    >
+                                        <label>{answer.text}</label>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                        <div className='image'>
+                            <img src={question.image == null ? noImage : question.image} />
+                        </div>
                     </div>
                 </div>
             </div>
