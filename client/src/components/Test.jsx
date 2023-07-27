@@ -12,6 +12,7 @@ import { Pagination } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 
 function Test() {
+    const [page, setPage] = React.useState(1);
     const [sectionName, setSectionName] = useState('')
     const [isPaused, setIsPaused] = useState(false)
     const [questions, setQuestions] = useState([]);
@@ -61,15 +62,25 @@ function Test() {
     }, [sectionId]);
 
     const handleChange = async (event, value) => {
-        console.log(value)
         await setQuestion(questions[value - 1])
-        console.log(question)
+        setPage(value);
+        setSelectedAnswer(null);
     }
 
     const handleAnswerClick = (event) => {
         const selectedId = parseInt(event.currentTarget.id);
         question.answered = true;
         setSelectedAnswer(selectedId);
+
+        setTimeout(() => {
+            const currentQuestionIndex = questions.findIndex((q) => q.id === question.id);
+            if (currentQuestionIndex < questions.length - 1) {
+                setQuestion(questions[currentQuestionIndex+1])
+                setPage(page+1)
+                setSelectedAnswer(null);
+            } else {
+            }
+        }, 1500)
     };
 
     const handlePauseClick = () => {
@@ -138,7 +149,7 @@ function Test() {
                     ) : (
                         <div>
                             <div className='questionPagination'>
-                                <Pagination count={questions.length} showFirstButton showLastButton variant="outlined" shape="rounded" size='large' onChange={handleChange}
+                                <Pagination page={page} count={questions.length} showFirstButton showLastButton variant="outlined" shape="rounded" size='large' onChange={handleChange}
                                     sx={{
                                         '& .MuiPaginationItem-root:nth-child(5)': {
                                             backgroundColor: 'green',
