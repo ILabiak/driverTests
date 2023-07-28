@@ -20,7 +20,9 @@ function Test() {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const { sectionId } = useParams();
     const [questionTime, setQuestionTime] = useState(0);
+    const [testTime, setTestTime] = useState(0);
     const timerRef = useRef(null);
+    const testTimerRef = useRef(null);
     const {
         showLoginForm,
         showDropdown,
@@ -44,6 +46,14 @@ function Test() {
         if (!timerRef.current) {
             timerRef.current = setInterval(() => {
                 setQuestionTime(prevTime => prevTime + 1);
+            }, 1000);
+        }
+    };
+
+    const startTestTimer = () => {
+        if (!testTimerRef.current) {
+            testTimerRef.current = setInterval(() => {
+                setTestTime(prevTime => prevTime + 1);
             }, 1000);
         }
     };
@@ -91,6 +101,7 @@ function Test() {
                 const fetchedQuestions = await response.json();
                 await setQuestions(fetchedQuestions);
                 await setQuestion(fetchedQuestions[0])
+                startTestTimer()
             } catch (error) {
                 console.error('Error fetching questions:', error);
             }
@@ -140,11 +151,15 @@ function Test() {
         await setIsPaused(!isPaused)
         if (!isPaused) {
             clearInterval(timerRef.current);
+            clearInterval(testTimerRef.current)
             timerRef.current = null;
+            testTimerRef.current = null;
         } else {
             if (!question.answered) {
                 createTimer()
+                
             }
+            startTestTimer()
         }
     }
 
@@ -189,7 +204,7 @@ function Test() {
                             </a>
                         </div>
                         <div className='testTime'>
-                            <span>Загальний час тестування: 3:31</span>
+                            <span>Загальний час тестування: {formatTime(testTime)}</span>
                         </div>
                     </div>
                     {isPaused ? (
