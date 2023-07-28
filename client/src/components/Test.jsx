@@ -3,7 +3,7 @@ import './test.css';
 import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePause, faCirclePlay } from '@fortawesome/free-regular-svg-icons';
@@ -19,6 +19,8 @@ function Test() {
     const [question, setQuestion] = useState({});
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const { sectionId } = useParams();
+    const [questionTime, setQuestionTime] = useState(0);
+    const timerRef = useRef(null);
     const {
         showLoginForm,
         showDropdown,
@@ -29,6 +31,55 @@ function Test() {
         handleProfileIconClick,
         handleLogout,
     } = useAuthData();
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+        return `${formattedMinutes}:${formattedSeconds}`;
+    }
+
+    const startTimer = () => {
+        if (!timerRef.current) {
+            timerRef.current = setInterval(() => {
+                setQuestionTime(prevTime => prevTime + 1);
+            }, 1000);
+        }
+    };
+
+    const createTimer = () => {
+        if (question.time) {
+            setQuestionTime(question.time)
+        } else {
+            setQuestionTime(0);
+        }
+        startTimer();
+    }
+
+    useEffect(() => {
+        // Reset the timer when a new question is loaded
+        if (question.time) {
+            setQuestionTime(question.time)
+        } else {
+            setQuestionTime(0);
+        }
+        let timerInterval
+        if (!question.answered) {
+            timerInterval = startTimer();
+        } else {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+
+        return () => {
+            clearInterval(timerInterval); // Cleanup the timer when a new question is loaded
+        };
+    }, [question]);
+
+    useEffect(() => {
+        question.time = questionTime
+    }, [questionTime])
 
     useEffect(() => {
         const fetchQuestions = async () => {
@@ -71,22 +122,29 @@ function Test() {
         const selectedId = parseInt(event.currentTarget.id);
         question.answered = true;
         setSelectedAnswer(selectedId);
+        clearInterval(timerRef.current);
+        timerRef.current = null;
 
         setTimeout(() => {
             const currentQuestionIndex = questions.findIndex((q) => q.id === question.id);
             if (currentQuestionIndex < questions.length - 1) {
-                setQuestion(questions[currentQuestionIndex+1])
-                setPage(page+1)
+                setQuestion(questions[currentQuestionIndex + 1])
+                setPage(page + 1)
                 setSelectedAnswer(null);
             } else {
             }
         }, 1500)
     };
 
-    const handlePauseClick = () => {
-        setIsPaused(!isPaused)
-        if (isPaused) {
-
+    const handlePauseClick = async () => {
+        await setIsPaused(!isPaused)
+        if (!isPaused) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        } else {
+            if (!question.answered) {
+                createTimer()
+            }
         }
     }
 
@@ -114,7 +172,7 @@ function Test() {
                     </div>
                     <div className='questionsTimeRow'>
                         <div className='questionTime'>
-                            <span>Розмірковуємо над питанням: 0:12</span>
+                            <span>Розмірковуємо над питанням: {formatTime(questionTime)}</span>
                         </div>
                         <div className='questionButtons'>
                             <a onClick={handlePauseClick}>
