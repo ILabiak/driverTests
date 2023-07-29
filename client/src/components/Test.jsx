@@ -8,10 +8,11 @@ import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePause, faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import { Pagination } from '@mui/material';
+import { Pagination, Backdrop } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 
 function Test() {
+    const [open, setOpen] = React.useState(false);
     const [page, setPage] = React.useState(1);
     const [sectionName, setSectionName] = useState('')
     const [isPaused, setIsPaused] = useState(false)
@@ -200,6 +201,15 @@ function Test() {
         }
     }
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
             <div className='container'>
@@ -304,9 +314,18 @@ function Test() {
                                         );
                                     })}
                                 </ul>
-                                <div className='image'>
+                                <div className='image' onClick={question.image !== null ? handleOpen : ()=> {}}>
                                     <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
                                 </div>
+                                <Backdrop
+                                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                    open={open}
+                                    onClick={handleClose}
+                                >
+                                    <div className='BackDropImage' onClick={handleOpen}>
+                                        <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
+                                    </div>
+                                </Backdrop>
                             </div>
                         </div>
                     )}

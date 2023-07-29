@@ -173,11 +173,24 @@
     border: 1px solid #a6a6a6;
     transition: width 1s ease;
 }
-.image img:hover {
+/* .image img:hover {
     width: 150%;
     align-self: center;
     border-radius: 5px;
     border: 1px solid #a6a6a6;
+} */
+
+.BackDropImage {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+}
+
+.BackDropImage img {
+    width: 150%;
+    border-radius: 10px;
+    border: 1px solid #a6a6a6;
+    transition: width 1s ease;
 }
 
 .correct-answer {
