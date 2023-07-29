@@ -21,6 +21,12 @@ function Test() {
     const { sectionId } = useParams();
     const [questionTime, setQuestionTime] = useState(0);
     const [testTime, setTestTime] = useState(0);
+    const [paginationStyle, setPaginationStyle] = useState({
+        '.Mui-selected': {
+            borderColor: 'black',
+            borderWidth: '2px',
+        }
+    });
     const timerRef = useRef(null);
     const testTimerRef = useRef(null);
     const {
@@ -133,16 +139,47 @@ function Test() {
         const selectedId = parseInt(event.currentTarget.id);
         question.answered = true;
         setSelectedAnswer(selectedId);
+        const answerIndex = question.answers.findIndex((e) => e.id === selectedId)
+        if (question.rightAnswerIndex === answerIndex) {
+            question.correctAnswer = true
+        } else {
+            question.correctAnswer = false
+        }
+        const currentQuestionIndex = questions.findIndex((q) => q.id === question.id);
+        const buttonColor = question.correctAnswer ? '#3daa32' : 'red'
+        setPaginationStyle((prevStyle) => ({
+            ...prevStyle,
+            [`& [aria-label="Go to page ${currentQuestionIndex + 1}"] `]: {
+                backgroundColor: buttonColor,
+                color: "white",
+            },
+            [`& [aria-label="Go to page ${currentQuestionIndex + 1}"]:hover `]: {
+                backgroundColor: buttonColor,
+                color: "white",
+                borderColor: 'black',
+                borderWidth: '2px'
+            },
+            [`& [aria-label="page ${currentQuestionIndex + 1}"].Mui-selected`]: {
+                backgroundColor: buttonColor,
+                color: "white",
+                borderColor: 'black',
+                borderWidth: '2px'
+            },
+            [`& [aria-label="page ${currentQuestionIndex + 1}"].Mui-selected:hover`]: {
+                backgroundColor: buttonColor,
+                color: "white",
+                borderColor: 'black',
+                borderWidth: '2px'
+            }
+        }));
         clearInterval(timerRef.current);
         timerRef.current = null;
 
         setTimeout(() => {
-            const currentQuestionIndex = questions.findIndex((q) => q.id === question.id);
             if (currentQuestionIndex < questions.length - 1) {
                 setQuestion(questions[currentQuestionIndex + 1])
                 setPage(page + 1)
                 setSelectedAnswer(null);
-            } else {
             }
         }, 1500)
     };
@@ -157,7 +194,7 @@ function Test() {
         } else {
             if (!question.answered) {
                 createTimer()
-                
+
             }
             startTestTimer()
         }
@@ -223,11 +260,7 @@ function Test() {
                         <div>
                             <div className='questionPagination'>
                                 <Pagination page={page} count={questions.length} showFirstButton showLastButton variant="outlined" shape="rounded" size='large' onChange={handleChange}
-                                    sx={{
-                                        '& .MuiPaginationItem-root:nth-child(5)': {
-                                            backgroundColor: 'green',
-                                        },
-                                    }}
+                                    sx={paginationStyle}
                                 />
                             </div>
                             <div className='questionTextDiv'>
