@@ -146,7 +146,7 @@ function Test() {
             question.correctAnswer = false
         }
         const currentQuestionIndex = questions.findIndex((q) => q.id === question.id);
-        const buttonColor = question.correctAnswer ? '#3daa32' : 'red'
+        const buttonColor = question.correctAnswer ? '#3daa32' : '#e4615d'
         setPaginationStyle((prevStyle) => ({
             ...prevStyle,
             [`& [aria-label="Go to page ${currentQuestionIndex + 1}"] `]: {
