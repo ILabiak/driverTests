@@ -16,6 +16,7 @@ function Test() {
     const [openImage, setOpenImage] = useState(false);
     const [page, setPage] = useState(1);
     const [sectionName, setSectionName] = useState('')
+    const [isExam, setIsExam] = useState(false)
     const { sectionId } = useParams();
     const location = useLocation();
     const [isPaused, setIsPaused] = useState(false)
@@ -26,6 +27,7 @@ function Test() {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [testTime, setTestTime] = useState(0);
     const [openTestResults, setOpenTestResults] = useState(false);
+    const [openExamResults, setOpenExamResults] = useState(false);
     const [paginationStyle, setPaginationStyle] = useState({
         '.Mui-selected': {
             borderColor: 'black',
@@ -103,6 +105,10 @@ function Test() {
     }, [questionTime])
 
     useEffect(() => {
+        if (isExam && answeredQuestions.filter((value) => !value).length > 2) {
+            console.log('exam failed')
+            setOpenExamResults(true);
+        }
         if (answeredQuestions.length === questions.length && questions.length > 0) {
             setOpenTestResults(true)
             clearInterval(testTimerRef.current)
@@ -139,17 +145,20 @@ function Test() {
             }
         };
         let link
-        if(location.pathname.includes('twenty-questions')){
+        if (location.pathname.includes('twenty-questions')) {
             link = 'http://localhost:3005/randomquestions/20'
             setSectionName('20 випадкових питань')
-        }else if(location.pathname.includes('question')){
+        } else if (location.pathname.includes('question')) {
             link = `http://localhost:3005/sectionquestions/${sectionId}`
             fetchSectionName();
+        } else if (location.pathname.includes('exam')) {
+            link = 'http://localhost:3005/examquestions'
+            setSectionName('Іспит')
+            setIsExam(true)
         }
         fetchQuestions(link);
-        
-        
-        console.log('location ', location)
+
+
     }, [sectionId]);
 
     const handleChange = async (event, value) => {
@@ -235,6 +244,10 @@ function Test() {
 
     const handleTestResultClose = () => {
         setOpenTestResults(false);
+    };
+
+    const handleExamResultClose = () => {
+        setOpenExamResults(false);
     };
 
     return (
@@ -370,6 +383,36 @@ function Test() {
                                         <li className='topButton'>
                                             <label >
                                                 Повернутись до тем
+                                            </label>
+                                        </li>
+                                    </a>
+                                    <a>
+                                        <li className='bottomButton'>
+                                            <label >
+                                                Залишитись та проаналізувати помилки
+                                            </label>
+                                        </li>
+                                    </a>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </Backdrop>
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={openExamResults}
+                        onClick={handleExamResultClose}
+                    >
+                        <div className='resultsContainer'>
+                            <div className='resultsInfo'>
+                                <span>Іспит не складено</span>
+                                <span>Кількість помилок: {answeredQuestions.filter((value) => !value).length}</span>
+                                <ul>
+                                    <a href="/exam">
+                                        <li className='topButton'>
+                                            <label >
+                                                Почати заново
                                             </label>
                                         </li>
                                     </a>

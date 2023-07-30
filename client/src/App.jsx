@@ -12,6 +12,7 @@ function App() {
         <Route path='sections' element={<Sections />} />
         <Route path='question/:sectionId' element={<Test />} />
         <Route path='twenty-questions' element={<Test />} />
+        <Route path='exam' element={<Test />} />
       </Routes>
     </BrowserRouter>
   );
