@@ -12,6 +12,9 @@ import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { Pagination, Backdrop } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 
+import ExamResultBackdrop from './ExamResultBackdrop';
+import TestResultBackdrop from './TestResultBackdrop';
+
 function Test() {
     const [openImage, setOpenImage] = useState(false);
     const [page, setPage] = useState(1);
@@ -378,69 +381,23 @@ function Test() {
                             </div>
                         </div>
                     )}
-                    <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openTestResults}
-                        onClick={handleTestResultClose}
-                    >
-                        <div className='resultsContainer'>
-                            <div className='resultsInfo'>
-                                <span className='examResultsText' >Результати тестування</span>
-                                <span className='examAdditionalText'>Правильно {answeredQuestions.filter(Boolean).length}/{questions.length} запитань</span>
-                                <ul>
-                                    <a href="/sections">
-                                        <li className='topButton'>
-                                            <label >
-                                                Повернутись до тем
-                                            </label>
-                                        </li>
-                                    </a>
-                                    <a>
-                                        <li className='bottomButton'>
-                                            <label >
-                                                Залишитись та проаналізувати помилки
-                                            </label>
-                                        </li>
-                                    </a>
-
-                                </ul>
-                            </div>
-
-                        </div>
-                    </Backdrop>
-                    <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    <ExamResultBackdrop
                         open={openExamResults}
-                        onClick={handleExamResultClose}
-                    >
-                        <div className='resultsContainer'>
-                            <div className='resultsInfo'>
-                                <span className='examResultsText'>{examFailed ? 'Іспит не складено' : 'Іспит складено'}</span>
-                                <div className='additionalTextContainer'>
-                                    <span className='examAdditionalText'>Кількість помилок: {answeredQuestions.filter((value) => !value).length}</span>
-                                    <span className='examAdditionalText'>Витрачено часу: {formatTime(testTime)}</span>
-                                </div>
-                                <ul>
-                                    <a href="/exam">
-                                        <li className='topButton'>
-                                            <label >
-                                                Почати заново
-                                            </label>
-                                        </li>
-                                    </a>
-                                    <a>
-                                        <li className='bottomButton'>
-                                            <label >
-                                                Залишитись та проаналізувати помилки
-                                            </label>
-                                        </li>
-                                    </a>
-
-                                </ul>
-                            </div>
-
-                        </div>
-                    </Backdrop>
+                        onClose={handleExamResultClose}
+                        examFailed={examFailed}
+                        answeredQuestions={answeredQuestions}
+                        questions={questions}
+                        testTime={testTime}
+                        formatTime={formatTime}
+                    />
+                    <TestResultBackdrop
+                        open={openTestResults}
+                        onClose={handleTestResultClose}
+                        answeredQuestions={answeredQuestions}
+                        questions={questions}
+                        testTime={testTime}
+                        formatTime={formatTime}
+                    />
                 </div>
             </div>
         </div>
