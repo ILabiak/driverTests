@@ -272,6 +272,21 @@
     color: black;
 }
 
+.additionalTextContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.examResultsText {
+    font-weight: 600;
+    font-size: calc(3vmin);
+}
+
+.examAdditionalText {
+    margin: 5px 0;
+    font-size: calc(2.3vmin);
+}
+
 .resultsContainer ul {
     width: 100%;
     /* border: 1px solid #a6a6a6;  */
@@ -310,3 +325,4 @@
 .bottomButton {
     margin-top: 10px;
 }
+

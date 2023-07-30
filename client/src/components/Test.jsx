@@ -17,6 +17,7 @@ function Test() {
     const [page, setPage] = useState(1);
     const [sectionName, setSectionName] = useState('')
     const [isExam, setIsExam] = useState(false)
+    const [examFailed, setExamFailed] = useState(false)
     const { sectionId } = useParams();
     const location = useLocation();
     const [isPaused, setIsPaused] = useState(false)
@@ -101,13 +102,21 @@ function Test() {
     }, [question]);
 
     useEffect(() => {
+        if (isExam && testTime > 1200) {
+            setOpenExamResults(true);
+            setExamFailed(true)
+            clearInterval(testTimerRef.current)
+            testTimerRef.current = null;
+        }
         question.time = questionTime
     }, [questionTime])
 
     useEffect(() => {
         if (isExam && answeredQuestions.filter((value) => !value).length > 2) {
-            console.log('exam failed')
             setOpenExamResults(true);
+            setExamFailed(true)
+            clearInterval(testTimerRef.current)
+            testTimerRef.current = null;
         }
         if (answeredQuestions.length === questions.length && questions.length > 0) {
             setOpenTestResults(true)
@@ -376,8 +385,8 @@ function Test() {
                     >
                         <div className='resultsContainer'>
                             <div className='resultsInfo'>
-                                <span>Результати тестування</span>
-                                <span>Правильно {answeredQuestions.filter(Boolean).length}/{questions.length} запитань</span>
+                                <span className='examResultsText' >Результати тестування</span>
+                                <span className='examAdditionalText'>Правильно {answeredQuestions.filter(Boolean).length}/{questions.length} запитань</span>
                                 <ul>
                                     <a href="/sections">
                                         <li className='topButton'>
@@ -406,8 +415,11 @@ function Test() {
                     >
                         <div className='resultsContainer'>
                             <div className='resultsInfo'>
-                                <span>Іспит не складено</span>
-                                <span>Кількість помилок: {answeredQuestions.filter((value) => !value).length}</span>
+                                <span className='examResultsText'>{examFailed ? 'Іспит не складено' : 'Іспит складено'}</span>
+                                <div className='additionalTextContainer'>
+                                    <span className='examAdditionalText'>Кількість помилок: {answeredQuestions.filter((value) => !value).length}</span>
+                                    <span className='examAdditionalText'>Витрачено часу: {formatTime(testTime)}</span>
+                                </div>
                                 <ul>
                                     <a href="/exam">
                                         <li className='topButton'>
