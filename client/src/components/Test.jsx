@@ -140,7 +140,7 @@ function Test() {
         };
         let link
         if(location.pathname.includes('twenty-questions')){
-            link = 'http://localhost:3005/sectionquestions/'
+            link = 'http://localhost:3005/randomquestions/20'
             setSectionName('20 випадкових питань')
         }else if(location.pathname.includes('question')){
             link = `http://localhost:3005/sectionquestions/${sectionId}`

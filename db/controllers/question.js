@@ -113,8 +113,13 @@ module.exports = {
       order: sequelize.literal('random()'),
       limit: req.params.quantity,
     })
-      .then((questions) => {
-        res.status(200).send(questions);
+      .then(async (questions) => {
+        const questionsRes = [];
+        for (const question of questions) {
+          const handledQuestion = await handleQuestion(question, res);
+          questionsRes.push(handledQuestion);
+        }
+        res.status(200).send(questionsRes);
       })
       .catch((error) => {
         res.status(400).send(error);
