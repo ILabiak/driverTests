@@ -108,6 +108,19 @@ module.exports = {
       });
   },
 
+  getRandomQuestions(req, res) {
+    return Question.findAll({
+      order: sequelize.literal('random()'),
+      limit: req.params.quantity,
+    })
+      .then((questions) => {
+        res.status(200).send(questions);
+      })
+      .catch((error) => {
+        res.status(400).send(error);
+      });
+  },
+
   getRandomQuestion(req, res) {
     return findRandomQuestion(req.body.section_ids, res);
   },

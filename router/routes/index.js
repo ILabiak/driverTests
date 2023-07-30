@@ -20,6 +20,10 @@ async function routes(fastify /*, options*/) {
   );
   fastify.get('/question/:id', questionController.getById);
   fastify.get('/examquestions', questionController.getExamQuestions);
+  fastify.get(
+    '/randomquestions/:quantity',
+    questionController.getRandomQuestions,
+  );
   fastify.post('/question', questionController.add);
   fastify.post('/randomquestion', questionController.getRandomQuestion);
   fastify.delete('/question/:id', questionController.delete);

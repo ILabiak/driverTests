@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import './test.css';
 import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePause, faCirclePlay } from '@fortawesome/free-regular-svg-icons';
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
@@ -12,16 +13,19 @@ import { Pagination, Backdrop } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 
 function Test() {
-    const [open, setOpen] = React.useState(false);
-    const [page, setPage] = React.useState(1);
+    const [openImage, setOpenImage] = useState(false);
+    const [page, setPage] = useState(1);
     const [sectionName, setSectionName] = useState('')
+    const { sectionId } = useParams();
+    const location = useLocation();
     const [isPaused, setIsPaused] = useState(false)
     const [questions, setQuestions] = useState([]);
     const [question, setQuestion] = useState({});
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const { sectionId } = useParams();
     const [questionTime, setQuestionTime] = useState(0);
+    const [answeredQuestions, setAnsweredQuestions] = useState([])
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [testTime, setTestTime] = useState(0);
+    const [openTestResults, setOpenTestResults] = useState(false);
     const [paginationStyle, setPaginationStyle] = useState({
         '.Mui-selected': {
             borderColor: 'black',
@@ -99,9 +103,17 @@ function Test() {
     }, [questionTime])
 
     useEffect(() => {
-        const fetchQuestions = async () => {
+        if (answeredQuestions.length === questions.length && questions.length > 0) {
+            setOpenTestResults(true)
+            clearInterval(testTimerRef.current)
+            testTimerRef.current = null;
+        }
+    }, [answeredQuestions])
+
+    useEffect(() => {
+        const fetchQuestions = async (link) => {
             try {
-                const response = await fetch(`http://localhost:3005/sectionquestions/${sectionId}`);
+                const response = await fetch(link);
                 if (!response.ok) {
                     throw new Error('Failed to fetch questions');
                 }
@@ -126,8 +138,18 @@ function Test() {
                 console.error('Error fetching section name:', error);
             }
         };
-        fetchQuestions();
-        fetchSectionName();
+        let link
+        if(location.pathname.includes('twenty-questions')){
+            link = 'http://localhost:3005/sectionquestions/'
+            setSectionName('20 випадкових питань')
+        }else if(location.pathname.includes('question')){
+            link = `http://localhost:3005/sectionquestions/${sectionId}`
+            fetchSectionName();
+        }
+        fetchQuestions(link);
+        
+        
+        console.log('location ', location)
     }, [sectionId]);
 
     const handleChange = async (event, value) => {
@@ -175,6 +197,7 @@ function Test() {
         }));
         clearInterval(timerRef.current);
         timerRef.current = null;
+        setAnsweredQuestions((arr) => [...arr, question.correctAnswer])
 
         setTimeout(() => {
             if (currentQuestionIndex < questions.length - 1) {
@@ -201,13 +224,17 @@ function Test() {
         }
     }
 
-    const handleClose = () => {
-        setOpen(false);
+    const handleImgClose = () => {
+        setOpenImage(false);
     };
 
 
-    const handleOpen = () => {
-        setOpen(true);
+    const handleImgOpen = () => {
+        setOpenImage(true);
+    };
+
+    const handleTestResultClose = () => {
+        setOpenTestResults(false);
     };
 
     return (
@@ -314,22 +341,51 @@ function Test() {
                                         );
                                     })}
                                 </ul>
-                                <div className='image' onClick={question.image !== null ? handleOpen : ()=> {}}>
+                                <div className='image' onClick={question.image !== null ? handleImgOpen : () => { }}>
                                     <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
                                 </div>
                                 <Backdrop
                                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                                    open={open}
-                                    onClick={handleClose}
+                                    open={openImage}
+                                    onClick={handleImgClose}
                                 >
-                                    <div className='BackDropImage' onClick={handleOpen}>
+                                    <div className='BackDropImage' onClick={handleImgOpen}>
                                         <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
                                     </div>
                                 </Backdrop>
                             </div>
                         </div>
                     )}
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={openTestResults}
+                        onClick={handleTestResultClose}
+                    >
+                        <div className='resultsContainer'>
+                            <div className='resultsInfo'>
+                                <span>Результати тестування</span>
+                                <span>Правильно {answeredQuestions.filter(Boolean).length}/{questions.length} запитань</span>
+                                <ul>
+                                    <a href="/sections">
+                                        <li className='topButton'>
+                                            <label >
+                                                Повернутись до тем
+                                            </label>
+                                        </li>
+                                    </a>
+                                    <a>
+                                        <li className='bottomButton'>
+                                            <label >
+                                                Залишитись та проаналізувати помилки
+                                            </label>
+                                        </li>
+                                    </a>
 
+                                </ul>
+                            </div>
+
+                        </div>
+                    </Backdrop>
                 </div>
             </div>
         </div>
