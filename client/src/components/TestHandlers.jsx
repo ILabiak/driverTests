@@ -37,7 +37,7 @@ const useTestHandlers = () => {
         }
         let timerInterval
         if (!question.answered) {
-            timerInterval = startTimer();
+            timerInterval = startTimer('question');
         } else {
             clearInterval(timerRef.current);
             timerRef.current = null;
@@ -82,7 +82,7 @@ const useTestHandlers = () => {
                 const fetchedQuestions = await response.json();
                 await setQuestions(fetchedQuestions);
                 await setQuestion(fetchedQuestions[0])
-                startTestTimer()
+                startTimer('test');
             } catch (error) {
                 console.error('Error fetching questions:', error);
             }
@@ -117,16 +117,12 @@ const useTestHandlers = () => {
 
     }, [sectionId]);
 
-    const startTimer = () => {
-        if (!timerRef.current) {
+    const startTimer = (timerType) => {
+        if (timerType === 'question' && !timerRef.current) {
             timerRef.current = setInterval(() => {
                 setQuestionTime(prevTime => prevTime + 1);
             }, 1000);
-        }
-    };
-
-    const startTestTimer = () => {
-        if (!testTimerRef.current) {
+        } else if (timerType === 'test' && !testTimerRef.current) {
             testTimerRef.current = setInterval(() => {
                 setTestTime(prevTime => prevTime + 1);
             }, 1000);
@@ -147,7 +143,7 @@ const useTestHandlers = () => {
         } else {
             setQuestionTime(0);
         }
-        startTimer();
+        startTimer('question');
     }
 
     const handleChange = async (event, value) => {
@@ -218,7 +214,7 @@ const useTestHandlers = () => {
                 createTimer()
 
             }
-            startTestTimer()
+            startTimer('test');
         }
     }
 
@@ -240,26 +236,26 @@ const useTestHandlers = () => {
 
     return {
         sectionName,
-        formatTime,
         questionTime,
-        handlePauseClick,
         isPaused,
         testTime,
         page,
         questions,
-        handleChange,
         paginationStyle,
         question,
         selectedAnswer,
-        handleAnswerClick,
-        handleImgOpen,
         openImage,
-        handleImgClose,
         openExamResults,
-        handleExamResultClose,
         examFailed,
         answeredQuestions,
         openTestResults,
+        formatTime,
+        handlePauseClick,
+        handleChange,
+        handleAnswerClick,
+        handleImgOpen,
+        handleImgClose,
+        handleExamResultClose,
         handleTestResultClose
       };
 }

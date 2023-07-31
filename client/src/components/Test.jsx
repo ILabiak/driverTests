@@ -18,26 +18,26 @@ import TestResultBackdrop from './TestResultBackdrop';
 function Test() {
     const {
         sectionName,
-        formatTime,
         questionTime,
-        handlePauseClick,
         isPaused,
         testTime,
         page,
         questions,
-        handleChange,
         paginationStyle,
         question,
         selectedAnswer,
-        handleAnswerClick,
-        handleImgOpen,
         openImage,
-        handleImgClose,
         openExamResults,
-        handleExamResultClose,
         examFailed,
         answeredQuestions,
         openTestResults,
+        formatTime,
+        handlePauseClick,
+        handleChange,
+        handleAnswerClick,
+        handleImgOpen,
+        handleImgClose,
+        handleExamResultClose,
         handleTestResultClose
     } = useTestHandlers();
 
