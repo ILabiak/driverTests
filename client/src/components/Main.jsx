@@ -19,7 +19,7 @@ function Main() {
 
     return (
         <div className={'App' + (showLoginForm ? ' active' : '')}>
-            <div className='container'>
+            {/* <div className='container'> */}
                 <Layout showDropdown={showDropdown}
                     isAuthenticated={isAuthenticated}
                     userEmail={userEmail}
@@ -27,16 +27,16 @@ function Main() {
                     handleLogout={handleLogout}
                     handleLoginLinkClick={handleLoginLinkClick}
                 />
-            </div >
+            {/* </div > */}
             {showLoginForm && (
                 <div className='loginContainer' ref={loginContainerRef}>
                     <Login />
                 </div>
             )
             }
-            <div className='bannerContainer'>
+            {/* <div className='bannerContainer'>
                 <div className='bannerLong'></div>
-            </div>
+            </div> */}
             <div className='container homepage'>
                 <div className='row'>
                     <div className='row1'>
