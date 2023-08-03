@@ -5,11 +5,9 @@ import useAuthData from './useAuthData';
 import React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import bannerLong from '../media/banner-long.png';
 import bannerShort from '../media/banner-short.webp'
-import { height, width } from '@mui/system';
 
 function Main() {
     const {
