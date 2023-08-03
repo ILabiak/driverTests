@@ -115,11 +115,10 @@ function Layout(props) {
 
   return (
     <AppBar position="static"
-      // style={{ background: 'white' }}
+      style={{ background: 'white' }}
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Box
             noWrap
             component="a"
@@ -131,25 +130,6 @@ function Layout(props) {
               <img src={logo} className='App-logo' alt='logo' />
             </a>
           </Box >
-
-          {/* <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                textAlign: 'center'
-              }}
-            >
-              Driving Tests
-            </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -178,14 +158,18 @@ function Layout(props) {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' },
-                // color: 'green'
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" sx={{ color: 'black' }}>{page}</Typography>
+              <a href="/sections" style={{ textDecoration: 'none' }}>
+                <MenuItem key={'pdr-tests'}>
+                  <Typography textAlign="center" sx={{ color: 'black' }}>{'Тести ПДР'}</Typography>
                 </MenuItem>
-              ))}
+              </a>
+              <a href="/exam" style={{ textDecoration: 'none' }}>
+                <MenuItem key={'exam'}>
+                  <Typography textAlign="center" sx={{ color: 'black' }}>{'Іспит з водіння'}</Typography>
+                </MenuItem>
+              </a>
             </Menu>
           </Box>
           <Box
@@ -197,35 +181,21 @@ function Layout(props) {
               <img src={logo} className='App-logo' alt='logo' />
             </a>
           </Box >
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          {/* <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Logo
-          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              key={'pdr-tests'}
+              href='/sections'
+              sx={{ my: 2, color: 'black', display: 'block' }}
+            >
+              Тести ПДР
+            </Button>
+            <Button
+              key={'exam'}
+              href='/exam'
+              sx={{ my: 2, color: 'black', display: 'block' }}
+            >
+              Іспит з водіння
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -243,12 +213,11 @@ function Layout(props) {
             ) : (
               <Tooltip title="Login">
                 <IconButton onClick={handleLoginLinkClick} sx={{ p: 0 }}>
-                <LoginIcon fontSize='large' />
+                  <LoginIcon fontSize='large' />
                 </IconButton>
               </Tooltip>
 
             )}
-
 
             <Menu
               sx={{ mt: '45px', }}
