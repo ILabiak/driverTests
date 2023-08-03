@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import logo from '../media/logo.png';
 import React from 'react';
-import profileIcon from '../media/profile-icon.png';
 import './layout.css';
 
 import AppBar from '@mui/material/AppBar';
@@ -10,13 +9,13 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
 
 const pages = ['Тести з ПДР', 'Іспит з водіння'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -86,7 +85,16 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 //   );
 // }
 
-function Layout() {
+function Layout(props) {
+  const {
+    showDropdown,
+    isAuthenticated,
+    userEmail,
+    handleProfileIconClick,
+    handleLogout,
+    handleLoginLinkClick
+  } = props;
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -106,22 +114,22 @@ function Layout() {
   };
 
   return (
-    <AppBar position="static" 
-    style={{background: 'white'}}
+    <AppBar position="static"
+      // style={{ background: 'white' }}
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <Box               
-              noWrap
-              component="a"
-              sx = {{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-              }}>
-          <a href='/'>
-            <img src={logo} className='App-logo' alt='logo' />
-          </a>
+          <Box
+            noWrap
+            component="a"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+            }}>
+            <a href='/'>
+              <img src={logo} className='App-logo' alt='logo' />
+            </a>
           </Box >
 
           {/* <Typography
@@ -150,7 +158,7 @@ function Layout() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color="black"
             >
               <MenuIcon />
             </IconButton>
@@ -170,23 +178,24 @@ function Layout() {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' },
+                // color: 'green'
               }}
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" sx={{color: 'black'}}>{page}</Typography>
+                  <Typography textAlign="center" sx={{ color: 'black' }}>{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Box             
-          variant="h5"
+          <Box
+            variant="h5"
             noWrap
             component="a"
-            href="" sx={{ display: { xs: 'flex', md: 'none'}, mr: 2, flexGrow: 1 }}>
-          <a href='/'>
-            <img src={logo} className='App-logo' alt='logo' />
-          </a>
+            href="" sx={{ display: { xs: 'flex', md: 'none' }, mr: 2, flexGrow: 1 }}>
+            <a href='/'>
+              <img src={logo} className='App-logo' alt='logo' />
+            </a>
           </Box >
           {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           {/* <Typography
@@ -220,15 +229,29 @@ function Layout() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" 
-                // src={"/static/images/avatar/2.jpg"}
-                />  
-              </IconButton>
-            </Tooltip>
+            {isAuthenticated ? (
+              <Tooltip title="Profile">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp"
+                    // src={"/static/images/avatar/2.jp"}
+                    sx={{
+                      color: 'black'
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip title="Login">
+                <IconButton onClick={handleLoginLinkClick} sx={{ p: 0 }}>
+                <LoginIcon fontSize='large' />
+                </IconButton>
+              </Tooltip>
+
+            )}
+
+
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: '45px', }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
