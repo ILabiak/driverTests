@@ -39,7 +39,7 @@ function Main() {
             )
             }
             <Box className='bannerContainer' sx={{
-                height: '40vw'
+                height: '70vw'
             }}>
                 <Container sx={{
                     display: { xs: 'none', sm: 'flex' }
@@ -53,9 +53,7 @@ function Main() {
                 </Container>
 
             </Box>
-            <Container maxWidth="lg" sx={{
-                // border: '2px solid #a6a6a6',
-            }}>
+            <Container maxWidth="lg">
                 <Box sx={{
                     flexGrow: 1,
                     display: 'flex',
@@ -75,12 +73,10 @@ function Main() {
                     }}>
                         <Box sx={{
                             alignItems: 'center',
-                            // display: { xs: 'none', md: 'flex' },
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignContent: 'center',
-                            // border: '2px solid #a6a6a6',
                         }}>
                             <Box className='row2' sx={{
                                 flexDirection: 'column',
@@ -113,7 +109,7 @@ function Main() {
                                 <Box className='row3' sx={{
                                     marginTop: '20px'
                                 }}>
-                                    <Grid container spacing={{ xs: 2, md: 12 }} sx={{
+                                    <Grid container spacing={{ xs: 4, md: 12 }} sx={{
                                         flexDirection: { xs: 'column', md: 'initial' }
                                     }}>
                                         <Grid item xs={4}>
