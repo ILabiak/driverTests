@@ -2,8 +2,8 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* width: 100%; */
+  height: 100%;
+  width: 100%;
   place-items: center;
   background-color: #fff;
   z-index: 4;
@@ -89,17 +89,39 @@
 }
 
 .bannerContainer {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-text-size-adjust: 100%;
-  color: #333;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* color: #333;
   box-sizing: border-box;
+  width: 100%;
   margin-right: auto;
   margin-left: auto;
   padding: 0;
-  position: relative;
+  position: relative; */
   border-bottom: 2px solid #a6a6a6;
   border-top: 2px solid #a6a6a6;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0;
+  position: relative;
+  /* height: 90vh; */
+}
+
+.bannerContainerShort {
+
+  border-bottom: 2px solid #a6a6a6;
+  border-top: 2px solid #a6a6a6;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0;
+  position: relative;
+  height: 30vh;
+}
+
+.bannerContainer img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-height:100%;
+  transform: translate(-50%, -50%);
 }
 
 .bannerLong {
@@ -116,7 +138,7 @@
   width: 100vw;
   background-size: 5500px 296px;
   background-position: center center;
-  background-image: url('../media/banner.png');
+  background-image: url('../media/banner-long.png');
 }
 
 .container.homepage {
@@ -133,7 +155,8 @@
 .row {
   display: center;
   height: 45vh;
-  width: 120vh;
+  /* width: 120vh; */
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   /* border: 2px solid #a6a6a6; */
