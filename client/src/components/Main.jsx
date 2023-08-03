@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import bannerLong from '../media/banner-long.png';
 import bannerShort from '../media/banner-short.webp'
+import { height, width } from '@mui/system';
 
 function Main() {
     const {
@@ -81,29 +82,29 @@ function Main() {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignContent: 'center',
-                            border: '2px solid #a6a6a6',
+                            // border: '2px solid #a6a6a6',
                         }}>
                             <Box className='row2' sx={{
-                                display: { xs: 'none', md: 'flex' },
-                                border: '2px solid #a6a6a6',
+                                flexDirection: 'column',
                             }}>
-                                <Grid container spacing={12}>
-                                    <Grid item>
+                                <Grid container spacing={12} sx={{
+                                    display: { xs: 'none', md: 'flex' },
+                                }}>
+                                    <Grid item md={4} xs={12}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
                                             <span>Вчися</span>
                                         </div>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
                                             <a href="">
                                                 <span>Проходь тести</span>
                                             </a>
-
                                         </div>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
                                             <span>Складай іспит</span>
@@ -111,68 +112,41 @@ function Main() {
                                     </Grid>
                                 </Grid>
 
-
-
-                            </Box>
-                            <Box className='row3' sx={{
-                                flexDirection: { xs: 'column', md: 'initial' }
-                            }}>
-                            </Box>
-                            {/* <div className='row3'>
-                                <a href='start-testing'>Розпочати тестування</a>
-                                <a href='read-pdr'>Читати ПДР</a>
-                                <a href='start-learning'>Пройти навчання</a>
-                            </div> */}
-                            <Box className='row3' sx={{
-                                border: '2px solid #a6a6a6',
-                            }}>
-                                <Grid container>
-                                    <Grid item>
-                                        <a href='start-testing'>Розпочати тестування</a>
+                                <Box className='row3' sx={{
+                                    marginTop: '20px'
+                                }}>
+                                    <Grid container spacing={{ xs: 2, md: 12 }} sx={{
+                                        flexDirection: { xs: 'column', md: 'initial' }
+                                    }}>
+                                        <Grid item xs={4}>
+                                            <Box className='row3-button' sx={{
+                                                width: { xs: '80vw', md: '180px' }
+                                            }}>
+                                                <a href='start-testing'>Розпочати тестування</a>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Box className='row3-button' sx={{
+                                                width: { xs: '80vw', md: '180px' }
+                                            }}>
+                                                <a href='start-testing'>Читати ПДР</a>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Box className='row3-button' sx={{
+                                                width: { xs: '80vw', md: '180px' }
+                                            }}>
+                                                <a href='start-testing'>Пройти навчання </a>
+                                            </Box>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item>
-                                        <a href='start-testing'>Читати ПДР</a>
-                                    </Grid>
-                                    <Grid item>
-                                        <a href='start-testing'>Пройти навчання</a>
-                                    </Grid>
-                                </Grid>
+                                </Box>
                             </Box>
-
                         </Box>
                     </Container>
-
                 </Box>
             </Container>
             <div className='container homepage'>
-
-                {/* <div className='row'>
-                    <div className='row1'>
-                        <h1>
-                            Підготуватися до складання іспиту на отримання водійського
-                            посвідчення дуже просто!
-                        </h1>
-                    </div>
-                    <div className='row2'>
-                        <div className='col1'>
-                            <span className='iconLearn'></span>
-                            <span>Вчися</span>
-                        </div>
-                        <div className='col1'>
-                            <span className='iconLearn'></span>
-                            <span>Проходь тести</span>
-                        </div>
-                        <div className='col1'>
-                            <span className='iconLearn'></span>
-                            <span>Складай іспит</span>
-                        </div>
-                    </div>
-                    <div className='row3'>
-                        <a href='start-testing'>Розпочати тестування</a>
-                        <a href='read-pdr'>Читати ПДР</a>
-                        <a href='start-learning'>Пройти навчання</a>
-                    </div>
-                </div> */}
             </div>
         </div >
     );
