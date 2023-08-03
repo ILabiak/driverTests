@@ -55,42 +55,93 @@ function Main() {
 
             </Box>
             <Container maxWidth="lg" sx={{
-                border: '2px solid #a6a6a6'
+                // border: '2px solid #a6a6a6',
             }}>
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
                     <div className='row1'>
                         <h1>
                             Підготуватися до складання іспиту на отримання водійського
                             посвідчення дуже просто!
                         </h1>
                     </div>
-                    <Grid container spacing={{ xs: 2, md: 3 }} sx={{
-                        alignItems: 'center',
-                        display: { xs: 'none', md: 'flex' },
-                        justifyContent: 'center'
+                    <Container sx={{
+                        marginTop: '10px',
+                        display: 'block'
                     }}>
+                        <Box sx={{
+                            alignItems: 'center',
+                            // display: { xs: 'none', md: 'flex' },
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            border: '2px solid #a6a6a6',
+                        }}>
+                            <Box className='row2' sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                border: '2px solid #a6a6a6',
+                            }}>
+                                <Grid container spacing={12}>
+                                    <Grid item>
+                                        <div className='col1'>
+                                            <span className='iconLearn'></span>
+                                            <span>Вчися</span>
+                                        </div>
+                                    </Grid>
+                                    <Grid item>
+                                        <div className='col1'>
+                                            <span className='iconLearn'></span>
+                                            <a href="">
+                                                <span>Проходь тести</span>
+                                            </a>
 
-                        <div className='row2'>
-                            <div className='col1'>
-                                <span className='iconLearn'></span>
-                                <span>Вчися</span>
-                            </div>
-                            <div className='col1'>
-                                <span className='iconLearn'></span>
-                                <span>Проходь тести</span>
-                            </div>
-                            <div className='col1'>
-                                <span className='iconLearn'></span>
-                                <span>Складай іспит</span>
-                            </div>
-                        </div>
-                        <div className='row3'>
-                            <a href='start-testing'>Розпочати тестування</a>
-                            <a href='read-pdr'>Читати ПДР</a>
-                            <a href='start-learning'>Пройти навчання</a>
-                        </div>
+                                        </div>
+                                    </Grid>
+                                    <Grid item>
+                                        <div className='col1'>
+                                            <span className='iconLearn'></span>
+                                            <span>Складай іспит</span>
+                                        </div>
+                                    </Grid>
+                                </Grid>
 
-                    </Grid>
+
+
+                            </Box>
+                            <Box className='row3' sx={{
+                                flexDirection: { xs: 'column', md: 'initial' }
+                            }}>
+                            </Box>
+                            {/* <div className='row3'>
+                                <a href='start-testing'>Розпочати тестування</a>
+                                <a href='read-pdr'>Читати ПДР</a>
+                                <a href='start-learning'>Пройти навчання</a>
+                            </div> */}
+                            <Box className='row3' sx={{
+                                border: '2px solid #a6a6a6',
+                            }}>
+                                <Grid container>
+                                    <Grid item>
+                                        <a href='start-testing'>Розпочати тестування</a>
+                                    </Grid>
+                                    <Grid item>
+                                        <a href='start-testing'>Читати ПДР</a>
+                                    </Grid>
+                                    <Grid item>
+                                        <a href='start-testing'>Пройти навчання</a>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+
+                        </Box>
+                    </Container>
+
                 </Box>
             </Container>
             <div className='container homepage'>
