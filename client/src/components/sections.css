@@ -31,17 +31,16 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    height: 37px;
+    height: auto;
     width: 100vw;
     /* border: 2px solid #a6a6a6; */
     background-color: #f2f2f2;
+    text-align: center;
 }
 
 .menuHeader .container {
     display: flex;
-    height: 37px;
-    width: 120vh;
-    /* border: 2px solid #a6a6a6; */
+    height: auto;
     justify-content: space-between;
     align-items: center;
     padding: 0 40px;
@@ -54,7 +53,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .menuHeader a {
@@ -62,7 +60,7 @@
     line-height: calc(2vmin);
     color: #333;
     text-decoration: none;
-    font-size: calc(2vmin);
+    font-size: 1.2rem;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: transparent;
     /* border: 1px solid #a6a6a6; */

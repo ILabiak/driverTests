@@ -5,6 +5,9 @@ import useAuthData from './useAuthData';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 
 function Sections() {
     const [sectionsData, setSectionsData] = useState([]);
@@ -61,7 +64,29 @@ function Sections() {
             }
             <div className='container sectionspage'>
                 <div className='menuHeader'>
-                    <ul className='menuheader container'>
+                    <Grid container className='menuheader container' maxWidth="lg" spacing={{ xs: 1.5, sm: 2, md: 0 }}>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <li className='singleton current-menu-li'>
+                                <a href="/sections" class="sections">Питання до теми</a>
+                            </li>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                        <li className='singleton'>
+                            <a href="/twenty-questions" class="twenty-questions">20 випадкових питань</a>
+                        </li>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                        <li className='singleton'>
+                            <a href="/favourites" class="favourites">Обрані питання</a>
+                        </li>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                        <li className='singleton'>
+                            <a href="/exam" class="exam">Іспит</a>
+                        </li>
+                        </Grid>
+                    </Grid>
+                    {/* <ul className='menuheader container'>
                         <li className='singleton current-menu-li'>
                             <a href="/sections" class="sections">Питання до теми</a>
                         </li>
@@ -74,12 +99,12 @@ function Sections() {
                         <li className='singleton'>
                             <a href="/exam" class="exam">Іспит</a>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
                 <div className='sectionsContainer'>
-                <div className='sectionRows'>
-                    {renderSections()}
-                </div>
+                    <div className='sectionRows'>
+                        {renderSections()}
+                    </div>
                 </div>
             </div>
         </div>
