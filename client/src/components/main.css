@@ -45,15 +45,7 @@
   align-items: center;
 }
 
-.App-logo {
-  display: flex;
-  flex-shrink: 0;
-  height: 7vmin;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  /* padding-left: 1em; */
-}
+
 
 .headerList {
   display: flex;
@@ -231,7 +223,11 @@
   border: 2px solid #20623d;
   padding: 10px 0;
   border-radius: 10px;
-  background-color: #2e8b57;
+  background-color: #3daa32;
+}
+
+.row3-button:hover {
+  background-color: #1b9710;
 }
 
 .row3-button a{
