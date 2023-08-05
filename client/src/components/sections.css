@@ -86,8 +86,8 @@
     position: relative;
     margin-top: 20px;
     display: center;
-    height: 70vh;
-    width: 120vh;
+    height: auto;
+    /* width: 120vh; */
     justify-content: space-between;
     align-items: center;
     /* border: 2px solid #a6a6a6; */

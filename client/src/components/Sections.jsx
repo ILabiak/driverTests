@@ -71,41 +71,36 @@ function Sections() {
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
-                        <li className='singleton'>
-                            <a href="/twenty-questions" class="twenty-questions">20 випадкових питань</a>
-                        </li>
+                            <li className='singleton'>
+                                <a href="/twenty-questions" class="twenty-questions">20 випадкових питань</a>
+                            </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
-                        <li className='singleton'>
-                            <a href="/favourites" class="favourites">Обрані питання</a>
-                        </li>
+                            <li className='singleton'>
+                                <a href="/favourites" class="favourites">Обрані питання</a>
+                            </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
-                        <li className='singleton'>
-                            <a href="/exam" class="exam">Іспит</a>
-                        </li>
+                            <li className='singleton'>
+                                <a href="/exam" class="exam">Іспит</a>
+                            </li>
                         </Grid>
                     </Grid>
-                    {/* <ul className='menuheader container'>
-                        <li className='singleton current-menu-li'>
-                            <a href="/sections" class="sections">Питання до теми</a>
-                        </li>
-                        <li className='singleton'>
-                            <a href="/twenty-questions" class="twenty-questions">20 випадкових питань</a>
-                        </li>
-                        <li className='singleton'>
-                            <a href="/favourites" class="favourites">Обрані питання</a>
-                        </li>
-                        <li className='singleton'>
-                            <a href="/exam" class="exam">Іспит</a>
-                        </li>
-                    </ul> */}
                 </div>
+
                 <div className='sectionsContainer'>
+                    <Box className='sectionRows' maxWidth="lg">
+                        {renderSections()}
+                    </Box>
+                </div>
+
+
+
+                {/* <div className='sectionsContainer'>
                     <div className='sectionRows'>
                         {renderSections()}
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
 
