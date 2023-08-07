@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useCookies } from 'react-cookie';
 
 const useAuthData = () => {
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [open, setOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState("");
@@ -49,13 +49,13 @@ const useAuthData = () => {
         loginContainerRef.current &&
         !loginContainerRef.current.contains(event.target)
       ) {
-        setShowLoginForm(false);
+        setOpen(false);
       }
     }
 
     function handleEscapeKey(event) {
       if (event.keyCode === 27) {
-        setShowLoginForm(false);
+        setOpen(false);
       }
     }
 
@@ -68,7 +68,8 @@ const useAuthData = () => {
   }, []);
 
   const handleLoginLinkClick = () => {
-    setShowLoginForm(true);
+    setOpen(true);
+    console.log('open')
   };
 
   const handleProfileIconClick = () => {
@@ -82,8 +83,8 @@ const useAuthData = () => {
 
   return {
     cookies,
-    showLoginForm,
-    setShowLoginForm,
+    open,
+    setOpen,
     showDropdown,
     setShowDropdown,
     isAuthenticated,

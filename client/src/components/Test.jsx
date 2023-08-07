@@ -11,7 +11,7 @@ import React from 'react';
 function Test() {
 
     const {
-        showLoginForm,
+        open,
         showDropdown,
         isAuthenticated,
         userEmail,
@@ -22,7 +22,7 @@ function Test() {
     } = useAuthData();
 
     return (
-        <div className={'App' + (showLoginForm ? ' active' : '')}>
+        <div className='App'>
             <div className='container'>
                 <Layout showDropdown={showDropdown}
                     isAuthenticated={isAuthenticated}
@@ -32,12 +32,7 @@ function Test() {
                     handleLoginLinkClick={handleLoginLinkClick}
                 />
             </div >
-            {showLoginForm && (
-                <div className='loginContainer' ref={loginContainerRef}>
-                    <Login />
-                </div>
-            )
-            }
+            <Login open={open} loginContainerRef={loginContainerRef} />
             <TestContent />
         </div>
     );

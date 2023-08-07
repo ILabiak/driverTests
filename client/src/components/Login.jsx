@@ -8,8 +8,12 @@ import {
     faCheck,
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
+import { Backdrop } from '@mui/material';
+// import ClickAwayListener from '@mui/base/ClickAwayListener';
+// import useAuthData from './useAuthData';
 
-function Login() {
+function Login(props) {
+    const { open, loginContainerRef } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState({
@@ -60,6 +64,7 @@ function Login() {
         setloginStatusText('');
     };
 
+
     const handleLoginSubmit = async (event) => {
         event.preventDefault(); // Prevents form submission and page reload
 
@@ -98,130 +103,140 @@ function Login() {
     };
 
     return (
-        <div className='loginform'>
-            <div className='title-text'>
-                <div className='title login'>Авторизація</div>
-                <div className='title signup'>Реєстрація</div>
-            </div>
-            <div className='form-container'>
-                <div className='slide-controls'>
-                    <input type='radio' name='slide' id='login' />
-                    <input type='radio' name='slide' id='signup' />
-                    <label
-                        onClick={handleLoginClick}
-                        htmlFor='login'
-                        className='slide login'
-                    >
-                        Вхід
-                    </label>
-                    <label
-                        onClick={handleSignupClick}
-                        htmlFor='signup'
-                        className='slide signup'
-                    >
-                        Реєстрація
-                    </label>
-                    <div className='slider-tab'></div>
-                </div>
-                <div className='form-inner'>
-                    <form action='#' className='login'>
-                        {loginStatusText && (
-                            <div className='field loginStatusField'>
-                                <p
-                                    className={
-                                        loginSuccess ? 'loginSuccessForm' : 'loginErrorForm'
-                                    }
-                                >
-                                    {loginStatusText}
-                                </p>
-                                <button
-                                    onClick={handleErrorCancelClick}
-                                    className={
-                                        loginSuccess ? 'closeSuccessButton' : 'closeErrorButton'
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={loginSuccess ? faCheck : faTimes} />
-                                </button>
-                            </div>
-                        )}
+        <Backdrop
+            open={open}
+            // onClick={handleClose}
+            sx={{
+                zIndex: (theme) =>
+                    Math.max.apply(Math, Object.values(theme.zIndex)) + 1,
+            }}
 
-                        <div className='field'>
-                            <input
-                                type='text'
-                                placeholder='Електронна пошта'
-                                onChange={handleEmailChange}
-                                required
-                            />
-                        </div>
-                        <div className='field password-field'>
-                            <input
-                                type={showPassword.login ? 'text' : 'password'}
-                                placeholder='Пароль'
-                                onChange={handlePasswordChange}
-                                required
-                            />
-                            <span
-                                className='password-toggle'
-                                onClick={() => handleTogglePasswordVisibility('login')}
-                            >
-                                <FontAwesomeIcon
-                                    icon={showPassword.login ? faEyeSlash : faEye}
+        >
+            <div className='loginform' ref={loginContainerRef}>
+                <div className='title-text'>
+                    <div className='title login'>Авторизація</div>
+                    <div className='title signup'>Реєстрація</div>
+                </div>
+                <div className='form-container'>
+                    <div className='slide-controls'>
+                        <input type='radio' name='slide' id='login' />
+                        <input type='radio' name='slide' id='signup' />
+                        <label
+                            onClick={handleLoginClick}
+                            htmlFor='login'
+                            className='slide login'
+                        >
+                            Вхід
+                        </label>
+                        <label
+                            onClick={handleSignupClick}
+                            htmlFor='signup'
+                            className='slide signup'
+                        >
+                            Реєстрація
+                        </label>
+                        <div className='slider-tab'></div>
+                    </div>
+                    <div className='form-inner'>
+                        <form action='#' className='login'>
+                            {loginStatusText && (
+                                <div className='field loginStatusField'>
+                                    <p
+                                        className={
+                                            loginSuccess ? 'loginSuccessForm' : 'loginErrorForm'
+                                        }
+                                    >
+                                        {loginStatusText}
+                                    </p>
+                                    <button
+                                        onClick={handleErrorCancelClick}
+                                        className={
+                                            loginSuccess ? 'closeSuccessButton' : 'closeErrorButton'
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={loginSuccess ? faCheck : faTimes} />
+                                    </button>
+                                </div>
+                            )}
+
+                            <div className='field'>
+                                <input
+                                    type='text'
+                                    placeholder='Електронна пошта'
+                                    onChange={handleEmailChange}
+                                    required
                                 />
-                            </span>
-                        </div>
-                        <div className='pass-link'>
-                            <a href='#'>Забули пароль?</a>
-                        </div>
-                        <div className='field btn'>
-                            <div className='btn-layer'></div>
-                            <input type='submit' onClick={handleLoginSubmit} value='Увійти' />
-                        </div>
-                        <div className='signup-link'>
-                            Не учасник? <a onClick={handleSignupLinkClick}>Зареєструватися</a>
-                        </div>
-                    </form>
-                    <form action='#' className='signup'>
-                        <div className='field'>
-                            <input type='text' placeholder='Електронна пошта' required />
-                        </div>
-                        <div className='field'>
-                            <input
-                                type={showPassword.signup ? 'text' : 'password'}
-                                placeholder='Пароль'
-                                required
-                            />
-                            <span
-                                className='password-toggle'
-                                onClick={() => handleTogglePasswordVisibility('signup')}
-                            >
-                                <FontAwesomeIcon
-                                    icon={showPassword.signup ? faEyeSlash : faEye}
+                            </div>
+                            <div className='field password-field'>
+                                <input
+                                    type={showPassword.login ? 'text' : 'password'}
+                                    placeholder='Пароль'
+                                    onChange={handlePasswordChange}
+                                    required
                                 />
-                            </span>
-                        </div>
-                        <div className='field'>
-                            <input
-                                type={showPassword.signupConfirm ? 'text' : 'password'}
-                                placeholder='Підтвердіть пароль'
-                                required
-                            />
-                            <span
-                                className='password-toggle'
-                                onClick={() => handleTogglePasswordVisibility('signupConfirm')}
-                            >
-                                <FontAwesomeIcon
-                                    icon={showPassword.signupConfirm ? faEyeSlash : faEye}
+                                <span
+                                    className='password-toggle'
+                                    onClick={() => handleTogglePasswordVisibility('login')}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={showPassword.login ? faEyeSlash : faEye}
+                                    />
+                                </span>
+                            </div>
+                            <div className='pass-link'>
+                                <a href='#'>Забули пароль?</a>
+                            </div>
+                            <div className='field btn'>
+                                <div className='btn-layer'></div>
+                                <input type='submit' onClick={handleLoginSubmit} value='Увійти' />
+                            </div>
+                            <div className='signup-link'>
+                                Не учасник? <a onClick={handleSignupLinkClick}>Зареєструватися</a>
+                            </div>
+                        </form>
+                        <form action='#' className='signup'>
+                            <div className='field'>
+                                <input type='text' placeholder='Електронна пошта' required />
+                            </div>
+                            <div className='field'>
+                                <input
+                                    type={showPassword.signup ? 'text' : 'password'}
+                                    placeholder='Пароль'
+                                    required
                                 />
-                            </span>
-                        </div>
-                        <div className='field btn'>
-                            <div className='btn-layer'></div>
-                            <input type='submit' value='Зареєструватись' />
-                        </div>
-                    </form>
+                                <span
+                                    className='password-toggle'
+                                    onClick={() => handleTogglePasswordVisibility('signup')}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={showPassword.signup ? faEyeSlash : faEye}
+                                    />
+                                </span>
+                            </div>
+                            <div className='field'>
+                                <input
+                                    type={showPassword.signupConfirm ? 'text' : 'password'}
+                                    placeholder='Підтвердіть пароль'
+                                    required
+                                />
+                                <span
+                                    className='password-toggle'
+                                    onClick={() => handleTogglePasswordVisibility('signupConfirm')}
+                                >
+                                    <FontAwesomeIcon
+                                        icon={showPassword.signupConfirm ? faEyeSlash : faEye}
+                                    />
+                                </span>
+                            </div>
+                            <div className='field btn'>
+                                <div className='btn-layer'></div>
+                                <input type='submit' value='Зареєструватись' />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Backdrop>
     );
 }
 

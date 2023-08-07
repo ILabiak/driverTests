@@ -11,7 +11,7 @@ import bannerShort from '../media/banner-short.webp'
 
 function Main() {
     const {
-        showLoginForm,
+        open,
         showDropdown,
         isAuthenticated,
         userEmail,
@@ -22,7 +22,7 @@ function Main() {
     } = useAuthData();
 
     return (
-        <div className={'App' + (showLoginForm ? ' active' : '')}>
+        <div className='App'>
             <Layout showDropdown={showDropdown}
                 isAuthenticated={isAuthenticated}
                 userEmail={userEmail}
@@ -30,12 +30,7 @@ function Main() {
                 handleLogout={handleLogout}
                 handleLoginLinkClick={handleLoginLinkClick}
             />
-            {showLoginForm && (
-                <div className='loginContainer' ref={loginContainerRef}>
-                    <Login />
-                </div>
-            )
-            }
+            <Login open={open} loginContainerRef={loginContainerRef} />
             <Box className='bannerContainer' sx={{
                 height: '70vw'
             }}>
@@ -91,7 +86,7 @@ function Main() {
                                     <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
-                                            <a href="">
+                                            <a href="/sections">
                                                 <span>Проходь тести</span>
                                             </a>
                                         </div>

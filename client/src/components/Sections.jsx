@@ -7,12 +7,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 
 function Sections() {
     const [sectionsData, setSectionsData] = useState([]);
     const {
-        showLoginForm,
+        open,
         showDropdown,
         isAuthenticated,
         userEmail,
@@ -46,7 +45,7 @@ function Sections() {
     }, []);
 
     return (
-        <div className={'App' + (showLoginForm ? ' active' : '')}>
+        <div className='App'>
             <div className='container'>
                 <Layout showDropdown={showDropdown}
                     isAuthenticated={isAuthenticated}
@@ -56,12 +55,7 @@ function Sections() {
                     handleLoginLinkClick={handleLoginLinkClick}
                 />
             </div >
-            {showLoginForm && (
-                <div className='loginContainer' ref={loginContainerRef}>
-                    <Login />
-                </div>
-            )
-            }
+            <Login open={open} loginContainerRef={loginContainerRef} />
             <div className='container sectionspage'>
                 <div className='menuHeader'>
                     <Grid container className='menuheader container' maxWidth="lg" spacing={{ xs: 1.5, sm: 2, md: 0 }}>

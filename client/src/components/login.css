@@ -39,6 +39,7 @@
   width: 200%;
 }
 .loginform .title {
+  user-select: none;
   width: 50%;
   font-size: 35px;
   font-weight: 600;
@@ -57,6 +58,7 @@
   border-radius: 15px;
 }
 .slide-controls .slide {
+  user-select: none;
   height: 100%;
   width: 100%;
   color: #fff;
