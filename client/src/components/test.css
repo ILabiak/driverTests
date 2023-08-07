@@ -123,10 +123,10 @@
     justify-content: space-between;
 }
 
-.answers {
+/* .answers {
     margin-top: 20px;
     width: 50%;
-}
+} */
 
 .defaultli {
     display: flex;
@@ -142,8 +142,9 @@
     transition: background-color 0.5s ease;
 }
 
-.answers label {
-    font-size: calc(2vmin);
+.answerLabel {
+    /* font-size: calc(2vmin); */
+    font-size: 1rem;
     cursor: pointer;
 }
 
@@ -171,7 +172,7 @@
 }
 
 .BackDropImage img {
-    width: 150%;
+    width: 150%; 
     border-radius: 10px;
     border: 1px solid #a6a6a6;
     transition: width 1s ease;

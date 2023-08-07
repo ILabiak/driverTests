@@ -9,6 +9,7 @@ import { Pagination, Backdrop } from '@mui/material';
 import noImage from '../media/no_image_uk.png';
 import useTestHandlers from './TestHandlers';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 
 import ExamResultBackdrop from './ExamResultBackdrop';
 import TestResultBackdrop from './TestResultBackdrop';
@@ -129,8 +130,59 @@ function TestContent() {
                         <div className='questionTextDiv'>
                             <span>{question.text || 'loading'}</span>
                         </div>
+                        {question.image !== null && (
+                            <Box className='image'
+                                // onClick={question.image !== null ? handleImgOpen : () => { }}
+                                sx={{
+                                    display: { xs: 'flex', sm: 'none' },
+                                    width: '100%',
+                                    justifyContent: 'center'
+                                }}>
+                                <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
+                            </Box >
+                        )}
                         <div className='answersBlock'>
-                            <ul className='answers'>
+                            <Stack sx={{
+                                marginTop: '20px',
+                                width: { xs: '100%', sm: '50%' }
+                            }}>
+                                {question && question.answers && question.answers.map((answer, index) => {
+                                    const answerId = answer.id;
+                                    let isSelected = selectedAnswer === answerId;
+                                    if (isSelected) {
+                                        question.selected = index
+                                    }
+                                    if (question.selected && question.selected === index) {
+                                        isSelected = true
+                                    }
+                                    const isCorrect = question.rightAnswerIndex === index;
+                                    let answerClass = isSelected
+                                        ? isCorrect
+                                            ? 'correct-answer'
+                                            : 'wrong-answer'
+                                        : 'defaultli';
+
+                                    if (question.answered) {
+                                        if (isCorrect) {
+                                            answerClass = 'correct-answer'
+                                        } else if (answerClass !== 'wrong-answer') {
+                                            answerClass = 'disabledLi'
+                                        }
+                                    }
+
+                                    return (
+                                        <li
+                                            key={answerId}
+                                            id={answerId}
+                                            className={answerClass}
+                                            onClick={question.answered ? () => { } : handleAnswerClick}
+                                        >
+                                            <label className='answerLabel'>{answer.text}</label>
+                                        </li>
+                                    );
+                                })}
+                            </Stack>
+                            {/* <ul className='answers'>
                                 {question && question.answers && question.answers.map((answer, index) => {
                                     const answerId = answer.id;
                                     let isSelected = selectedAnswer === answerId;
@@ -166,10 +218,17 @@ function TestContent() {
                                         </li>
                                     );
                                 })}
-                            </ul>
-                            <div className='image' onClick={question.image !== null ? handleImgOpen : () => { }}>
+                            </ul> */}
+                            <Box className='image'
+                                onClick={question.image !== null ? handleImgOpen : () => { }}
+                                sx={{
+                                    display: { xs: 'none', sm: 'flex' }
+                                }}>
                                 <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
-                            </div>
+                            </Box >
+                            {/* <div className='image' onClick={question.image !== null ? handleImgOpen : () => { }}>
+                                <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
+                            </div> */}
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                                 open={openImage}

@@ -32,10 +32,10 @@ const useTestHandlers = () => {
             borderColor: 'black',
             borderWidth: '2px',
         },
-        // ".MuiPagination-ul": {
-        //     //   height: '50px',
-        //       width: '100%'
-        //   },
+        '& .MuiPaginationItem-root': {
+            height: {xs: '2.3rem', sm : '2.7rem'},
+            width: {xs: '2.3rem', sm : '2.7rem'}
+          },
     
     });
     const timerRef = useRef(null);
