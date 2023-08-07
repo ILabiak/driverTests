@@ -32,7 +32,7 @@ function Main() {
             />
             <Login open={open} loginContainerRef={loginContainerRef} />
             <Box className='bannerContainer' sx={{
-                height: '70vw'
+                height: '80vw'
             }}>
                 <Container sx={{
                     display: { xs: 'none', sm: 'flex' }

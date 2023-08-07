@@ -116,7 +116,7 @@ module.exports = {
                 res.setCookie('sessionID', session.session_id, {
                   path: '/',
                   httpOnly: false,
-                  secure: true,
+                  // secure: true,
                   expires: session.expirationDate,
                 });
                 res.status(200).send({ message: 'Login successful' });
