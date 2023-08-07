@@ -240,16 +240,19 @@
     flex-direction: column;
     width: 100%;
     height: auto;
+    font-size: 2.8rem;
 }
 
 .testPausedTextContainer h2 {
     margin-bottom: 15px;
     font-weight: 300;
+    font-size: 2.5rem;
 }
 
 .testPausedTextContainer h5 {
     font-weight: 400;
     margin-bottom: 15px;
+    font-size: 1.5rem;
 }
 
 .testPausedTextContainer a {

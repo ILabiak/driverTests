@@ -44,7 +44,7 @@ function TestContent() {
     return (
         <div className='testpageContainer'>
             <Box className='questionsContainer' maxWidth="lg" sx={{
-                marginTop: { xs: '10px', md: '40px' },
+                marginTop: { xs: '20px', md: '40px' },
                 padding: { xs: '0 10px', md: 0 }
             }}>
                 <div className='testNameRow'>
