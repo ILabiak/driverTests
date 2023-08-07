@@ -9,8 +9,7 @@ import {
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { Backdrop } from '@mui/material';
-// import ClickAwayListener from '@mui/base/ClickAwayListener';
-// import useAuthData from './useAuthData';
+
 
 function Login(props) {
     const { open, loginContainerRef } = props;
@@ -105,7 +104,6 @@ function Login(props) {
     return (
         <Backdrop
             open={open}
-            // onClick={handleClose}
             sx={{
                 zIndex: (theme) =>
                     Math.max.apply(Math, Object.values(theme.zIndex)) + 1,

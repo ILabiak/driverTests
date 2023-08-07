@@ -21,10 +21,10 @@
 
 .loginform {
   overflow: hidden;
+  width: 100%;
   max-width: 390px;
   background: #fff;
   padding: 30px;
-  /* position: absolute; */
   position: fixed;
   top: 50%;
   left: 50%;
