@@ -24,9 +24,8 @@
 }
 
 .questionsContainer {
-    margin-top: 40px;
     height: 70vh;
-    width: 120vh;
+    /* width: 120vh; */
     /* border: 1px solid #a6a6a6; */
 }
 
@@ -41,6 +40,7 @@
 
 .testNameRow h5 {
     font-weight: 400;
+    font-size: 1.5rem;
 }
 
 .questionsTimeRow {
@@ -53,8 +53,8 @@
     justify-content: space-between;
 }
 
-.questionsTimeRow span {
-    font-size: medium;
+.questionTimeText {
+    font-size: 1rem;
     text-align: center;
 }
 
@@ -67,6 +67,10 @@
     width: 20vw;
 }
 
+.questionTimeMobText {
+    font-size: 1.5rem;
+}
+
 .testTime {
     display: flex;
     align-items: center;
@@ -75,6 +79,10 @@
     height: 100%;
     width: 20vw;
 }
+
+/* .questionButtons {
+    font-size: 1.8rem;
+} */
 
 .questionButtons a:hover {
     cursor: pointer;
@@ -100,11 +108,11 @@
     height: auto;
     text-align: center;
     align-items: top;
+    font-size: 1.3rem;
 }
 
 .questionTextDiv span {
     margin-left: 10px;
-    font-size: 18px;
     font-weight: 600;
     text-align: left;
 }
@@ -325,4 +333,3 @@
 .bottomButton {
     margin-top: 10px;
 }
-

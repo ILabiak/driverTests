@@ -31,7 +31,12 @@ const useTestHandlers = () => {
         '.Mui-selected': {
             borderColor: 'black',
             borderWidth: '2px',
-        }
+        },
+        // ".MuiPagination-ul": {
+        //     //   height: '50px',
+        //       width: '100%'
+        //   },
+    
     });
     const timerRef = useRef(null);
     const testTimerRef = useRef(null);
