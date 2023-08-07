@@ -47,8 +47,6 @@ function TestContent() {
                 marginTop: { xs: '10px', md: '40px' },
                 padding: { xs: '0 10px', md: 0 }
             }}>
-
-                {/* <div className='questionsContainer'> */}
                 <div className='testNameRow'>
                     <h5>{sectionName}</h5>
                 </div>
@@ -182,43 +180,6 @@ function TestContent() {
                                     );
                                 })}
                             </Stack>
-                            {/* <ul className='answers'>
-                                {question && question.answers && question.answers.map((answer, index) => {
-                                    const answerId = answer.id;
-                                    let isSelected = selectedAnswer === answerId;
-                                    if (isSelected) {
-                                        question.selected = index
-                                    }
-                                    if (question.selected && question.selected === index) {
-                                        isSelected = true
-                                    }
-                                    const isCorrect = question.rightAnswerIndex === index;
-                                    let answerClass = isSelected
-                                        ? isCorrect
-                                            ? 'correct-answer'
-                                            : 'wrong-answer'
-                                        : 'defaultli';
-
-                                    if (question.answered) {
-                                        if (isCorrect) {
-                                            answerClass = 'correct-answer'
-                                        } else if (answerClass !== 'wrong-answer') {
-                                            answerClass = 'disabledLi'
-                                        }
-                                    }
-
-                                    return (
-                                        <li
-                                            key={answerId}
-                                            id={answerId}
-                                            className={answerClass}
-                                            onClick={question.answered ? () => { } : handleAnswerClick}
-                                        >
-                                            <label>{answer.text}</label>
-                                        </li>
-                                    );
-                                })}
-                            </ul> */}
                             <Box className='image'
                                 onClick={question.image !== null ? handleImgOpen : () => { }}
                                 sx={{
@@ -226,9 +187,6 @@ function TestContent() {
                                 }}>
                                 <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
                             </Box >
-                            {/* <div className='image' onClick={question.image !== null ? handleImgOpen : () => { }}>
-                                <img alt="questionPicture" src={question.image == null ? noImage : question.image} />
-                            </div> */}
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                                 open={openImage}
@@ -258,9 +216,7 @@ function TestContent() {
                     testTime={testTime}
                     formatTime={formatTime}
                 />
-                {/* </div> */}
             </Box>
-
         </div>
     );
 }
