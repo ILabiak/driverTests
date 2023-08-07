@@ -38,7 +38,7 @@ function Sections() {
 
     useEffect(() => {
         // Fetch the data from the API endpoint
-        fetch('http://localhost:3005/sections')
+        fetch('/sections')
             .then((response) => response.json())
             .then((data) => setSectionsData(data))
             .catch((error) => console.error('Error fetching data:', error));

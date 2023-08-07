@@ -69,7 +69,7 @@ function Login(props) {
 
         // Make the API call to the login endpoint
         try {
-            const response = await fetch('http://localhost:3005/login', {
+            const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

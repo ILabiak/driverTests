@@ -12,7 +12,7 @@ const useAuthData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3005/usermail', {
+        const response = await fetch('/usermail', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

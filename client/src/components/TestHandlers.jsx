@@ -98,7 +98,7 @@ const useTestHandlers = () => {
 
         const fetchSectionName = async () => {
             try {
-                const response = await fetch(`http://localhost:3005/section/${sectionId}`);
+                const response = await fetch(`/section/${sectionId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch section name');
                 }
@@ -110,13 +110,13 @@ const useTestHandlers = () => {
         };
         let link
         if (location.pathname.includes('twenty-questions')) {
-            link = 'http://localhost:3005/randomquestions/20'
+            link = '/randomquestions/20'
             setSectionName('20 випадкових питань')
         } else if (location.pathname.includes('question')) {
-            link = `http://localhost:3005/sectionquestions/${sectionId}`
+            link = `/sectionquestions/${sectionId}`
             fetchSectionName();
         } else if (location.pathname.includes('exam')) {
-            link = 'http://localhost:3005/examquestions'
+            link = '/examquestions'
             setSectionName('Іспит')
             setIsExam(true)
         }
