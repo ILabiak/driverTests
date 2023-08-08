@@ -263,7 +263,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 90%;
+    max-width: 500px;
     height: 40vh;
     background-color: #fff;
     border: 2px solid #a6a6a6;
@@ -291,12 +292,13 @@
 
 .examResultsText {
     font-weight: 600;
-    font-size: calc(3vmin);
+    font-size: 1.5rem;
 }
 
 .examAdditionalText {
     margin: 5px 0;
-    font-size: calc(2.3vmin);
+    /* font-size: calc(2.3vmin); */
+    font-size: 1rem;
 }
 
 .resultsContainer ul {
@@ -325,7 +327,8 @@
 }
 
 .resultsContainer label {
-    font-size: calc(2vmin);
+    /* font-size: calc(2vmin); */
+    font-size: 1rem;
     cursor: pointer;
     color: black
 }
