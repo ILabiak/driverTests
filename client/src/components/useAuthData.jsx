@@ -68,7 +68,6 @@ const useAuthData = () => {
 
   const handleLoginLinkClick = () => {
     setOpen(true);
-    console.log('open')
   };
 
 
