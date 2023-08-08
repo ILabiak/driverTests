@@ -235,7 +235,7 @@ form .btn input[type='submit'] {
   width: 100%;
   border-radius: 15px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding-left: 10px;
   align-items: center;
   text-align: center;
@@ -251,7 +251,7 @@ form .btn input[type='submit'] {
   width: 100%;
   border-radius: 15px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   padding-left: 10px;
   align-items: center;
   text-align: center;

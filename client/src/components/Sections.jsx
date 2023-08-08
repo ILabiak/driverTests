@@ -61,22 +61,22 @@ function Sections() {
                     <Grid container className='menuheader container' maxWidth="lg" spacing={{ xs: 1.5, sm: 2, md: 0 }}>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton current-menu-li'>
-                                <a href="/sections" class="sections">Питання до теми</a>
+                                <a href="/sections" className="sections">Питання до теми</a>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/twenty-questions" class="twenty-questions">20 випадкових питань</a>
+                                <a href="/twenty-questions" className="twenty-questions">20 випадкових питань</a>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/favourites" class="favourites">Обрані питання</a>
+                                <a href="/favourites" className="favourites">Обрані питання</a>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/exam" class="exam">Іспит</a>
+                                <a href="/exam" className="exam">Іспит</a>
                             </li>
                         </Grid>
                     </Grid>
@@ -88,13 +88,6 @@ function Sections() {
                     </Box>
                 </div>
 
-
-
-                {/* <div className='sectionsContainer'>
-                    <div className='sectionRows'>
-                        {renderSections()}
-                    </div>
-                </div> */}
             </div>
         </div>
 

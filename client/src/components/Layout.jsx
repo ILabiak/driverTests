@@ -52,15 +52,13 @@ function Layout(props) {
       <Container maxWidth="lg">
         <Toolbar disableGutters>
           <Box
-            noWrap
             component="a"
+            href='/'
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' }
             }}>
-            <a href='/'>
-              <img src={logo} className='App-logo' alt='logo' />
-            </a>
+            <img src={logo} className='App-logo' alt='logo' />
           </Box >
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -106,12 +104,10 @@ function Layout(props) {
           </Box>
           <Box
             variant="h5"
-            noWrap
             component="a"
-            href="" sx={{ display: { xs: 'flex', md: 'none' }, mr: 2, flexGrow: 1 }}>
-            <a href='/'>
-              <img src={logo} className='App-logo' alt='logo' />
-            </a>
+            href="/"
+            sx={{ display: { xs: 'flex', md: 'none' }, mr: 2, flexGrow: 1 }}>
+            <img src={logo} className='App-logo' alt='logo' />
           </Box >
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
@@ -168,17 +164,17 @@ function Layout(props) {
               onClose={handleCloseUserMenu}
             >
               <MenuItem key={'email'} divider onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{userEmail}</Typography>
-                </MenuItem>
-                <MenuItem key={'my-profile'} component="a" href="/my-profile" >
-                  <Typography textAlign="center">Мій профіль</Typography>
-                </MenuItem>
-                <MenuItem key={'tests'} component="a" href="sections">
-                  <Typography textAlign="center">Тести</Typography>
-                </MenuItem>
-                <MenuItem key={'leave'} onClick={handleLogout}>
-                  <Typography textAlign="center">Вийти</Typography>
-                </MenuItem>
+                <Typography textAlign="center">{userEmail}</Typography>
+              </MenuItem>
+              <MenuItem key={'my-profile'} component="a" href="/my-profile" >
+                <Typography textAlign="center">Мій профіль</Typography>
+              </MenuItem>
+              <MenuItem key={'tests'} component="a" href="sections">
+                <Typography textAlign="center">Тести</Typography>
+              </MenuItem>
+              <MenuItem key={'leave'} onClick={handleLogout}>
+                <Typography textAlign="center">Вийти</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
