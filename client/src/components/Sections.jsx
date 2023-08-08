@@ -40,8 +40,7 @@ function Sections() {
 
     useEffect(() => {
         // Fetch the data from the API endpoint
-        console.log('env '+process.env.REACT_APP_API_URL)
-        fetch(process.env.REACT_APP_API_URL +'/sections')
+        fetch(process.env.REACT_APP_API_URL + '/sections')
             .then((response) => response.json())
             .then((data) => setSectionsData(data))
             .catch((error) => console.error('Error fetching data:', error));

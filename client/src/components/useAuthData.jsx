@@ -11,7 +11,7 @@ const useAuthData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/usermail', {
+        const response = await fetch(process.env.REACT_APP_API_URL + '/usermail', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

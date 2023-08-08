@@ -103,7 +103,7 @@ const useTestHandlers = () => {
 
         const fetchSectionName = async () => {
             try {
-                const response = await fetch(`/section/${sectionId}`);
+                const response = await fetch(process.env.REACT_APP_API_URL + `/section/${sectionId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch section name');
                 }
@@ -115,13 +115,13 @@ const useTestHandlers = () => {
         };
         let link
         if (location.pathname.includes('twenty-questions')) {
-            link = '/randomquestions/20'
+            link = process.env.REACT_APP_API_URL + '/randomquestions/20'
             setSectionName('20 випадкових питань')
         } else if (location.pathname.includes('question')) {
-            link = `/sectionquestions/${sectionId}`
+            link = process.env.REACT_APP_API_URL + `/sectionquestions/${sectionId}`
             fetchSectionName();
         } else if (location.pathname.includes('exam')) {
-            link = '/examquestions'
+            link = process.env.REACT_APP_API_URL + '/examquestions'
             setSectionName('Іспит')
             setIsExam(true)
         }
