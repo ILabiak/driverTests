@@ -33,7 +33,6 @@ const useAuthData = () => {
         console.log('Error while getting user data', error);
       }
     }
-
     if (cookies.sessionID) {
       setIsAuthenticated(true);
       fetchData().catch(console.error)
@@ -69,7 +68,6 @@ const useAuthData = () => {
   const handleLoginLinkClick = () => {
     setOpen(true);
   };
-
 
   const handleLogout = () => {
     document.cookie = 'sessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
