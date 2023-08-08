@@ -190,7 +190,15 @@
   /* margin: 0 5.5vh; */
 }
 
-.col1 a {
+.col1 button {
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
   text-decoration: none;
   color: #333;
 }
@@ -225,7 +233,7 @@
   background-color: #1b9710;
 }
 
-.row3-button a{
+.row3-button {
   /* height: 30px; */
   width: 100%;
   color: #fff;
@@ -238,8 +246,18 @@
   /* padding: 10px 0; */
 }
 
- .row3-a {
-  /* width: 180px; */
+.row3 button {
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+}
+
+ /* .row3-a {
   color: #fff;
   text-align: center;
   font-family: 'Gill Sans';
@@ -253,7 +271,7 @@
   border: 1px solid transparent;
   border: 2px solid #a6a6a6;
   padding: 10px 0;
-} 
+}  */
 
 .dropdown {
   position: absolute;

@@ -2,6 +2,7 @@
 import logo from '../media/logo.png';
 import React from 'react';
 import './layout.css';
+import {useNavigate } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -20,6 +21,7 @@ import LoginIcon from '@mui/icons-material/Login';
 
 
 function Layout(props) {
+  const navigate = useNavigate();
   const {
     isAuthenticated,
     userEmail,
@@ -53,7 +55,7 @@ function Layout(props) {
         <Toolbar disableGutters>
           <Box
             component="a"
-            href='/'
+            onClick={() => navigate('/')}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' }
@@ -90,36 +92,36 @@ function Layout(props) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <a href="/sections" style={{ textDecoration: 'none' }}>
+              <button onClick={() => navigate('/sections')} style={{ textDecoration: 'none' }}>
                 <MenuItem key={'pdr-tests'}>
                   <Typography textAlign="center" sx={{ color: 'black' }}>{'Тести ПДР'}</Typography>
                 </MenuItem>
-              </a>
-              <a href="/exam" style={{ textDecoration: 'none' }}>
+              </button>
+              <button onClick={() => navigate('/exam')} style={{ textDecoration: 'none' }}>
                 <MenuItem key={'exam'}>
                   <Typography textAlign="center" sx={{ color: 'black' }}>{'Іспит з водіння'}</Typography>
                 </MenuItem>
-              </a>
+              </button>
             </Menu>
           </Box>
           <Box
             variant="h5"
             component="a"
-            href="/"
+            onClick={() => navigate('/')}
             sx={{ display: { xs: 'flex', md: 'none' }, mr: 2, flexGrow: 1 }}>
             <img src={logo} className='App-logo' alt='logo' />
           </Box >
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
               key={'pdr-tests'}
-              href='/sections'
+              onClick={() => navigate('/sections')}
               sx={{ my: 2, color: 'black', display: 'block' }}
             >
               Тести ПДР
             </Button>
             <Button
               key={'exam'}
-              href='/exam'
+              onClick={() => navigate('/exam')}
               sx={{ my: 2, color: 'black', display: 'block' }}
             >
               Іспит з водіння
@@ -166,10 +168,10 @@ function Layout(props) {
               <MenuItem key={'email'} divider onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">{userEmail}</Typography>
               </MenuItem>
-              <MenuItem key={'my-profile'} component="a" href="/my-profile" >
+              <MenuItem key={'my-profile'} component="button" onClick={() => navigate('/my-profile')}>
                 <Typography textAlign="center">Мій профіль</Typography>
               </MenuItem>
-              <MenuItem key={'tests'} component="a" href="sections">
+              <MenuItem key={'tests'} component="button" onClick={() => navigate('/sections')}>
                 <Typography textAlign="center">Тести</Typography>
               </MenuItem>
               <MenuItem key={'leave'} onClick={handleLogout}>

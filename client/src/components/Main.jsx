@@ -8,8 +8,10 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import bannerLong from '../media/banner-long.png';
 import bannerShort from '../media/banner-short.webp'
+import {useNavigate } from 'react-router-dom';
 
 function Main() {
+    const navigate = useNavigate();
     const {
         open,
         showDropdown,
@@ -86,9 +88,9 @@ function Main() {
                                     <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
-                                            <a href="/sections">
+                                            <button onClick={() => navigate('/sections')}>
                                                 <span>Проходь тести</span>
-                                            </a>
+                                            </button>
                                         </div>
                                     </Grid>
                                     <Grid item md={4}>
@@ -109,21 +111,21 @@ function Main() {
                                             <Box className='row3-button' sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <a href='start-testing'>Розпочати тестування</a>
+                                                <button onClick={() => navigate('/sections')}>Розпочати тестування</button>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4}>
                                             <Box className='row3-button' sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <a href='start-testing'>Читати ПДР</a>
+                                                <button onClick={() => navigate('/sections')}>Читати ПДР</button>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4}>
                                             <Box className='row3-button' sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <a href='start-testing'>Пройти навчання </a>
+                                                <button onClick={() => navigate('/sections')}>Пройти навчання </button>
                                             </Box>
                                         </Grid>
                                     </Grid>
