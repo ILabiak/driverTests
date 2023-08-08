@@ -3,12 +3,14 @@ import Layout from './Layout';
 import Login from './Login'
 import useAuthData from './useAuthData';
 import React, { useEffect, useState } from 'react';
+import {useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 function Sections() {
+    const navigate = useNavigate();
     const [sectionsData, setSectionsData] = useState([]);
     const {
         open,
@@ -27,11 +29,11 @@ function Sections() {
                 <div className='sectionInfo'>
                     <span className='sectionText'>{section.name}</span>
                 </div>
-                <a href={`/question/${section.id}`} className='sectionButton'>
+                <button onClick={() => navigate(`/question/${section.id}`)} className='sectionButton'>
                     <span>
                         <FontAwesomeIcon icon={faPlay} style={{ color: '#555555' }} />
                     </span>
-                </a>
+                </button>
             </div>
         ));
     };
@@ -61,22 +63,22 @@ function Sections() {
                     <Grid container className='menuheader container' maxWidth="lg" spacing={{ xs: 1.5, sm: 2, md: 0 }}>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton current-menu-li'>
-                                <a href="/sections" className="sections">Питання до теми</a>
+                                <button onClick={() => navigate('/sections')} className="sections">Питання до теми</button>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/twenty-questions" className="twenty-questions">20 випадкових питань</a>
+                                <button onClick={() => navigate('/twenty-questions')} className="twenty-questions">20 випадкових питань</button>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/favourites" className="favourites">Обрані питання</a>
+                                <button onClick={() => navigate('/favourites')} className="favourites">Обрані питання</button>
                             </li>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3}>
                             <li className='singleton'>
-                                <a href="/exam" className="exam">Іспит</a>
+                                <button onClick={() => navigate('/exam')} className="exam">Іспит</button>
                             </li>
                         </Grid>
                     </Grid>

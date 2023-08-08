@@ -155,8 +155,27 @@ form .field input:focus::placeholder {
   color: #006400;
   text-decoration: none;
 }
+
+.form-inner form .pass-link button,
+.form-inner form .signup-link button {
+  background-color: transparent;
+  border-width: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  padding: 0;
+  color: #006400;
+  text-decoration: none;
+  cursor: pointer;
+}
 .form-inner form .pass-link a:hover,
 .form-inner form .signup-link a:hover {
+  text-decoration: underline;
+}
+.form-inner form .pass-link button:hover,
+.form-inner form .signup-link button:hover {
   text-decoration: underline;
 }
 form .btn {

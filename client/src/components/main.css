@@ -255,23 +255,9 @@
   font-weight: inherit;
   line-height: inherit;
   padding: 0;
+  color: #fff;
 }
 
- /* .row3-a {
-  color: #fff;
-  text-align: center;
-  font-family: 'Gill Sans';
-  font-size: calc(12px + 0.9vmin);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  text-decoration: none;
-  background: #2e8b57;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  border: 2px solid #a6a6a6;
-  padding: 10px 0;
-}  */
 
 .dropdown {
   position: absolute;
@@ -292,7 +278,6 @@
   position: flex;
 }
 
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
@@ -300,7 +285,6 @@
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
-
 
 .profileContainer {
   display: flex;

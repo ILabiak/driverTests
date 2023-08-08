@@ -54,7 +54,7 @@
     justify-content: center;
     align-items: center;
 }
-
+/* 
 .menuHeader a {
     vertical-align: top;
     line-height: calc(2vmin);
@@ -63,8 +63,23 @@
     font-size: 1.2rem;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: transparent;
+} */
+
+.menuHeader button {
+    border-width: 0;
+    padding: 0;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    line-height: calc(2vmin);
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: transparent;
     /* border: 1px solid #a6a6a6; */
 }
+
 
 .menuHeader .current-menu-li {
     font-weight: 600;
@@ -122,6 +137,11 @@
 }
 
 .sectionButton {
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
     display: flex;
     justify-content: center;
     align-items: center;

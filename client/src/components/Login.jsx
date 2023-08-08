@@ -9,9 +9,11 @@ import {
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { Backdrop } from '@mui/material';
+import {useNavigate } from 'react-router-dom';
 
 
 function Login(props) {
+    const navigate = useNavigate();
     const { open, loginContainerRef } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -182,7 +184,8 @@ function Login(props) {
                                 </span>
                             </div>
                             <div className='pass-link'>
-                                <a href='#'>Забули пароль?</a>
+                                {/* <a href='#'>Забули пароль?</a> */}
+                                <button onClick={() => navigate('/forgot-password')}>Забули пароль?</button>
                             </div>
                             <div className='field btn'>
                                 <div className='btn-layer'></div>

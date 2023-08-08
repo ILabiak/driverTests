@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Backdrop } from '@mui/material';
+import {useNavigate } from 'react-router-dom';
 
 function ResultBackdrop({ open, onClose, examFailed, answeredQuestions, questions, testTime, formatTime }) {
+  const navigate = useNavigate();
+
   return (
     <Backdrop
       sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -17,20 +20,20 @@ function ResultBackdrop({ open, onClose, examFailed, answeredQuestions, question
             <span className='examAdditionalText'>Витрачено часу: {formatTime(testTime)}</span>
           </div>
           <ul>
-            <a href="/exam">
+            <button onClick={() => navigate('/exam')}>
               <li className='topButton'>
                 <label>
                   Почати заново
                 </label>
               </li>
-            </a>
-            <a>
+            </button>
+            <button>
               <li className='bottomButton'>
                 <label>
                   Залишитись та проаналізувати помилки
                 </label>
               </li>
-            </a>
+            </button>
           </ul>
         </div>
       </div>
