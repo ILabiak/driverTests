@@ -18,14 +18,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Layout(props) {
   const {
-    showDropdown,
     isAuthenticated,
     userEmail,
-    handleProfileIconClick,
     handleLogout,
     handleLoginLinkClick
   } = props;
@@ -170,11 +167,18 @@ function Layout(props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              <MenuItem key={'email'} divider onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{userEmail}</Typography>
                 </MenuItem>
-              ))}
+                <MenuItem key={'my-profile'} component="a" href="/my-profile" >
+                  <Typography textAlign="center">Мій профіль</Typography>
+                </MenuItem>
+                <MenuItem key={'tests'} component="a" href="sections">
+                  <Typography textAlign="center">Тести</Typography>
+                </MenuItem>
+                <MenuItem key={'leave'} onClick={handleLogout}>
+                  <Typography textAlign="center">Вийти</Typography>
+                </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

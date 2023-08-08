@@ -3,7 +3,6 @@ import { useCookies } from 'react-cookie';
 
 const useAuthData = () => {
   const [open, setOpen] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [cookies] = useCookies();
@@ -72,9 +71,6 @@ const useAuthData = () => {
     console.log('open')
   };
 
-  const handleProfileIconClick = () => {
-    setShowDropdown(!showDropdown);
-  }
 
   const handleLogout = () => {
     document.cookie = 'sessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -85,15 +81,12 @@ const useAuthData = () => {
     cookies,
     open,
     setOpen,
-    showDropdown,
-    setShowDropdown,
     isAuthenticated,
     setIsAuthenticated,
     userEmail,
     setUserEmail,
     loginContainerRef,
     handleLoginLinkClick,
-    handleProfileIconClick,
     handleLogout,
   };
 }
