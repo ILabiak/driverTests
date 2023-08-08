@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_API_URL=$REACT_APP_API_URL react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -49,7 +49,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3005",
   "devDependencies": {
     "gh-pages": "^5.0.0"
   },
