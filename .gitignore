@@ -110,3 +110,4 @@ db/seeders/seed-data/old-data/
 firebase
 
 !client/.env
+.vercel
