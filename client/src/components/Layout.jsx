@@ -92,16 +92,16 @@ function Layout(props) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <button onClick={() => navigate('/sections')} style={{ textDecoration: 'none' }}>
+              <a onClick={() => navigate('/sections')} style={{ textDecoration: 'none' }}>
                 <MenuItem key={'pdr-tests'}>
                   <Typography textAlign="center" sx={{ color: 'black' }}>{'Тести ПДР'}</Typography>
                 </MenuItem>
-              </button>
-              <button onClick={() => navigate('/exam')} style={{ textDecoration: 'none' }}>
+              </a>
+              <a onClick={() => navigate('/exam')} style={{ textDecoration: 'none' }}>
                 <MenuItem key={'exam'}>
                   <Typography textAlign="center" sx={{ color: 'black' }}>{'Іспит з водіння'}</Typography>
                 </MenuItem>
-              </button>
+              </a>
             </Menu>
           </Box>
           <Box
