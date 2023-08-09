@@ -7,7 +7,7 @@ import Test from './components/Test'
 function App() {
   return (
 
-    <BrowserRouter basename='/driverTests'>
+    <BrowserRouter>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='sections' element={<Sections />} />
