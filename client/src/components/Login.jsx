@@ -10,9 +10,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Backdrop } from '@mui/material';
 import {useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 
 function Login(props) {
+    const [cookies, setCookie] = useCookies();
     const navigate = useNavigate();
     const { open, loginContainerRef } = props;
     const [email, setEmail] = useState('');
@@ -80,6 +82,15 @@ function Login(props) {
                 credentials: 'include'
             });
             if (response.status === 200) {
+                const responseData = await response.json();
+
+                // const expires = new Date(responseData.expires);
+                // document.cookie = `session=${responseData.session}; expires=${expires.toUTCString()}; path=/`;
+                setCookie('sessionID', responseData.session, {
+                    path: '/',
+                    httpOnly: false,
+                    expires: new Date(responseData.expires)
+                })
                 // alert("Login successfull");
                 setloginSuccess(true);
                 setloginStatusText('Успішна авторизація');
