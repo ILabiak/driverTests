@@ -111,3 +111,5 @@ firebase
 
 !client/.env
 .vercel
+
+server
