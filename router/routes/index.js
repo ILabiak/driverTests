@@ -37,7 +37,7 @@ async function routes(fastify /*, options*/) {
 
   /* User Routes */
   fastify.get('/user/:telegram_id', userController.getByTelegramId);
-  fastify.post('/user', userController.add);
+  fastify.post('/signup', userController.add);
   fastify.post('/login', userController.login);
   fastify.post('/usermail', userController.getUserMail);
   fastify.put('/user/:id', userController.update);

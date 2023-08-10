@@ -273,7 +273,7 @@ form .btn input[type='submit'] {
   justify-content: flex-start;
   padding-left: 10px;
   align-items: center;
-  text-align: center;
+  text-align: left;
   color: #fff;
   font-size: 18px;
   font-weight: 500;

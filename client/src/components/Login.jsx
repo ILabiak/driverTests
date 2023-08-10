@@ -9,7 +9,7 @@ import {
     faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { Backdrop } from '@mui/material';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 
@@ -19,6 +19,9 @@ function Login(props) {
     const { open, loginContainerRef } = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [signupEmail, setSignupEmail] = useState('');
+    const [signupPassword, setSignupPassword] = useState('');
+    const [signupConfirmPassword, setSignupConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState({
         login: false,
         signup: false,
@@ -26,6 +29,8 @@ function Login(props) {
     });
     const [loginStatusText, setloginStatusText] = useState('');
     const [loginSuccess, setloginSuccess] = useState(false);
+    const [signUpStatusText, setSignUpStatusText] = useState('');
+    const [signUpSuccess, setSignUpSuccess] = useState(false);
 
     const handleSignupClick = () => {
         const loginText = document.querySelector('.title-text .login');
@@ -55,6 +60,18 @@ function Login(props) {
         setPassword(event.target.value);
     };
 
+    const handleSignupEmailChange = (event) => {
+        setSignupEmail(event.target.value);
+    };
+
+    const handleSignupPasswordChange = (event) => {
+        setSignupPassword(event.target.value);
+    };
+
+    const handleSignupConfirmPasswordChange = (event) => {
+        setSignupConfirmPassword(event.target.value);
+    };
+
     const handleTogglePasswordVisibility = (field) => {
         setShowPassword((prevShowPassword) => ({
             ...prevShowPassword,
@@ -62,9 +79,14 @@ function Login(props) {
         }));
     };
 
-    const handleErrorCancelClick = () => {
+    const handleLoginErrorCancelClick = () => {
         setloginSuccess(false);
         setloginStatusText('');
+    };
+
+    const handleSignUpErrorCancelClick = () => {
+        setSignUpSuccess(false);
+        setSignUpStatusText('');
     };
 
 
@@ -114,6 +136,62 @@ function Login(props) {
         }
     };
 
+    const handleSignupSubmit = async (event) => {
+        event.preventDefault();
+
+        // Check if passwords match
+        if (signupPassword !== signupConfirmPassword) {
+            setSignUpSuccess(false);
+            setSignUpStatusText('Паролі не співпадають');
+            return;
+        }
+
+        try {
+            const response = await fetch(process.env.REACT_APP_API_URL + '/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: signupEmail, password: signupPassword }),
+                credentials: 'include'
+            });
+
+            if (response.status === 201) {
+                const responseData = await response.json();
+
+                setCookie('sessionID', responseData.session, {
+                    path: '/',
+                    httpOnly: false,
+                    expires: new Date(responseData.expires)
+                })
+                // Successful sign-up
+                setSignUpSuccess(true);
+                setSignUpStatusText('Реєстрація пройшла успішно');
+                setTimeout(() => {
+                    window.location.reload(false);
+                }, 750);
+            } else if (response.status === 400) {
+                // Handle other response statuses (e.g., validation errors, server errors)
+                const responseData = await response.json();
+                const error = responseData.error
+                if (error.includes('email must be unique')) {
+                    setSignUpStatusText('Така пошта вже зареєстрована')
+                } else {
+                    setSignUpStatusText(responseData.error);
+                }
+                setSignUpSuccess(false);
+            }else {
+                setSignUpSuccess(false);
+                setSignUpStatusText('Помилка на сервері, спробуйте пізніше');
+            }
+        } catch (error) {
+            setSignUpSuccess(false);
+            setSignUpStatusText('Помилка на сервері');
+            console.log(error)
+        }
+    };
+
+
     return (
         <Backdrop
             open={open}
@@ -160,7 +238,7 @@ function Login(props) {
                                         {loginStatusText}
                                     </p>
                                     <button
-                                        onClick={handleErrorCancelClick}
+                                        onClick={handleLoginErrorCancelClick}
                                         className={
                                             loginSuccess ? 'closeSuccessButton' : 'closeErrorButton'
                                         }
@@ -207,13 +285,33 @@ function Login(props) {
                             </div>
                         </form>
                         <form action='#' className='signup'>
+                            {signUpStatusText && (
+                                <div className='field loginStatusField'>
+                                    <p
+                                        className={
+                                            signUpSuccess ? 'loginSuccessForm' : 'loginErrorForm'
+                                        }
+                                    >
+                                        {signUpStatusText}
+                                    </p>
+                                    <button
+                                        onClick={handleSignUpErrorCancelClick}
+                                        className={
+                                            signUpSuccess ? 'closeSuccessButton' : 'closeErrorButton'
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={signUpSuccess ? faCheck : faTimes} />
+                                    </button>
+                                </div>
+                            )}
                             <div className='field'>
-                                <input type='text' placeholder='Електронна пошта' required />
+                                <input type='text' placeholder='Електронна пошта' onChange={handleSignupEmailChange} required />
                             </div>
                             <div className='field'>
                                 <input
                                     type={showPassword.signup ? 'text' : 'password'}
                                     placeholder='Пароль'
+                                    onChange={handleSignupPasswordChange}
                                     required
                                 />
                                 <span
@@ -229,6 +327,7 @@ function Login(props) {
                                 <input
                                     type={showPassword.signupConfirm ? 'text' : 'password'}
                                     placeholder='Підтвердіть пароль'
+                                    onChange={handleSignupConfirmPasswordChange}
                                     required
                                 />
                                 <span
@@ -242,7 +341,7 @@ function Login(props) {
                             </div>
                             <div className='field btn'>
                                 <div className='btn-layer'></div>
-                                <input type='submit' value='Зареєструватись' />
+                                <input type='submit' onClick={handleSignupSubmit} value='Зареєструватись' />
                             </div>
                         </form>
                     </div>

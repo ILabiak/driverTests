@@ -1,4 +1,5 @@
 'use strict';
+
 const User = require('../models').User;
 const Session = require('../models').Session;
 const bcrypt = require('bcrypt');
@@ -48,8 +49,33 @@ module.exports = {
         email: req.body.email,
         password: passwordHash,
       })
-        .then((user) => res.status(201).send(user))
-        .catch((error) => res.status(400).send(error));
+        .then((user) => {
+          if (!user) {
+            return res.status(401).send({ message: 'Error while signing up' });
+          }
+          const sessionId = crypto.randomBytes(32).toString('hex');
+          return Session.create({
+            session_id: sessionId,
+            user_id: user.id,
+            expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          })
+            .then((session) => {
+              res.status(201).send({
+                user: user.email || user.id,
+                message: 'Signup successful',
+                session: session.session_id,
+                expires: session.expirationDate,
+              });
+            })
+            .catch((error) => res.status(400).send(error));
+        })
+        .catch((error) => {
+          const errArr = [];
+          error.errors.map((er) => {
+            errArr.push(er.message);
+          });
+          res.status(400).send({ error: errArr.join(' ') });
+        });
     } else {
       res.status(400).send(new Error('Could not hash password'));
     }
@@ -113,13 +139,11 @@ module.exports = {
               expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
             })
               .then((session) => {
-                res.setCookie('sessionID', session.session_id, {
-                  path: '/',
-                  httpOnly: false,
-                  // secure: true,
+                res.status(200).send({
+                  message: 'Login successful',
+                  session: session.session_id,
                   expires: session.expirationDate,
                 });
-                res.status(200).send({ message: 'Login successful' });
               })
               .catch((error) => res.status(400).send(error));
           } else {
@@ -148,13 +172,11 @@ module.exports = {
           .send({ message: 'No user found with this session' });
       }
       // console.log(JSON.stringify(data, null, 2));
-      res
-        .status(200)
-        .send({
-          user_id: data.user_id,
-          email: data.User.email,
-          username: data.User.username,
-        });
+      res.status(200).send({
+        user_id: data.user_id,
+        email: data.User.email,
+        username: data.User.username,
+      });
     });
   },
 };
