@@ -108,24 +108,24 @@ function Main() {
                                         flexDirection: { xs: 'column', md: 'initial' }
                                     }}>
                                         <Grid item xs={4}>
-                                            <Box className='row3-button' sx={{
+                                            <Box className='row3-button' onClick={() => navigate('/sections')} sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <button onClick={() => navigate('/sections')}>Розпочати тестування</button>
+                                                <button>Розпочати тестування</button>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <Box className='row3-button' sx={{
+                                            <Box className='row3-button' onClick={() => navigate('/sections')} sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <button onClick={() => navigate('/sections')}>Читати ПДР</button>
+                                                <button>Читати ПДР</button>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <Box className='row3-button' sx={{
+                                            <Box className='row3-button' onClick={() => navigate('/sections')} sx={{
                                                 width: { xs: '80vw', md: '180px' }
                                             }}>
-                                                <button onClick={() => navigate('/sections')}>Пройти навчання </button>
+                                                <button>Пройти навчання </button>
                                             </Box>
                                         </Grid>
                                     </Grid>
