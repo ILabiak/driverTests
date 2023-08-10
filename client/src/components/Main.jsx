@@ -82,21 +82,19 @@ function Main() {
                                     <Grid item md={4} xs={12}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
-                                            <span>Вчися</span>
+                                            <span className='col1Text'>Вчися</span>
                                         </div>
                                     </Grid>
                                     <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
-                                            <button onClick={() => navigate('/sections')}>
-                                                <span>Проходь тести</span>
-                                            </button>
+                                            <span className='col1Text'>Проходь тести</span>
                                         </div>
                                     </Grid>
                                     <Grid item md={4}>
                                         <div className='col1'>
                                             <span className='iconLearn'></span>
-                                            <span>Складай іспит</span>
+                                            <span className='col1Text'>Складай іспит</span>
                                         </div>
                                     </Grid>
                                 </Grid>

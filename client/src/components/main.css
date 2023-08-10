@@ -176,9 +176,12 @@
 }
 
 .col1 {
-  display: block;
+  display: flex;
   /* width: 26vh; */
   /* height: 26vh; */
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   height: 200px;
   width: 180px;
   border: 2px solid #a6a6a6;
@@ -188,6 +191,13 @@
   font-style: normal;
   font-weight: normal;
   /* margin: 0 5.5vh; */
+}
+
+.col1Text{
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-decoration: none;
+  /* color: black; */
 }
 
 .col1 button {
@@ -204,12 +214,17 @@
 }
 
 .iconLearn {
-  background: url('../media/study-icon.png');
+  background: url('../media/study-icon.png') no-repeat;
+  object-fit: cover;
   display: block;
-  height: 20vh;
-  background-size: 22vh 22vh;
-  background-position: center center;
-  padding: 5px;
+  /* height: 20vh; */
+  background-size: 128px;
+  height: 128px;
+  width: 128px;
+  margin: 10px auto 0;
+  /* background-size: 20vh 20vh; */
+  background-position: top;
+  /* padding: 5px; */
 }
 
 .row3 {
